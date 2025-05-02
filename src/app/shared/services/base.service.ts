@@ -29,7 +29,7 @@ export class BaseService<T> {
       console.log(`An error occurred: ${error.error.message}`);
     } else if (error instanceof ProgressEvent) {
       // Network error or CORS issue
-      errorMessage = 'A network error occurred.';
+      errorMessage = 'A network or CORS error occurred.';
     } else {
       // Backend error
       switch (error.status) {
