@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {Toolbar} from 'primeng/toolbar';
 import {AvatarModule} from 'primeng/avatar';
 import {ButtonModule} from 'primeng/button';
 import {RouterLink} from '@angular/router';
@@ -9,7 +8,7 @@ import {Ripple} from 'primeng/ripple';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [Toolbar, AvatarModule, ButtonModule, RouterLink, Menu, Ripple],
+  imports: [AvatarModule, ButtonModule, RouterLink, Menu, Ripple],
   templateUrl: './sidebar.component.html',
   standalone: true,
   styleUrl: './sidebar.component.css'
