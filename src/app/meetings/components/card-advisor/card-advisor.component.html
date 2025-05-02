@@ -1,0 +1,21 @@
+<div class="card flex justify-center">
+  <p-dialog [header]="advisor?.nombre" [(visible)]="visible" [modal]="true" [draggable]="false" [resizable]="false">
+    <p-card [style]="{ width: '25rem', overflow: 'hidden' }">
+      <ng-template #header>
+        <img alt="Card" class="w-full" src="https://primefaces.org/cdn/primeng/images/card-ng.jpg" />
+      </ng-template>
+      <ng-template #title> {{ advisor?.ubicacion }}</ng-template>
+      <ng-template #subtitle>{{ advisor?.calificacion }}</ng-template>
+      <ng-template #subHeader>{{ advisor?.calificacion }}</ng-template>
+      <p> {{ advisor?.id }} </p>
+      <p> {{ advisor?.tipoAsesoria }} </p>
+      <p> {{ advisor?.especialidad }} </p>
+      <ng-template #footer>
+        <div class="flex gap-4 mt-1">
+          <p-button label="Cancel" severity="secondary" class="w-full" [outlined]="true" styleClass="w-full" (onClick)="closeDialog()" />
+          <p-button label="Save" class="w-full" styleClass="w-full" (onClick)="onRequestMeeting(advisor!)" />
+        </div>
+      </ng-template>
+    </p-card>
+  </p-dialog>
+</div>
