@@ -1,0 +1,28 @@
+<div class="card">
+  <p-toolbar [style]="{ 'border-radius': '3rem', 'padding': '1rem 1rem 1rem 1.5rem' }">
+
+    <ng-template #start>
+      <div class="flex items-center gap-2">
+        @for ( o of options; track o.title ){
+
+          <p-button
+            [routerLink]="o.path"
+            [label]="o.title"
+            [icon]='o.icon'
+            [style]="{ 'border-radius': '3rem'}"
+            />
+        }
+      </div>
+    </ng-template>
+
+    <ng-template #end>
+      <div class="flex items-center gap-2">
+        <p-avatar
+          image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+          [style]="{ width: '48px', height: '48px' }"
+        />
+
+      </div>
+    </ng-template>
+  </p-toolbar>
+</div>
