@@ -1,8 +1,8 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {FilterMatchMode, FilterService, SelectItem} from 'primeng/api';
 import {CommonModule} from '@angular/common';
 import {TableModule} from 'primeng/table';
-import {CarService} from '../../services/car.service';
+
 import {AdvisorService} from '../../services/advisor.service';
 import {Button} from 'primeng/button';
 import {CardAdvisorComponent} from '../card-advisor/card-advisor.component';
@@ -13,20 +13,20 @@ import {Card} from 'primeng/card';
 @Component({
   selector: 'app-advisors-list',
   imports: [TableModule, CommonModule, Button, CardAdvisorComponent, Dialog, Card],
-  providers: [FilterService, CarService, AdvisorService],
+  providers: [FilterService, AdvisorService],
   templateUrl: './advisors-list.component.html',
   standalone: true,
   styleUrl: './advisors-list.component.css'
 })
 
-export class AdvisorsListComponent implements OnInit {
+export class AdvisorsListComponent implements OnInit, OnChanges{
 
   cols: any[] = [];
   advisors: Advisor[] = [];
-  advisorId: string = '';
   visible: boolean = false;
   matchModeOptions: SelectItem[] = [];
   advisor: Advisor | undefined;
+
   constructor(
     private filterService: FilterService,
     private advisorService: AdvisorService
@@ -90,20 +90,21 @@ export class AdvisorsListComponent implements OnInit {
 
   onRequestMeeting(asesor: Advisor): void {
     this.advisor = asesor;
-    this.visible = true;
-
   }
 
   onViewDetails(asesor: Advisor): void {
     this.advisor = asesor;
     this.visible = true;
+    console.log("asesor: ", this.advisor)
+
   }
 
-
-  closeDialog() {
-    this.visible = !this.visible;
-    console.log('id:' + this.advisorId );
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['visible']) {
+      this.visible = changes['visible'].currentValue;
+    }
   }
+
 
 }
 

@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, input, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {AdvisorService} from '../../services/advisor.service';
 import {CardModule} from 'primeng/card';
 import {ButtonModule} from 'primeng/button';
@@ -13,28 +13,24 @@ import {Advisor} from '../../model/advisor.entity';
   styleUrl: './card-advisor.component.css'
 })
 
-export class CardAdvisorComponent implements OnInit, OnChanges {
+export class CardAdvisorComponent implements OnChanges {
 
-@Input() advisorId?: any;
-  advisor!: Advisor ;
+@Input() advisor?: Advisor;
+@Input() visibleFromFather: boolean = false;
+@Output() dialogClosed = new EventEmitter<void>();
+
   visible: boolean = false;
 
-  constructor(private advisorService: AdvisorService) {}
-
-  ngOnInit(): void {
-    // Puede o no funcionar dependiendo de si advisorId está disponible al iniciar
-    if (this.advisorId) {
-  }
-
-}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['advisorId'] && this.advisorId) {
+    if (changes['visibleFromFather']) {
+      this.visible = changes['visibleFromFather'].currentValue;
+    }
   }
-}
 
   closeDialog() {
-    this.visible = !this.visible
+    this.visible = false;
+    this.dialogClosed.emit();
   }
 
   onRequestMeeting(advisor: Advisor) {
