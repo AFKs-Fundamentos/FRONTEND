@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {FilterMatchMode, FilterService, SelectItem} from 'primeng/api';
 import {CommonModule} from '@angular/common';
 import {TableModule} from 'primeng/table';
@@ -6,13 +6,13 @@ import {TableModule} from 'primeng/table';
 import {AdvisorService} from '../../services/advisor.service';
 import {Button} from 'primeng/button';
 import {CardAdvisorComponent} from '../card-advisor/card-advisor.component';
-import {Dialog} from 'primeng/dialog';
 import {Advisor} from '../../model/advisor.entity';
-import {Card} from 'primeng/card';
+import {CardComponent} from '../../../shared/components/card/card.component';
+import {DialogComponent} from '../../../shared/components/dialog/dialog.component';
 
 @Component({
   selector: 'app-advisors-list',
-  imports: [TableModule, CommonModule, Button, CardAdvisorComponent, Dialog, Card],
+  imports: [TableModule, CommonModule, Button, CardAdvisorComponent, CardComponent, DialogComponent],
   providers: [FilterService, AdvisorService],
   templateUrl: './advisors-list.component.html',
   standalone: true,
@@ -25,7 +25,10 @@ export class AdvisorsListComponent implements OnInit, OnChanges{
   advisors: Advisor[] = [];
   visible: boolean = false;
   matchModeOptions: SelectItem[] = [];
-  advisor: Advisor | undefined;
+  @Input() advisor?: Advisor;
+  @Output() dialogClosed = new EventEmitter<void>();
+
+
 
   constructor(
     private filterService: FilterService,
@@ -96,7 +99,10 @@ export class AdvisorsListComponent implements OnInit, OnChanges{
     this.advisor = asesor;
     this.visible = true;
     console.log("asesor: ", this.advisor)
+  }
 
+  onHandleCancel() {
+    this.visible = false;
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -104,7 +110,6 @@ export class AdvisorsListComponent implements OnInit, OnChanges{
       this.visible = changes['visible'].currentValue;
     }
   }
-
 
 }
 

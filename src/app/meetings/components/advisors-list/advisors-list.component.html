@@ -41,13 +41,35 @@
     </ng-template>
   </p-table>
 
+
+
 @if (advisor){
-  <app-card-advisor [advisor]="advisor" [visibleFromFather]="visible" (dialogClosed)="visible = false"></app-card-advisor>
+
+  <app-dialog
+    [dialogTitle]="advisor ? advisor.nombre : '' "
+    [visibleFromFather]="visible"
+    (dialogClosed)="onHandleCancel()"
+
+
+  >
+
+    <app-card
+      [contentTitle]="advisor ? advisor.nombre : '' "
+      [contentSubtitle]="advisor ? advisor.ubicacion : '' "
+      (cancelClicked)="onHandleCancel()"
+      (saveClicked)="onHandleCancel()"
+    >
+      <p> {{ advisor?.id }} </p>
+      <p> {{ advisor?.tipoAsesoria }} </p>
+      <p> {{ advisor?.especialidad }} </p>
+
+    </app-card>
+
+  </app-dialog>
+
 }
 
 </div>
-
-
 
 
 

@@ -1,9 +1,9 @@
-  <div class="card flex justify-center">
+
+<!--
+<div class="card flex justify-center">
     <p-dialog [header]="advisor?.nombre" [(visible)]="visible" [modal]="true" [draggable]="true" [resizable]="false" (onHide)="closeDialog()" [closeOnEscape]="true" >
       <p-card [style]="{ width: '25rem', overflow: 'hidden' }">
-        <ng-template #header>
-          <img alt="Card" class="w-full" src="https://primefaces.org/cdn/primeng/images/card-ng.jpg" />
-        </ng-template>
+
         <ng-template #title> {{ advisor?.ubicacion }}</ng-template>
         <ng-template #subtitle>{{ advisor?.calificacion }}</ng-template>
         <ng-template #subHeader>{{ advisor?.calificacion }}</ng-template>
@@ -19,4 +19,26 @@
       </p-card>
     </p-dialog>
   </div>
+buttonClicked
+  <app-dialog
+    [dialogTitle]="advisor ? advisor.nombre : '' "
+    [visibleFromFather]="visible"
+    (dialogClosed)="onHandleCancel()"
 
+
+  >
+
+    <app-card
+    [contentTitle]="advisor ? advisor.nombre : '' "
+    [contentSubtitle]="advisor ? advisor.ubicacion : '' "
+    (cancelClicked)="onHandleCancel()"
+    (saveClicked)="onHandleSave()"
+    >
+      <p> {{ advisor?.id }} </p>
+      <p> {{ advisor?.tipoAsesoria }} </p>
+      <p> {{ advisor?.especialidad }} </p>
+
+    </app-card>
+
+  </app-dialog>
+-->
