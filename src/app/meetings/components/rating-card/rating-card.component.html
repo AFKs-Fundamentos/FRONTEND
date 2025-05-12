@@ -1,0 +1,17 @@
+@if (!submitted){
+  <p-card
+    [header]="rating?'Rating' : 'No Rating'" class="text-center">
+    <div class="flex flex-column justify-content-center align-items-center ">
+      <p>{{question}}</p>
+
+      <div class="flex  flex-column gap-2  justify-content-center align-items-center" >
+        <p-rating [(ngModel)]="ratingValue"/>
+
+        <p-button [disabled]="ratingValue===0"  label="Enviar" (onClick)="OnSubmit()" />
+      </div>
+
+    </div>
+
+  </p-card>
+
+}

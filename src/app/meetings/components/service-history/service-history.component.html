@@ -1,0 +1,42 @@
+<div class="flex flex-row bg-black-alpha-20 px-6 border-0 border-round-3xl">
+
+
+    <div class="flex flex-row flex-wrap max-w-30rem  p-2 gap-3   ">
+      <p class="inline  w-full text-center">Servicios Pendientes</p>
+
+    @for (m of meetings; track m.id) {
+      <app-card
+        [image]="false"
+        [contentTitle]="advisor?advisor.nombre: '' "
+
+      >
+        <p>Estado: {{m.estado}}</p>
+        @if (m.rating!=null) {
+          <p>Rating: {{m.rating}}</p>
+        }
+      </app-card>
+    }
+    </div>
+
+
+
+
+    <div class="flex flex-row flex-wrap max-w-30rem  p-2 gap-3">
+      <p class="inline w-full text-center">Servicios Completados</p>
+
+      @for (m of meetings; track m.id) {
+        <app-card
+          [image]="false"
+          [contentTitle]="advisor?advisor.nombre: '' "
+
+        >
+          <p>Estado: {{m?.estado}}</p>
+
+          <p>Rating: {{m?.rating}}</p>
+        </app-card>
+      }
+    </div>
+
+  </div>
+
+

@@ -1,0 +1,12 @@
+<app-card
+  [contentTitle]="advisor ? advisor.nombre : '' "
+  [contentSubtitle]="advisor ? advisor.ubicacion : '' "
+  [image] = true
+  (cancelClicked)="onHandleCancel()"
+  (saveClicked)="onHandleSave()"
+>
+  <p> {{ advisor?.id }} </p>
+  <p> {{ advisor?.tipoAsesoria }} </p>
+  <p> {{ advisor?.especialidad }} </p>
+
+</app-card>
