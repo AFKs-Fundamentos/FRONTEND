@@ -10,10 +10,11 @@ import {CardComponent} from '../../../shared/components/card/card.component';
 import {DialogComponent} from '../../../shared/components/dialog/dialog.component';
 import {AdvisoryFormComponent} from '../advisory-form/advisory-form.component';
 import {CardAdvisorComponent} from '../card-advisor/card-advisor.component';
+import {Droppable} from 'primeng/dragdrop';
 
 @Component({
   selector: 'app-advisors-list',
-  imports: [TableModule, CommonModule, Button, CardComponent, DialogComponent, AdvisoryFormComponent, CardAdvisorComponent],
+  imports: [TableModule, CommonModule, Button, DialogComponent, AdvisoryFormComponent, CardAdvisorComponent, Droppable],
   providers: [FilterService, AdvisorService],
   templateUrl: './advisors-list.component.html',
   standalone: true,
