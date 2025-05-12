@@ -1,10 +1,7 @@
-import {Component, EventEmitter, input, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {AdvisorService} from '../../services/advisor.service';
+import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {CardModule} from 'primeng/card';
 import {ButtonModule} from 'primeng/button';
-import {Dialog} from 'primeng/dialog';
 import {Advisor} from '../../model/advisor.entity';
-import {DialogComponent} from '../../../shared/components/dialog/dialog.component';
 import {CardComponent} from '../../../shared/components/card/card.component';
 
 @Component({
@@ -12,9 +9,7 @@ import {CardComponent} from '../../../shared/components/card/card.component';
   imports: [
     CardModule,
     ButtonModule,
-    Dialog,
-    DialogComponent,
-    CardComponent
+    CardComponent,
   ],
   templateUrl: './card-advisor.component.html',
   standalone: true,
@@ -26,9 +21,8 @@ export class CardAdvisorComponent implements OnChanges {
   @Input() advisor?: Advisor;
   @Input() visibleFromFather: boolean = false;
   @Output() dialogClosed = new EventEmitter<void>();
+  @Output() onSave = new EventEmitter<void>();
   visible: boolean = false;
-  selectedAdvisor?: Advisor;
-  dialogVisible = false;
 
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -37,8 +31,15 @@ export class CardAdvisorComponent implements OnChanges {
     }
   }
 
+
   onHandleCancel() {
     this.visible = false;
+    this.dialogClosed.emit();
+
   }
-  onHandleSave() {}
+  onHandleSave(){
+    this.visible = false;
+    this.onSave.emit();
+    console.log(this.advisor);
+  }
 }

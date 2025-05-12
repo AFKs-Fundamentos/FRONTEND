@@ -110,6 +110,10 @@ export class AdvisorsListComponent implements OnInit, OnChanges{
     this.visibleInfo = false;
     this.visibleForm = false;
   }
+  onFormSent() {
+    this.visibleForm = false;
+    console.log("Form sent" , this.advisor);
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['visible']) {

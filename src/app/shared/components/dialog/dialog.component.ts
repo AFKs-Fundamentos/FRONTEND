@@ -6,8 +6,6 @@ import {Dialog} from 'primeng/dialog';
 @Component({
   selector: 'app-dialog',
   imports: [
-    Button,
-    Card,
     Dialog
   ],
   templateUrl: './dialog.component.html',
