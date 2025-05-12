@@ -5,14 +5,15 @@ import {TableModule} from 'primeng/table';
 
 import {AdvisorService} from '../../services/advisor.service';
 import {Button} from 'primeng/button';
-import {CardAdvisorComponent} from '../card-advisor/card-advisor.component';
 import {Advisor} from '../../model/advisor.entity';
 import {CardComponent} from '../../../shared/components/card/card.component';
 import {DialogComponent} from '../../../shared/components/dialog/dialog.component';
+import {AdvisoryFormComponent} from '../advisory-form/advisory-form.component';
+import {CardAdvisorComponent} from '../card-advisor/card-advisor.component';
 
 @Component({
   selector: 'app-advisors-list',
-  imports: [TableModule, CommonModule, Button, CardAdvisorComponent, CardComponent, DialogComponent],
+  imports: [TableModule, CommonModule, Button, CardComponent, DialogComponent, AdvisoryFormComponent, CardAdvisorComponent],
   providers: [FilterService, AdvisorService],
   templateUrl: './advisors-list.component.html',
   standalone: true,
@@ -23,7 +24,9 @@ export class AdvisorsListComponent implements OnInit, OnChanges{
 
   cols: any[] = [];
   advisors: Advisor[] = [];
-  visible: boolean = false;
+
+  visibleInfo: boolean = false;
+  visibleForm: boolean = false;
   matchModeOptions: SelectItem[] = [];
   @Input() advisor?: Advisor;
   @Output() dialogClosed = new EventEmitter<void>();
@@ -93,21 +96,24 @@ export class AdvisorsListComponent implements OnInit, OnChanges{
 
   onRequestMeeting(asesor: Advisor): void {
     this.advisor = asesor;
+    this.visibleForm = true;
+    console.log("asesor: ", this.advisor)
   }
 
   onViewDetails(asesor: Advisor): void {
     this.advisor = asesor;
-    this.visible = true;
+    this.visibleInfo = true;
     console.log("asesor: ", this.advisor)
   }
 
   onHandleCancel() {
-    this.visible = false;
+    this.visibleInfo = false;
+    this.visibleForm = false;
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['visible']) {
-      this.visible = changes['visible'].currentValue;
+      this.visibleInfo = changes['visible'].currentValue;
     }
   }
 

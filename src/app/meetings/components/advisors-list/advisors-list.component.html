@@ -46,28 +46,47 @@
 @if (advisor){
 
   <app-dialog
-    [dialogTitle]="advisor ? advisor.nombre : '' "
-    [visibleFromFather]="visible"
-    (dialogClosed)="onHandleCancel()"
+    [dialogTitle]="visibleInfo ? advisor.nombre : 'Angendar cita con ' + advisor.nombre "
+    [visibleFromFather]="visibleInfo || visibleForm"
+    (dialogClosed)="onHandleCancel()">
 
+    @if (visibleInfo) {
+      <!--
+      <app-card
+        [contentTitle]="advisor ? advisor.nombre : '' "
+        [contentSubtitle]="advisor ? advisor.ubicacion : '' "
+        [image] = true
+        (cancelClicked)="onHandleCancel()"
+        (saveClicked)="onHandleCancel()"
+      >
+        <p> {{ advisor?.id }} </p>
+        <p> {{ advisor?.tipoAsesoria }} </p>
+        <p> {{ advisor?.especialidad }} </p>
 
-  >
+      </app-card>
+     -->
 
-    <app-card
-      [contentTitle]="advisor ? advisor.nombre : '' "
-      [contentSubtitle]="advisor ? advisor.ubicacion : '' "
-      (cancelClicked)="onHandleCancel()"
-      (saveClicked)="onHandleCancel()"
-    >
-      <p> {{ advisor?.id }} </p>
-      <p> {{ advisor?.tipoAsesoria }} </p>
-      <p> {{ advisor?.especialidad }} </p>
+      <app-card-advisor
+      [advisor]="advisor"
+      (dialogClosed)="onHandleCancel()"
+      (onSave)="onHandleCancel()"
+    > </app-card-advisor>
 
-    </app-card>
+    }
+      @else if (visibleForm) {
+        <app-advisory-form
+          [advisor]="advisor"
+        ></app-advisory-form>
+      }
 
   </app-dialog>
 
+
+
 }
+
+
+
 
 </div>
 
