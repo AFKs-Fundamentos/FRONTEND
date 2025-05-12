@@ -33,7 +33,12 @@ export class SidebarComponent implements OnInit{
           {
             label: 'Service History',
             icon: 'pi pi-history',
-            path: 'history-services'
+            path: 'service-history'
+          },
+          {
+            label: 'Ratings',
+            icon: 'pi pi-star',
+            path: 'ratings'
           },
           {
             label: 'Products',
