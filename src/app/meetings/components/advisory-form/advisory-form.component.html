@@ -1,0 +1,49 @@
+
+  <form [formGroup]="advisoryForm" (ngSubmit)="OnSubmit()">
+    <p-fluid class="flex flex-column justify-content-center  gap-2">
+
+      <p-datepicker
+        [formControlName]="op.date.controlName"
+        [showButtonBar]="true"
+        placeholder="{{op.date.placeholder}}"
+        dateFormat="{{op.date.format}}">
+      </p-datepicker>
+
+      <p-datepicker
+        [formControlName]="op.time.controlName"
+        [timeOnly]="true"
+        placeholder="{{op.time.placeholder}}">
+      </p-datepicker>
+
+      <p-selectbutton
+        [options]="op.meetingType.options"
+        [formControlName]="op.meetingType.controlName"
+        optionLabel="label"
+        optionValue="value"
+        class="flex justify-content-center">
+      </p-selectbutton>
+
+      <p-iftalabel >
+        <input id="{{op.email.id}}" pInputText [formControlName]="op.email.controlName">
+        <label for="{{op.email.id}}">{{ op.email.label }}</label>
+      </p-iftalabel>
+
+      <p-iftalabel >
+        <input id="{{op.location.id}}" pInputText [formControlName]="op.location.controlName">
+        <label for="{{op.location.id}}">{{ op.location.label }}</label>
+      </p-iftalabel>
+
+      <p-iftalabel >
+        <textarea pTextarea id="{{op.description.id}}"  rows="4"  [formControlName]="op.description.controlName"></textarea>
+        <label for="{{op.description.id}}">{{op.description.label}}</label>
+      </p-iftalabel>
+
+      <p-button (onClick)="OnSubmit()">ENVIAR</p-button>
+    </p-fluid>
+  </form>
+
+
+
+
+
+
