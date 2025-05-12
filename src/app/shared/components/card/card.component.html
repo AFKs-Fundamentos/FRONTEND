@@ -1,6 +1,8 @@
   <p-card [style]="{ width: 'auto', overflow: 'hidden' }">
     <ng-template #header>
-      <img alt="Card" class="w-full" src="https://primefaces.org/cdn/primeng/images/card-ng.jpg" />
+      @if (image) {
+        <img alt="Card" class="w-full" src="https://primefaces.org/cdn/primeng/images/card-ng.jpg" />
+      }
     </ng-template>
     <ng-template #title>  {{contentTitle}} </ng-template>
     <ng-template #subtitle> {{contentSubtitle}} </ng-template>
