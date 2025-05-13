@@ -5,17 +5,19 @@ import {ProductsService} from '../../services/products.service';
 import {Product} from '../../model/product.entity';
 import {CurrencyPipe, NgForOf} from '@angular/common';
 import {ButtonModule,Button} from 'primeng/button';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-product-list',
-  imports: [CommonModule,CardModule, NgForOf, CurrencyPipe, Button,ButtonModule],
+  standalone: true,
+  imports: [CommonModule, CardModule, NgForOf, CurrencyPipe, Button, ButtonModule],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css'
 })
 export class ProductListComponent implements OnInit{
   productData: Product[] = [];
 
-  constructor(private productService: ProductsService) {}
+  constructor(private productService: ProductsService, private router: Router) {}
 
   ngOnInit() {
     this.loadProducts();
@@ -33,5 +35,17 @@ export class ProductListComponent implements OnInit{
   }
   toggleFavorite(product: Product): void {
     product.isFavorite = !product.isFavorite;
+  }
+  addToCart(product: Product): void {
+    const productId = product.id;
+    //console.log('Producto añadido al carrito con ID:', productId);
+    // Aqui debajo llamas al servicio de carrito el que lo este haciendo ;)
+  }
+  seeDetail(product: Product): void {
+
+    const productId = product.id;
+    this.router.navigate(['/product-detail', productId]);
+
+
   }
 }
