@@ -1,0 +1,113 @@
+{"products": [
+  {
+    "id": 1,
+    "productName": "Procesador Intel Core i9-14900K",
+    "photo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9yhAPF-GjRlNC1rngHyrvEZhedic0gd6NEQ&s",
+    "sku": "CPU-INT-I9-14900K",
+    "category": "Procesadores",
+    "price": 599.99,
+    "description": "Procesador de última generación con 24 núcleos y 32 hilos, ideal para gaming y tareas de alto rendimiento. Frecuencia de hasta 6.0 GHz.",
+    "isFavorite": false,
+    "characteristic_id": 201
+  },
+  {
+    "id": 2,
+    "productName": "Tarjeta Gráfica NVIDIA GeForce RTX 5090",
+    "photo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbrRcIasBR95YoOyHaA2plLeuTgxt9ijR19Q&s",
+    "sku": "GPU-NVD-RTX-5090",
+    "category": "Tarjetas Gráficas",
+    "price": 1999.00,
+    "description": "La tarjeta gráfica más potente del mercado, diseñada para gaming 8K y renderizado profesional. 32GB de GDDR7 VRAM.",
+    "isFavorite": false,
+    "characteristic_id": 202
+  },
+  {
+    "id": 3,
+    "productName": "Memoria RAM DDR5 Kingston Fury Beast 64GB (2x32GB) 6400MHz",
+    "photo": "https://cdn.memorykings.pe/files/2025/04/16/352790-MK039180-A.jpg",
+    "sku": "RAM-KNG-DDR5-64GB",
+    "category": "Memoria RAM",
+    "price": 289.50,
+    "description": "Kit de memoria RAM de alta velocidad y baja latencia, perfecto para sistemas de gaming y estaciones de trabajo. Iluminación RGB personalizable.",
+    "isFavorite": false,
+    "characteristic_id": 203
+  },
+  {
+    "id": 4,
+    "productName": "Disco SSD NVMe PCIe Gen5 Samsung 990 Pro 2TB",
+    "photo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaJZI3Ef1bWgf6dTIeNxMFuj-BuOxC7Pvvvw&s",
+    "sku": "SSD-SAM-990PRO-2TB",
+    "category": "Almacenamiento",
+    "price": 349.75,
+    "description": "Unidad de estado sólido con velocidades de lectura/escritura ultrarrápidas (hasta 14,000 MB/s), ideal para la carga rápida de juegos y aplicaciones.",
+    "isFavorite": false,
+    "characteristic_id": 204
+  },
+  {
+    "id": 5,
+    "productName": "Placa Madre ASUS ROG Maximus Z890 Extreme",
+    "photo": "https://m.media-amazon.com/images/I/813NIY0YE8L._AC_UF894,1000_QL80_.jpg",
+    "sku": "MB-ASU-Z890-EXT",
+    "category": "Placas Madre",
+    "price": 799.00,
+    "description": "Placa madre de gama alta con soporte para los últimos procesadores Intel, PCIe Gen5, Wi-Fi 7 y una robusta fase de alimentación.",
+    "isFavorite": false,
+    "characteristic_id": 205
+  },
+  {
+    "id": 6,
+    "productName": "Fuente de Alimentación Corsair RM1200x SHIFT 1200W",
+    "photo": "https://cdn.memorykings.pe/files/2025/02/13/351767-MK038605G.jpg",
+    "sku": "PSU-COR-RM1200X",
+    "category": "Fuentes de Poder",
+    "price": 279.00,
+    "description": "Fuente de poder modular de 1200W con certificación 80 Plus Gold, ideal para configuraciones de alto rendimiento con múltiples GPUs.",
+    "isFavorite": false,
+    "characteristic_id": 206
+  },
+  {
+    "id": 7,
+    "productName": "Gabinete Lian Li O11 Dynamic EVO XL",
+    "photo": "https://www.nanotek.lk/storage/products/466/HQYUfB69zyfKLzdMnJXZtKYF7gxr6HgT7w8kOrzl.png",
+    "sku": "CASE-LIA-O11XL",
+    "category": "Gabinetes",
+    "price": 249.00,
+    "description": "Gabinete de torre completa con excelente flujo de aire y capacidad para múltiples radiadores y GPUs de gran tamaño. Diseño modular.",
+    "isFavorite": false,
+    "characteristic_id": 207
+  },
+  {
+    "id": 8,
+    "productName": "Sistema de Refrigeración Líquida AIO NZXT Kraken Z73 RGB 360mm",
+    "photo": "https://m.media-amazon.com/images/I/51QqK4Rc03L._AC_SL1001_.jpg",
+    "sku": "COOL-NZX-KRZ73",
+    "category": "Refrigeración",
+    "price": 219.00,
+    "description": "Sistema de refrigeración líquida todo en uno con pantalla LCD personalizable y tres ventiladores RGB de 120mm para una disipación óptima del calor.",
+    "isFavorite": false,
+    "characteristic_id": 208
+  },
+  {
+    "id": 9,
+    "productName": "Monitor Gaming ASUS ROG Swift PG27AQDM OLED 240Hz",
+    "photo": "https://i0.wp.com/maqtech.pe/wp-content/uploads/2024/10/MONITOR-27-ASUS-ROG-SWIFT-PG27AQDM-240HZ-0.03-MS-OLED-2K-QHD-2560-X-1440_3-100.jpg?fit=1081%2C1081&ssl=1",
+    "sku": "MON-ASU-PG27AQDM",
+    "category": "Monitores",
+    "price": 999.00,
+    "description": "Monitor de 27 pulgadas con panel OLED, resolución QHD, tasa de refresco de 240Hz y tiempo de respuesta de 0.03ms para una experiencia de juego inmersiva.",
+    "isFavorite": false,
+    "characteristic_id": 209
+  },
+  {
+    "id": 10,
+    "productName": "Teclado Mecánico Corsair K70 RGB MK.2 Cherry MX Speed",
+    "photo": "https://www.loginstore.com/img/datasheet/KBCOCH9109014.webp",
+    "sku": "KB-COR-K70-MXS",
+    "category": "Periféricos",
+    "price": 169.99,
+    "description": "Teclado mecánico con interruptores Cherry MX Speed, retroiluminación RGB personalizable y reposamuñecas desmontable. Construcción de aluminio.",
+    "isFavorite": false,
+    "characteristic_id": 210
+  }
+]
+}
