@@ -1,0 +1,26 @@
+<p-card *ngIf="product" [style]="{ 'text-align': 'center' }">
+  <ng-template #header>
+    <h2>{{ product.productName }}</h2>
+  </ng-template>
+
+
+  <div class="product-container">
+    <img [src]="product.photo"
+           alt="Imagen del producto"
+           class="product-image" />
+
+    <div class="product-details">
+      <p><strong>Precio:</strong> {{ product.price | currency }}</p>
+      <p><strong>Descripción:</strong> {{ product.description }}</p>
+      <p><strong>Categoría:</strong> {{ product.category }}</p>
+      <p><strong>SKU:</strong> {{ product.sku }}</p>
+    </div>
+  </div>
+
+  <ng-template #footer>
+    <p-button icon="pi pi-shopping-cart"
+              label="Añadir al carrito"
+              (click)="addToCart(product)">
+    </p-button>
+  </ng-template>
+</p-card>
