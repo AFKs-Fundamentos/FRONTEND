@@ -1,0 +1,19 @@
+<div class="product-gallery">
+  <p-card class="custom-card" *ngFor="let product of productData">
+    <ng-template #header>
+      <div class="img-button-header">
+        <button pButton class="heart-button" (click)="toggleFavorite(product)">
+          <i [ngClass]="{'pi': true, 'pi-heart': !product.isFavorite, 'pi-heart-fill': product.isFavorite}"></i>
+        </button>
+        <img [src]="product.photo" alt="Imagen del producto" class="product-photo"/>
+      </div>
+    </ng-template>
+    <ng-template #title>
+      <h3>{{product.productName}}</h3>
+    </ng-template>
+    <ng-template #footer>
+      <p>Precio: {{product.price | currency}}</p>
+    </ng-template>
+  </p-card>
+</div>
+
