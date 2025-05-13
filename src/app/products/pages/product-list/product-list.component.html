@@ -10,9 +10,11 @@
     </ng-template>
     <ng-template #title>
       <h3>{{product.productName}}</h3>
+      <p>Precio: {{product.price | currency}}</p>
     </ng-template>
     <ng-template #footer>
-      <p>Precio: {{product.price | currency}}</p>
+      <p-button icon="pi pi-shopping-cart"  (click)="addToCart(product)"></p-button>
+      <p-button icon="pi pi-eye" (click)="seeDetail(product)"></p-button>
     </ng-template>
   </p-card>
 </div>
