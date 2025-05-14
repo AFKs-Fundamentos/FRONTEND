@@ -20,6 +20,8 @@ export class AuthenticationService {
   private signedInUserId: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   private signedInUsername: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
+  //User Role
+  private signedInUserRole: BehaviorSubject<string> = new BehaviorSubject<string>('');
   constructor(private router: Router, private http: HttpClient) { }
 
   get isSignedIn() {
@@ -28,6 +30,10 @@ export class AuthenticationService {
 
   get currentUserId() {
     return this.signedInUserId.asObservable();
+  }
+
+  get getCurrentUserId() {
+    return this.signedInUserId.value;
   }
 
   get currentUsername() {
@@ -67,7 +73,17 @@ export class AuthenticationService {
           this.signedInUserId.next(response.id);
           this.signedInUsername.next(response.username);
           localStorage.setItem('token', response.token);
-          console.log(`Signed in as ${response.username} with token ${response.token}`);
+          const rawRole = response.roles && response.roles.length > 0 ? response.roles[0] : '';
+          const normalizedRole = this.normalizeRole(rawRole);
+          this.signedInUserRole.next(normalizedRole);
+          //console.log(`Signed in as ${response.username} with token ${response.token}`);
+          console.log(`User logged in with role: ${normalizedRole}`);
+          // Redirección según rol
+          if (normalizedRole === 'client') {
+             this.router.navigate(['/ratings']).then();
+          } else {
+             this.router.navigate(['/']).then(); // Ruta por defecto
+          }
           this.router.navigate(['/']).then();
         },
         error: (error) => {
@@ -89,7 +105,14 @@ export class AuthenticationService {
     this.signedIn.next(false);
     this.signedInUserId.next(0);
     this.signedInUsername.next('');
+    this.signedInUserRole.next('');
     localStorage.removeItem('token');
     this.router.navigate(['/sign-in']).then();
+  }
+
+  private normalizeRole(role: string): string {
+        if (role === 'ROLE_TECHNICIAN') return 'technician';
+        if (role === 'ROLE_CLIENT') return 'client';
+        return '';
   }
 }

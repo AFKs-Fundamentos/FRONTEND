@@ -13,6 +13,7 @@ export const routes: Routes = [
   { path: 'meetings', component: MeetingsComponent },
   { path: 'service-history', component: ServiceHistoryComponent },
   { path: 'ratings', component: RatingCardComponent },
-
+  { path: '', redirectTo: 'meetings', pathMatch: 'full' },
+  { path: '**', component: MeetingsComponent }
 ];
 
