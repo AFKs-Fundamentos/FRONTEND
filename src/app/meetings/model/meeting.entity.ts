@@ -1,10 +1,15 @@
 export interface Meeting {
-  id: string;
-  hora: string; // o tipo Date si lo prefieres unificado con fecha
+  id: any;
+  tipoReunion: 'IN_PERSON' | 'VIRTUAL';
+  estado: 'IN_POGRESS' | 'COMPLETED' | 'CANCELLED' | 'PENDING';
+  advisorId: any;
+  customerId: any;
   fecha: Date;
-  tipoReunion: 'PRESENCIAL' | 'VIRTUAL';
+  hora: Date;
+  meetUrl: string;
   email: string;
   descripcion: string;
-  estado: 'EN_ESPERA' | 'EN_PROCESO' | 'COMPLETADA';
-  rating: number | null;
+  location: string;
 }
+
+
