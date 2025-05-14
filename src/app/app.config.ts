@@ -9,6 +9,8 @@ import {MyPreset} from './mypreset';
 import { withInterceptors } from "@angular/common/http";
 import { authenticationInterceptor } from "./iam/services/authentication.interceptor";
 
+import {HttpClient, provideHttpClient} from "@angular/common/http";
+import { importProvidersFrom } from '@angular/core';
 
 export const appConfig: ApplicationConfig = {
   providers: [
