@@ -72,6 +72,16 @@ export class BaseService<T> {
       .pipe(retry(2), catchError(this.handleError));
   }
 
+  getById(id: any): Observable<T> {
+    return this.http.get<T>(`${this.resourcePath()}/${id}`, this.httpOptions)
+      .pipe(retry(2), catchError(this.handleError));
+  }
+
+  getAllById(id: any): Observable<T[]> {
+    return this.http.get<T[]>(`${this.resourcePath()}/${id}`, this.httpOptions)
+      .pipe(retry(2), catchError(this.handleError));
+  }
+
   private resourcePath(): string {
     return `${this.basePath}${this.resourceEndpoint}`;
   }
