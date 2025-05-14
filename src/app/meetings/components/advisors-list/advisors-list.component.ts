@@ -88,7 +88,7 @@ export class AdvisorsListComponent implements OnInit, OnChanges{
       { label: 'Between Dates', value: 'betweenDates' }
 
     ];
-    this.advisorService.getAdvisors().then(data => {
+    this.advisorService.getAll().subscribe(data => {
       this.advisors = data;
     });
 

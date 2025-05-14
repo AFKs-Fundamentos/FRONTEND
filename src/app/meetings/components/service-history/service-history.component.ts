@@ -30,19 +30,21 @@ export class ServiceHistoryComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadMeetings();
+
+    //TODO: remove comments
+   // this.loadMeetings(this.advisors);
     this.loadAdvisor();
 
   }
 
   loadAdvisor(): void {
-    this.advisorService.getAdvisors().then(data => {
+    this.advisorService.getAll().subscribe(data => {
       this.advisors = data;
     //  console.log(this.advisors);
     });
   }
-  loadMeetings(): void {
-    this.meetingService.getMeetings().then(ms => this.meetings = ms);
+  loadMeetings(advisor: Advisor): void {
+    this.meetingService.getAllById(advisor.id).subscribe(ms => this.meetings = ms);
     console.log(this.meetings);
   }
 
