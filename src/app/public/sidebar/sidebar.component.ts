@@ -5,10 +5,11 @@ import {RouterLink} from '@angular/router';
 import {Menu} from 'primeng/menu';
 import {MenuItem} from 'primeng/api';
 import {Ripple} from 'primeng/ripple';
+import { AuthenticationSectionComponent } from "../../iam/components/authentication-section/authentication-section.component";
 
 @Component({
   selector: 'app-sidebar',
-  imports: [AvatarModule, ButtonModule, RouterLink, Menu, Ripple],
+  imports: [AvatarModule, ButtonModule, RouterLink, Menu, Ripple,AuthenticationSectionComponent],
   templateUrl: './sidebar.component.html',
   standalone: true,
   styleUrl: './sidebar.component.css'

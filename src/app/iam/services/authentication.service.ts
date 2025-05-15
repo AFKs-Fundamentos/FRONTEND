@@ -79,7 +79,7 @@ export class AuthenticationService {
           //console.log(`Signed in as ${response.username} with token ${response.token}`);
           console.log(`User logged in with role: ${normalizedRole}`);
           // Redirección según rol
-          if (normalizedRole === 'client') {
+          if (normalizedRole === 'ROLE_CLIENT') {
              this.router.navigate(['/ratings']).then();
           } else {
              this.router.navigate(['/']).then(); // Ruta por defecto
@@ -111,8 +111,8 @@ export class AuthenticationService {
   }
 
   private normalizeRole(role: string): string {
-        if (role === 'ROLE_TECHNICIAN') return 'technician';
-        if (role === 'ROLE_CLIENT') return 'client';
+        if (role === 'ROLE_TECHNICIAN') return 'ROLE_TECHNICIAN';
+        if (role === 'ROLE_CLIENT') return 'ROLE_CLIENT';
         return '';
   }
 }

@@ -2,12 +2,13 @@ import { Component } from '@angular/core';
 import {Router} from "@angular/router";
 import {AuthenticationService} from "../../services/authentication.service";
 import {NgIf} from "@angular/common";
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-authentication-section',
   standalone: true,
   imports: [
-    NgIf
+    NgIf, ButtonModule
   ],
   templateUrl: './authentication-section.component.html',
   styleUrl: './authentication-section.component.css'

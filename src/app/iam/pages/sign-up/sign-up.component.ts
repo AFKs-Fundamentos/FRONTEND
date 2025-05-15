@@ -4,34 +4,45 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/
 import {AuthenticationService} from "../../services/authentication.service";
 import {SignUpRequest} from "../../model/sign-up.request";
 import {NgIf} from "@angular/common";
+import {Router} from '@angular/router';
 import { DividerModule } from 'primeng/divider';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { SelectModule } from 'primeng/select';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 @Component({
   selector: 'app-sign-up',
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    DividerModule, ButtonModule, InputTextModule,
+    DividerModule, ButtonModule, InputTextModule,SelectModule, MultiSelectModule,
     NgIf
   ],
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.css'
 })
 export class SignUpComponent extends BaseFormComponent implements OnInit {
-
+  roles: any[] | undefined;
   form!: FormGroup;
   submitted = false;
 
-  constructor(private builder: FormBuilder, private authenticationService: AuthenticationService) {
+  selectedRole: any;
+  constructor(private builder: FormBuilder, private authenticationService: AuthenticationService,
+    private router: Router) {
     super();
   }
 
   ngOnInit(): void {
+    this.roles = [
+      { value: 'ROLE_TECHNICIAN' },
+      { value: 'ROLE_CLIENT' }
+    ];
+
     this.form = this.builder.group({
       username: ['', Validators.required],
-      password: ['', Validators.required]
+      password: ['', Validators.required],
+      selectedRole: [[],Validators.required]
     });
   }
 
@@ -39,10 +50,14 @@ export class SignUpComponent extends BaseFormComponent implements OnInit {
     if (this.form.invalid) return;
     let username = this.form.value.username;
     let password = this.form.value.password;
-    let roles = this.form.value.roles;
+    const selectedRole = this.form.value.selectedRole.map((role: any) => role.value); // Extraer los valores
 
-    const signUpRequest = new SignUpRequest(username, password,roles);
+    const signUpRequest = new SignUpRequest(username, password,selectedRole);
     this.authenticationService.signUp(signUpRequest);
     this.submitted = true;
   }
+
+  navigateToSignIn() {
+        this.router.navigate(['/sign-in']); // Navegación a la ruta /sign-up
+      }
 }

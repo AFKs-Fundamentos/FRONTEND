@@ -1,0 +1,7 @@
+<div *ngIf="isSignedIn; then authenticated else anonymous"></div>
+<ng-template #authenticated>
+  <span> Welcome, {{ currentUserName }}</span> | <p-button (click)="onSignOut()">Sign Out</p-button>
+</ng-template>
+<ng-template #anonymous>
+  <p-button (click)="onSignIn()">Sign In</p-button> | <p-button (click)="onSignUp()">Sign Up</p-button>
+</ng-template>

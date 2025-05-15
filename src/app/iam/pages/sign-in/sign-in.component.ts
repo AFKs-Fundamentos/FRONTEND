@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/
 import {AuthenticationService} from "../../services/authentication.service";
 import {BaseFormComponent} from "../../../shared/components/base-form.component";
 import {SignInRequest} from "../../model/sign-in.request";
+import {Router} from '@angular/router';
 
 import {NgIf} from "@angular/common";
 
@@ -26,7 +27,8 @@ export class SignInComponent extends BaseFormComponent implements OnInit {
   form!: FormGroup;
   submitted = false;
 
-  constructor(private builder: FormBuilder, private authenticationService: AuthenticationService) {
+  constructor(private builder: FormBuilder, private authenticationService: AuthenticationService,
+    private router: Router) {
     super();
   }
 
@@ -46,4 +48,8 @@ export class SignInComponent extends BaseFormComponent implements OnInit {
     this.authenticationService.signIn(signInRequest);
     this.submitted = true;
   }
+
+  navigateToSignUp() {
+      this.router.navigate(['/sign-up']); // Navegación a la ruta /sign-up
+    }
 }

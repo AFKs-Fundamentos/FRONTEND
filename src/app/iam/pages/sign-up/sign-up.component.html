@@ -1,1 +1,32 @@
-<p>sign-up works!</p>
+<div class="flex flex-col md:flex-row">
+  <form [formGroup]="form">
+    <div class="w-full md:w-5/12 flex flex-col items-center justify-center gap-3 py-5">
+      <div class="flex flex-col gap-2">
+        <label for="username">Username</label>
+        <input pInputText id="username" type="text" formControlName="username"/>
+      </div>
+      <div class="flex flex-col gap-2">
+        <label for="password">Password</label>
+        <input pInputText id="password" type="password" formControlName="password"/>
+      </div>
+      <div class="flex flex-col gap-2">
+        <label for="roles">Roles</label>
+        <p-multiselect formControlName="selectedRole"
+                         [options]="roles"
+                         optionLabel="value"
+                         [style]="{ minWidth: '14rem' }"
+                         placeholder="Select a Role" />
+      </div>
+      <div class="flex">
+        <p-button label="Register" (click)="onSubmit()" icon="pi pi-user" class="w-full max-w-[17.35rem]" styleClass="w-full mx-auto" />
+      </div>
+    </div>
+  </form>
+  <div class="w-full md:w-2/12">
+    <p-divider layout="vertical" class="!hidden md:!flex"><b>OR</b></p-divider>
+  </div>
+  <div class="w-full md:w-5/12 flex items-center justify-center py-5">
+    <label>Already have an account?</label>
+    <p-button label="Sign In"  (click)="navigateToSignIn()" icon="pi pi-user-plus" severity="success" class="w-full max-w-[17.35rem]" styleClass="w-full mx-auto" />
+  </div>
+</div>
