@@ -16,7 +16,6 @@ import { InputTextModule } from 'primeng/inputtext';
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    NgIf,
     DividerModule, ButtonModule, InputTextModule
   ],
   templateUrl: './sign-in.component.html',
@@ -52,4 +51,5 @@ export class SignInComponent extends BaseFormComponent implements OnInit {
   navigateToSignUp() {
       this.router.navigate(['/sign-up']); // Navegación a la ruta /sign-up
     }
+
 }

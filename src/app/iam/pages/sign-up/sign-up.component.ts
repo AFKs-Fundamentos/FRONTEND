@@ -17,7 +17,6 @@ import { MultiSelectModule } from 'primeng/multiselect';
   imports: [
     ReactiveFormsModule,
     DividerModule, ButtonModule, InputTextModule,SelectModule, MultiSelectModule,
-    NgIf
   ],
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.css'
@@ -35,8 +34,8 @@ export class SignUpComponent extends BaseFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.roles = [
-      { value: 'ROLE_TECHNICIAN' },
-      { value: 'ROLE_CLIENT' }
+      { value: 'ROLE_TECHNICIAN', label: 'TÉCNICO' },
+      { value: 'ROLE_CLIENT', label: 'CLIENTE' },
     ];
 
     this.form = this.builder.group({
@@ -50,14 +49,15 @@ export class SignUpComponent extends BaseFormComponent implements OnInit {
     if (this.form.invalid) return;
     let username = this.form.value.username;
     let password = this.form.value.password;
-    const selectedRole = this.form.value.selectedRole.map((role: any) => role.value); // Extraer los valores
+    const selectedRole = [this.form.value.selectedRole.value];
 
     const signUpRequest = new SignUpRequest(username, password,selectedRole);
     this.authenticationService.signUp(signUpRequest);
     this.submitted = true;
+
   }
 
   navigateToSignIn() {
-        this.router.navigate(['/sign-in']); // Navegación a la ruta /sign-up
+        this.router.navigate(['/sign-in']);
       }
 }
