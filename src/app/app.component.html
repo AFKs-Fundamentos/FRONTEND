@@ -1,7 +1,9 @@
 <div class="p-5 flex flex-row">
+  @if (isSignedIn){
+
+        <app-sidebar/>
+  }
   <div class="pl-5 max-h-full">
   <router-outlet/>
   </div>
 </div>
-
-<!--  <app-sidebar/>-->
