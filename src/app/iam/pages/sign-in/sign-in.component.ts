@@ -10,13 +10,15 @@ import {NgIf} from "@angular/common";
 import { DividerModule } from 'primeng/divider';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import {InputGroup} from 'primeng/inputgroup';
+import {InputGroupAddon} from 'primeng/inputgroupaddon';
 
 @Component({
   selector: 'app-sign-in',
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    DividerModule, ButtonModule, InputTextModule
+    DividerModule, ButtonModule, InputTextModule, InputGroup, InputGroupAddon
   ],
   templateUrl: './sign-in.component.html',
   styleUrl: './sign-in.component.css'
