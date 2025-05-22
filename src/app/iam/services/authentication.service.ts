@@ -21,7 +21,10 @@ export class AuthenticationService {
   private signedInUsername: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
   //User Role
-  private signedInUserRole: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  private signedInUserRole: BehaviorSubject<string> = new BehaviorSubject<string>(
+    localStorage.getItem('userRole') || ''
+  );
+
   constructor(private router: Router, private http: HttpClient) { }
 
   get isSignedIn() {
@@ -43,6 +46,7 @@ export class AuthenticationService {
   get currentUserRole() {
     return this.signedInUserRole.asObservable();
   }
+
   /**
    * Sign up a new user.
    * @param signUpRequest The sign up request.
@@ -79,6 +83,8 @@ export class AuthenticationService {
           const rawRole = response.roles && response.roles.length > 0 ? response.roles[0] : '';
           const normalizedRole = this.normalizeRole(rawRole);
           this.signedInUserRole.next(normalizedRole);
+          localStorage.setItem('userRole', normalizedRole);
+
           //console.log(`Signed in as ${response.username} with token ${response.token}`);
           console.log(`User logged in with role: ${normalizedRole}`);
           // Redirección según rol
@@ -110,6 +116,7 @@ export class AuthenticationService {
     this.signedInUsername.next('');
     this.signedInUserRole.next('');
     localStorage.removeItem('token');
+    localStorage.removeItem('userRole');
     this.router.navigate(['/sign-in']).then();
   }
 
