@@ -14,7 +14,7 @@ import {Droppable} from 'primeng/dragdrop';
 
 @Component({
   selector: 'app-advisors-list',
-  imports: [TableModule, CommonModule, Button, DialogComponent, AdvisoryFormComponent, CardAdvisorComponent, Droppable],
+  imports: [TableModule, CommonModule, Button, DialogComponent, AdvisoryFormComponent, CardAdvisorComponent],
   providers: [FilterService, AdvisorService],
   templateUrl: './advisors-list.component.html',
   standalone: true,

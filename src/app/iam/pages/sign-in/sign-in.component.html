@@ -1,0 +1,46 @@
+
+<div class="flex flex-column align-items-center justify-content-center w-screen h-full p-10 ">
+      <h3 class="text-3xl font-bold text-center mb-5 text-primary">Sign In</h3>
+      <div class="flex bg-black-alpha-50 border-round-2xl shadow-2xl  md:w-5/12 lg:w-4/12 xl:w-3/12 p-5 flex-column gap-3">
+        <form [formGroup]="form">
+          <div class="flex flex-column h-full w-full align-items-center justify-content-center gap-3">
+
+            <div class="flex flex-column gap-2">
+              <p-inputgroup>
+                <p-inputgroup-addon>
+                  <i class="pi pi-user"></i>
+                </p-inputgroup-addon>
+                <input pInputText id="username" type="text" formControlName="username" placeholder="Username"/>
+
+              </p-inputgroup>
+
+            </div>
+
+
+
+            <div class="flex flex-column gap-2">
+              <p-inputgroup>
+                <p-inputgroup-addon>
+                  <i class="pi pi-lock"></i>
+                </p-inputgroup-addon>
+                <input pInputText id="password" type="password" formControlName="password" placeholder="Password"/>
+              </p-inputgroup>
+            </div>
+
+
+            <div class="flex flex-column align-items-center">
+              <p-button label="Login" (click)="onSubmit()" icon="pi pi-user" class="w-full max-w-10rem"  size="small" styleClass="w-full mx-auto" />
+
+              <div class="w-full md:w-5/12 flex items-center justify-center py-5">
+                <label class="text-sm">Not having an account?</label>
+                <p-button label="Sign Up"  (click)="navigateToSignUp()" icon="pi pi-user-plus" severity="success" class="w-full max-w-10rem" size="small" styleClass="w-full mx-auto" />
+              </div>
+            </div>
+
+          </div>
+        </form>
+
+      </div>
+
+
+</div>
