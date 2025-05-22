@@ -40,6 +40,9 @@ export class AuthenticationService {
     return this.signedInUsername.asObservable();
   }
 
+  get currentUserRole() {
+    return this.signedInUserRole.asObservable();
+  }
   /**
    * Sign up a new user.
    * @param signUpRequest The sign up request.
