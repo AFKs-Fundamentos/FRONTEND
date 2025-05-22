@@ -11,11 +11,11 @@
       </div>
       <div class="flex flex-col gap-2">
         <label for="roles">Roles</label>
-        <p-multiselect formControlName="selectedRole"
+        <p-select formControlName="selectedRole"
                          [options]="roles"
-                         optionLabel="value"
+                         optionLabel="label"
                          [style]="{ minWidth: '14rem' }"
-                         placeholder="Select a Role" />
+                         placeholder="Selecciona un rol" />
       </div>
       <div class="flex">
         <p-button label="Register" (click)="onSubmit()" icon="pi pi-user" class="w-full max-w-[17.35rem]" styleClass="w-full mx-auto" />
