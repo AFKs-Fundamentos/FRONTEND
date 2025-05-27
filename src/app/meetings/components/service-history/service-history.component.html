@@ -1,47 +1,78 @@
-<div class="flex flex-row bg-black-alpha-20 px-6 border-0 border-round-3xl">
+<div class="flex flex-row bg-black-alpha-20 px-6 border-0 border-round-3xl gap-5">
 
 
-    <div class="flex flex-row flex-wrap max-w-30rem  p-2 gap-3   ">
-      <p class="inline  w-full text-center">Servicios Pendientes</p>
+<div class="flex flex-column align-items-center gap-3 w-full">
 
-    @for (m of meetings; track m.id) {
+  <p class="inline w-full text-center">Servicios Pendientes</p>
+
+  @for (a of advisoriesPending; track a.id) {
+    <app-card
+      class="w-20rem"
+      [image]="false"
+      [contentTitle]="advisor ? advisor.firstName : ''"
+    >
+      <p><strong>Tipo:</strong> {{ a.advisoryType === 'IN_PERSON' ? 'Presencial' : 'Virtual' }}</p>
+      <p><strong>Descripción:</strong> {{ a.advisoryDescription }}</p>
+      <p><strong>Estado:</strong>
+        <span [ngClass]="{
+            'text-orange-500': a.advisoryStatus === 'PENDING',
+            'text-green-600': a.advisoryStatus === 'COMPLETED',
+            'text-red-500': a.advisoryStatus === 'CANCELLED',
+            'text-blue-500': a.advisoryStatus === 'IN_PROGRESS'
+          }">
+            {{
+            a.advisoryStatus === 'PENDING' ? 'Pendiente' :
+              a.advisoryStatus === 'COMPLETED' ? 'Completado' :
+                a.advisoryStatus === 'CANCELLED' ? 'Cancelado' :
+                  'En progreso'
+          }}
+          </span>
+      </p>
+      <p *ngIf="a.advisoryDate"><strong>Fecha:</strong> {{ a.advisoryDate | date:'dd/MM/yyyy' }}</p>
+      <p *ngIf="a.advisoryTime"><strong>Hora:</strong> {{ a.advisoryTime }}</p>
+      <p *ngIf="a.location"><strong>Ubicación:</strong> {{ a.location }}</p>
+      <p *ngIf="a.meetUrl"><strong>Enlace:</strong> <a [href]="a.meetUrl" target="_blank">Ir a la reunión</a></p>
+      <p><strong>Cliente:</strong> {{ a.clientEmail }}</p>
+    </app-card>
+  }
+</div>
+
+  <div class="flex flex-column align-items-center gap-3 w-full">
+
+    <p class="inline w-full text-center">Servicios Completados</p>
+
+    @for (a of advisoriesCompleted; track a.id) {
       <app-card
+        class="w-20rem"
         [image]="false"
-        [contentTitle]="advisor?advisor.nombre: '' "
-
+        [contentTitle]="advisor ? advisor.firstName : ''"
       >
-        <p>Estado: {{m.estado}}</p>
-        <!-- TODO: remove comments
-        @if (m.rating!=null) {
-          <p>Rating: {{m.rating}}</p>
-        }
-        -->
+        <p><strong>Tipo:</strong> {{ a.advisoryType === 'IN_PERSON' ? 'Presencial' : 'Virtual' }}</p>
+        <p><strong>Descripción:</strong> {{ a.advisoryDescription }}</p>
+        <p><strong>Estado:</strong>
+          <span [ngClass]="{
+            'text-orange-500': a.advisoryStatus === 'PENDING',
+            'text-green-600': a.advisoryStatus === 'COMPLETED',
+            'text-red-500': a.advisoryStatus === 'CANCELLED',
+            'text-blue-500': a.advisoryStatus === 'IN_PROGRESS'
+          }">
+            {{
+              a.advisoryStatus === 'PENDING' ? 'Pendiente' :
+              a.advisoryStatus === 'COMPLETED' ? 'Completado' :
+              a.advisoryStatus === 'CANCELLED' ? 'Cancelado' :
+              'En progreso'
+            }}
+          </span>
+        </p>
+        <p *ngIf="a.advisoryDate"><strong>Fecha:</strong> {{ a.advisoryDate | date:'dd/MM/yyyy' }}</p>
+        <p *ngIf="a.advisoryTime"><strong>Hora:</strong> {{ a.advisoryTime }}</p>
+        <p *ngIf="a.location"><strong>Ubicación:</strong> {{ a.location }}</p>
+        <p *ngIf="a.meetUrl"><strong>Enlace:</strong> <a [href]="a.meetUrl" target="_blank">Ir a la reunión</a></p>
+        <p><strong>Cliente:</strong> {{ a.clientEmail }}</p>
+
       </app-card>
     }
-    </div>
-
-
-
-
-    <div class="flex flex-row flex-wrap max-w-30rem  p-2 gap-3">
-      <p class="inline w-full text-center">Servicios Completados</p>
-
-      @for (m of meetings; track m.id) {
-        <app-card
-          [image]="false"
-          [contentTitle]="advisor?advisor.nombre: '' "
-
-        >
-          <p>Estado: {{m?.estado}}</p>
-          <!-- TODO: remove comments
-
-            <p>Rating: {{m?.rating}}</p>
-
-           -->
-        </app-card>
-      }
-    </div>
-
+  </div>
   </div>
 
 

@@ -3,8 +3,8 @@ import {CardAdvisorComponent} from '../card-advisor/card-advisor.component';
 import {CardComponent} from '../../../shared/components/card/card.component';
 import {Advisor} from '../../model/advisor.entity';
 import {AdvisorService} from '../../services/advisor.service';
-import {Meeting} from '../../model/meeting.entity';
-import {MeetingService} from '../../services/meeting.service';
+import {Advisory} from '../../model/advisory.entity';
+import {AdvisoryService} from '../../services/advisory.service';
 import {CommonModule} from '@angular/common';
 
 @Component({
@@ -13,19 +13,19 @@ import {CommonModule} from '@angular/common';
     CardComponent,
     CommonModule,
   ],
-  providers: [AdvisorService,MeetingService],
+  providers: [AdvisorService,AdvisoryService],
   templateUrl: './service-history.component.html',
   standalone: true,
 
   styleUrl: './service-history.component.css'
 })
 export class ServiceHistoryComponent implements OnInit {
-  meeting?: Meeting;
+  advisoriesPending: Advisory[] = [];
+  advisoriesCompleted: Advisory[] = [];
   advisors: Advisor[] = [];
   advisor?: Advisor;
-  meetings: Meeting[] = [];
   constructor(
-    private meetingService:MeetingService,
+    private advisoryService:AdvisoryService,
     private advisorService: AdvisorService
   ) {}
 
@@ -34,7 +34,8 @@ export class ServiceHistoryComponent implements OnInit {
     //TODO: remove comments
    // this.loadMeetings(this.advisors);
     this.loadAdvisor();
-
+    this.loadAdvisoriesByStatus("PENDING");
+    this.loadAdvisoriesByStatus("COMPLETED");
   }
 
   loadAdvisor(): void {
@@ -43,11 +44,24 @@ export class ServiceHistoryComponent implements OnInit {
     //  console.log(this.advisors);
     });
   }
-  loadMeetings(advisor: Advisor): void {
-    this.meetingService.getAllById(advisor.id).subscribe(ms => this.meetings = ms);
-    console.log(this.meetings);
-  }
 
+
+
+  loadAdvisoriesByStatus(status: string): void {
+    this.advisoryService.getAdvisoryByStatus(status).subscribe({
+      next: (data: Advisory[]) => {
+        if (status === "PENDING") {
+          this.advisoriesPending = data;
+        } else if (status === "COMPLETED") {
+          this.advisoriesCompleted = data;
+        }
+        console.log(`Asesorías con estado ${status}:`, data);
+      },
+      error: (error) => {
+        console.error(`Error al cargar las asesorías con estado ${status}:`, error);
+      }
+    });
+  }
 
 
 }
