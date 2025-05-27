@@ -71,11 +71,12 @@ export class AdvisorsListComponent implements OnInit, OnChanges{
     );
 
     this.cols = [
-      { field: 'nombre', header: 'Name' },
-      { field: 'calificacion', header: 'Score' },
-      { field: 'tipoAsesoria', header: 'Mode' },
-      { field: 'ubicacion', header: 'Location' },
+      { field: 'firstName', header: 'Nombre' },
+      { field: 'lastName', header: 'Apellido' },
+      { field: 'email', header: 'Email' },
+      { field: 'phone', header: 'Phone' },
       { field: 'actions', header: 'Actions' }
+
     ];
 
     this.matchModeOptions = [
@@ -94,7 +95,6 @@ export class AdvisorsListComponent implements OnInit, OnChanges{
 
   }
 
-
   onRequestMeeting(asesor: Advisor): void {
     this.advisor = asesor;
     this.visibleForm = true;
@@ -111,10 +111,13 @@ export class AdvisorsListComponent implements OnInit, OnChanges{
     this.visibleInfo = false;
     this.visibleForm = false;
   }
+
   onFormSent() {
     this.visibleForm = false;
     console.log("Form sent" , this.advisor);
   }
+
+
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['visible']) {
