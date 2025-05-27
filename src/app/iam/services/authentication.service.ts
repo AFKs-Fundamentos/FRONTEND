@@ -35,7 +35,7 @@ export class AuthenticationService {
     return this.signedInUserId.asObservable();
   }
 
-  get getCurrentUserId() {
+  get getCurrentUserId(): number  {
     return this.signedInUserId.value;
   }
 
@@ -87,6 +87,7 @@ export class AuthenticationService {
 
           //console.log(`Signed in as ${response.username} with token ${response.token}`);
           console.log(`User logged in with role: ${normalizedRole}`);
+          console.log(`User logged with id ${response.id} and username ${response.username}`);
           // Redirección según rol
           if (normalizedRole === 'ROLE_CLIENT') {
              this.router.navigate(['/ratings']).then();
