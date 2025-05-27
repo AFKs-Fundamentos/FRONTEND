@@ -8,6 +8,6 @@ import {HttpClient} from '@angular/common/http';
 export class AdvisorService extends BaseService<Advisor>{
   constructor(http: HttpClient) {
     super(http);
-    this.resourceEndpoint = '/advisors';
+    this.resourceEndpoint = '/profiles';
   }
 }
