@@ -57,3 +57,11 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+## JSON Server
+To run a JSON server for mock API responses, use the following command:
+
+```bash
+json-server --watch server/db.json --routes server/routes.json
+```
+This command will start a JSON server that watches the `db.json` file for changes and uses the `routes.json` file to define custom routes. The server will be available at `http://localhost:3000/` by default.
