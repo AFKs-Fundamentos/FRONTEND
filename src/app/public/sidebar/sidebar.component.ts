@@ -38,7 +38,7 @@ export class SidebarComponent implements OnInit{
           {
             label: 'Ratings',
             icon: 'pi pi-star',
-            path: 'ratings'
+            path: '/ratings-page'
           },
           {
             label: 'Products',
