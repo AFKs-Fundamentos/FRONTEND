@@ -1,0 +1,6 @@
+::ng-deep .p-inputtext::placeholder {
+  text-align: center;
+}
+::ng-deep .p-inputtext{
+  text-align: center;
+}

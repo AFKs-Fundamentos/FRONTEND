@@ -1,0 +1,85 @@
+<div class="card min-w-full h-screen">
+  <p-table #dt [columns]="cols" [value]="advisors" [paginator]="true" [rows]="8" responsiveLayout="" [tableStyle]="{ 'table-layout': 'auto' }">
+
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        @for (col of columns; track col.field){<th>{{ col.header }}</th>}
+      </tr>
+      <tr >
+        @for(col of columns; track col.field){
+          @if(col.field=='actions'){
+            <th></th>
+          } @else {
+            <th>
+              <p-columnFilter
+                type="text"
+                [field]="col.field"
+                [matchModeOptions]="matchModeOptions"
+                [matchMode]="'custom-equals'"
+              />
+            </th>
+          }
+
+        }
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr [pSelectableRow]="rowData">
+        @for (col of columns; track col.field){
+          @if(col.field=='actions'){
+            <td class="flex  flex-row gap-1">
+              <p-button  type="button" label="" icon="pi pi-clock" (onClick)="onRequestMeeting(rowData)"></p-button>
+              <p-button  type="button" label="" icon="pi pi-user"  (onClick)="onViewDetails(rowData)" ></p-button>
+            </td>
+          } @else {
+            <td>
+              {{ rowData[col.field] }}
+            </td>
+          }
+        }
+      </tr>
+
+    </ng-template>
+
+
+
+  </p-table>
+
+
+
+@if (advisor){
+
+  <app-dialog
+    [dialogTitle]="visibleInfo ? advisor.nombre : 'Angendar cita con ' + advisor.nombre "
+    [visibleFromFather]="visibleInfo || visibleForm"
+    (dialogClosed)="onHandleCancel()">
+
+    @if (visibleInfo) {
+      <app-card-advisor
+      [advisor]="advisor"
+      (dialogClosed)="onHandleCancel()"
+      (onSave)="onHandleCancel()"
+    > </app-card-advisor>
+
+    }
+      @else if (visibleForm) {
+        <app-advisory-form
+          [advisor]="advisor"
+          (formSent)="onFormSent()"
+        ></app-advisory-form>
+      }
+
+  </app-dialog>
+
+
+
+}
+
+
+
+
+</div>
+
+
+
