@@ -14,7 +14,7 @@ import {Droppable} from 'primeng/dragdrop';
 
 @Component({
   selector: 'app-advisors-list',
-  imports: [TableModule, CommonModule, Button, DialogComponent, AdvisoryFormComponent, CardAdvisorComponent, Droppable],
+  imports: [TableModule, CommonModule, Button, DialogComponent, AdvisoryFormComponent, CardAdvisorComponent],
   providers: [FilterService, AdvisorService],
   templateUrl: './advisors-list.component.html',
   standalone: true,
@@ -71,11 +71,12 @@ export class AdvisorsListComponent implements OnInit, OnChanges{
     );
 
     this.cols = [
-      { field: 'nombre', header: 'Name' },
-      { field: 'calificacion', header: 'Score' },
-      { field: 'tipoAsesoria', header: 'Mode' },
-      { field: 'ubicacion', header: 'Location' },
+      { field: 'firstName', header: 'Nombre' },
+      { field: 'lastName', header: 'Apellido' },
+      { field: 'email', header: 'Email' },
+      { field: 'phone', header: 'Phone' },
       { field: 'actions', header: 'Actions' }
+
     ];
 
     this.matchModeOptions = [
@@ -88,12 +89,11 @@ export class AdvisorsListComponent implements OnInit, OnChanges{
       { label: 'Between Dates', value: 'betweenDates' }
 
     ];
-    this.advisorService.getAdvisors().then(data => {
+    this.advisorService.getAll().subscribe(data => {
       this.advisors = data;
     });
 
   }
-
 
   onRequestMeeting(asesor: Advisor): void {
     this.advisor = asesor;
@@ -111,10 +111,13 @@ export class AdvisorsListComponent implements OnInit, OnChanges{
     this.visibleInfo = false;
     this.visibleForm = false;
   }
+
   onFormSent() {
     this.visibleForm = false;
     console.log("Form sent" , this.advisor);
   }
+
+
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['visible']) {

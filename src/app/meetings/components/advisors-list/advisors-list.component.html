@@ -51,7 +51,7 @@
 @if (advisor){
 
   <app-dialog
-    [dialogTitle]="visibleInfo ? advisor.nombre : 'Angendar cita con ' + advisor.nombre "
+    [dialogTitle]="visibleInfo ? advisor.firstName : 'Angendar asesoría con ' + advisor.firstName "
     [visibleFromFather]="visibleInfo || visibleForm"
     (dialogClosed)="onHandleCancel()">
 
