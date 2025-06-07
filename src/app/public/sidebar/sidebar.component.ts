@@ -68,7 +68,9 @@ export class SidebarComponent  implements  OnInit {
             icon: 'pi pi-shopping-cart',
             path: '/buys'
           },
-
+        ]
+      },
+    ];
     this.currentUserRole=="ROLE_TECHNICIAN" ? this.role = "TÉCNICO" : this.role = "CLIENTE";
 
     this.items = [
