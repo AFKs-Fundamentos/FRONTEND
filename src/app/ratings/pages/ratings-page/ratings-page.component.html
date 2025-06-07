@@ -1,0 +1,24 @@
+<div class="flex flex-column bg-black-alpha-20 px-6 border-round-3xl">
+
+  <div class="flex flex-column justify-content-center align-items-center ">
+    <h2>Mis calificaciones</h2>
+  </div>
+
+  <div class="flex flex-row flex-wrap justify-content-center">
+
+    <p-card [style]="{ width: '20rem', overflow: 'hidden', margin: '3px' }">
+      <ng-template #title> Tipo: {{type?'Producto' : 'Servicio'}} </ng-template>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque quas!
+      </p>
+      <ng-template #footer>
+        <div class="flex gap-4 mt-1" >
+          <p-rating [(ngModel)]="rating" [readonly]="true"/>
+        </div>
+      </ng-template>
+    </p-card>    
+
+  </div>
+  
+</div>
+

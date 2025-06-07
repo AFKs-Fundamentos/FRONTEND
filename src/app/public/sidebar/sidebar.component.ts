@@ -36,6 +36,38 @@ export class SidebarComponent  implements  OnInit {
 
 
   ngOnInit() {
+    this.items = [
+      {
+        separator: true
+      },
+      {
+        label: 'General',
+        items: [
+          {
+            label: 'Meetings',
+            icon: 'pi pi-video',
+            path: '/meetings'
+          },
+          {
+            label: 'Service History',
+            icon: 'pi pi-history',
+            path: 'service-history'
+          },
+          {
+            label: 'Ratings',
+            icon: 'pi pi-star',
+            path: '/ratings-page'
+          },
+          {
+            label: 'Products',
+            icon: 'pi pi-desktop',
+            path: '/products'
+          },
+          {
+            label: 'My Buys',
+            icon: 'pi pi-shopping-cart',
+            path: '/buys'
+          },
 
     this.currentUserRole=="ROLE_TECHNICIAN" ? this.role = "TÉCNICO" : this.role = "CLIENTE";
 
