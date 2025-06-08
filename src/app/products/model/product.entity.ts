@@ -6,8 +6,6 @@ export class Product {
   category: string;
   price: number;
   description: string;
-  isFavorite?: boolean;
-  characteristic_id: number;
   constructor() {
     this.id=0;
     this.productName='';
@@ -16,7 +14,5 @@ export class Product {
     this.category='';
     this.price=0.0;
     this.description='';
-    this.isFavorite=false;
-    this.characteristic_id=0;
   }
 }
