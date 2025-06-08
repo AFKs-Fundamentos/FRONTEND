@@ -1,0 +1,165 @@
+<p-card styleClass="mb-3">
+  <form (ngSubmit)="onSubmit(productForm)" #productForm="ngForm" class="p-fluid grid formgrid">
+    <div class="field col-12 md:col-6">
+      <p-floatLabel>
+        <input
+          pInputText
+          id="productName"
+          name="productName"
+          [(ngModel)]="product.productName"
+          required
+          [disabled]="loading"
+          [class]="{'p-invalid': productForm.submitted && productForm.controls['productName']?.invalid}">
+        <label for="productName">Nombre del Producto</label>
+      </p-floatLabel>
+      <small *ngIf="productForm.submitted && productForm.controls['productName']?.invalid"
+             class="p-error">Este campo es requerido</small>
+    </div>
+
+    <div class="field col-12 md:col-6">
+      <p-floatLabel>
+        <input
+          pInputText
+          id="sku"
+          name="sku"
+          [(ngModel)]="product.sku"
+          required
+          [disabled]="loading"
+          [class]="{'p-invalid': productForm.submitted && productForm.controls['sku']?.invalid}">
+        <label for="sku">SKU</label>
+      </p-floatLabel>
+      <small *ngIf="productForm.submitted && productForm.controls['sku']?.invalid"
+             class="p-error">Este campo es requerido</small>
+    </div>
+
+    <div class="field col-12 md:col-6">
+      <p-floatLabel>
+        <input
+          pInputText
+          id="category"
+          name="category"
+          [(ngModel)]="product.category"
+          required
+          [disabled]="loading"
+          [class]="{'p-invalid': productForm.submitted && productForm.controls['category']?.invalid}">
+        <label for="category">Categoría</label>
+      </p-floatLabel>
+      <small *ngIf="productForm.submitted && productForm.controls['category']?.invalid"
+             class="p-error">Este campo es requerido</small>
+    </div>
+
+    <div class="field col-12 md:col-6">
+      <p-floatLabel>
+        <p-inputNumber
+          [(ngModel)]="product.price"
+          inputId="price"
+          name="price"
+          mode="currency"
+          currency="PEN"
+          locale="es-PE"
+          required
+          [disabled]="loading"
+          [class]="{'p-invalid': productForm.submitted && productForm.controls['price']?.invalid}">
+        </p-inputNumber>
+        <label for="price">Precio</label>
+      </p-floatLabel>
+      <small *ngIf="productForm.submitted && productForm.controls['price']?.invalid"
+             class="p-error">Este campo es requerido</small>
+    </div>
+
+    <div class="field col-12">
+      <p-floatLabel>
+        <textarea
+          pInputTextarea
+          id="description"
+          name="description"
+          [(ngModel)]="product.description"
+          rows="3"
+          required
+          [disabled]="loading"
+          [class]="{'p-invalid': productForm.submitted && productForm.controls['description']?.invalid}">
+        </textarea>
+        <label for="description">Descripción</label>
+      </p-floatLabel>
+      <small *ngIf="productForm.submitted && productForm.controls['description']?.invalid"
+             class="p-error">Este campo es requerido</small>
+    </div>
+
+    <div class="field col-12 md:col-6">
+      <p-floatLabel>
+        <input
+          pInputText
+          id="photo"
+          name="photo"
+          [(ngModel)]="product.photo"
+          [disabled]="loading">
+        <label for="photo">URL de Imagen</label>
+      </p-floatLabel>
+    </div>
+
+    <div class="field col-12 md:col-6">
+      <p-floatLabel>
+        <p-inputNumber
+          [(ngModel)]="initialStockValues.stock"
+          inputId="initialStock"
+          name="initialStock"
+          mode="decimal"
+          [min]="0"
+          [disabled]="loading">
+        </p-inputNumber>
+        <label for="initialStock">Stock Inicial</label>
+      </p-floatLabel>
+    </div>
+
+    <div class="field col-12 md:col-6">
+      <p-floatLabel>
+        <p-inputNumber
+          [(ngModel)]="initialStockValues.stock_min"
+          inputId="stockMin"
+          name="stockMin"
+          mode="decimal"
+          [min]="0"
+          [disabled]="loading">
+        </p-inputNumber>
+        <label for="stockMin">Stock Mínimo</label>
+      </p-floatLabel>
+    </div>
+
+    <div class="field col-12 md:col-6">
+      <p-floatLabel>
+        <p-inputNumber
+          [(ngModel)]="initialStockValues.stock_max"
+          inputId="stockMax"
+          name="stockMax"
+          mode="decimal"
+          [min]="0"
+          [disabled]="loading">
+        </p-inputNumber>
+        <label for="stockMax">Stock Máximo</label>
+      </p-floatLabel>
+    </div>
+
+    <div class="field col-12 flex justify-content-end gap-2">
+      <button
+        pButton
+        type="button"
+        label="Cancelar"
+        icon="pi pi-times"
+        class="p-button-text"
+        (click)="onCancel()"
+        [disabled]="loading">
+      </button>
+      <button
+        pButton
+        type="submit"
+        label="Guardar Producto"
+        icon="pi pi-check"
+        class="p-button-success"
+        [disabled]="productForm.invalid || loading">
+        @if (loading) {
+          <i class="pi pi-spinner pi-spin ml-2"></i>
+        }
+      </button>
+    </div>
+  </form>
+</p-card>
