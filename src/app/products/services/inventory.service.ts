@@ -14,7 +14,7 @@ export class InventoryService extends BaseService<Inventory>{
     this.resourceEndpoint = '/inventory';
   }
   getInventoryByUserId(userId: number): Observable<Inventory[]> {
-    return this.http.get<Inventory[]>(`${this.basePath}${this.resourceEndpoint}?user_id=${userId}`, this.httpOptions)
+    return this.http.get<Inventory[]>(`${this.basePath}${this.resourceEndpoint}?user_technical_id=${userId}`, this.httpOptions)
       .pipe(retry(2),catchError(this.handleError));
   }
 }
