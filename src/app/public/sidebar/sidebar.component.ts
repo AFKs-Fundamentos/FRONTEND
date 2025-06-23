@@ -44,6 +44,11 @@ export class SidebarComponent  implements  OnInit {
         label: 'General',
         items: [
           {
+            label: 'Home',
+            icon: 'pi pi-home',
+            path: '/home'
+          },
+          {
             label: 'Meetings',
             icon: 'pi pi-video',
             path: '/meetings'
@@ -75,6 +80,7 @@ export class SidebarComponent  implements  OnInit {
 
     this.items = [
       { separator: true },
+      { label: 'Home', icon: 'pi pi-home', path: '/home' },
       { label: 'Meetings', icon: 'pi pi-video', path: '/meetings' },
       { label: 'Service History', icon: 'pi pi-history', path: '/service-history' },
       { label: 'Ratings', icon: 'pi pi-star', path: '/ratings' },

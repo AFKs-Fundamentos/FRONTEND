@@ -13,12 +13,7 @@ export class ProductsService extends BaseService<Product> {
     this.resourceEndpoint = '/products';
   }
 
-<<<<<<< HEAD
-
-  override getById(id: number): Observable<Product> {
-=======
   getProductById(id: number): Observable<Product> {
->>>>>>> origin/feature-product
     return this.http.get<Product>(`${this.basePath}${this.resourceEndpoint}?id=${id}`, this.httpOptions)
       .pipe(retry(2),catchError(this.handleError));
   }
