@@ -1,0 +1,19 @@
+<p-card>
+    <ng-template #header>
+        <div class="flex justify-center m-3">
+            <div class="m-1"> 
+                <p-rating [(ngModel)]="ratings.punctuation" [readonly]="true"/> 
+            </div>
+        </div>
+    </ng-template>
+    
+    <ng-template #title> Ha valorado un {{ratings.type}} </ng-template>
+    
+    <p>
+        {{ratings.description}}
+    </p>
+    
+    <ng-template #footer>
+        <div class="m-2"> {{ratings.createdAt}} </div>
+    </ng-template>
+</p-card>
