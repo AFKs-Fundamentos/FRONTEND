@@ -2,9 +2,7 @@
   <p-card class="custom-card" *ngFor="let product of productData">
     <ng-template #header>
       <div class="img-button-header">
-        <button pButton class="heart-button" (click)="toggleFavorite(product)">
-          <i [ngClass]="{'pi': true, 'pi-heart': !product.isFavorite, 'pi-heart-fill': product.isFavorite}"></i>
-        </button>
+        <!--AÑADIR BOTTON DE CORAZON-->
         <img [src]="product.photo" alt="Imagen del producto" class="product-photo"/>
       </div>
     </ng-template>

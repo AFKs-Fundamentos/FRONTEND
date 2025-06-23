@@ -24,7 +24,7 @@ export class ProductDetailComponent implements OnInit{
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.productService.getById(+id).subscribe({
+      this.productService.getProductById(+id).subscribe({
         next: (data) => {
           this.product = Array.isArray(data) ? data[0] : data;
         },
@@ -37,6 +37,8 @@ export class ProductDetailComponent implements OnInit{
 
   addToCart(product: Product): void {
     console.log('Producto añadido al carrito:', product.id);
+    // Aquí puedes llamar al servicio de carrito para añadir el producto
+
   }
 
 }

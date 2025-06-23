@@ -14,6 +14,10 @@ import {HomeComponent} from './public/pages/home/home.component';
 import {ProductListComponent} from './products/pages/product-list/product-list.component';
 import {ProductDetailComponent} from './products/components/product-detail/product-detail.component';
 import {ProductInventoryComponent} from './products/pages/product-inventory/product-inventory.component';
+//import {MeetingsComponent} from './meetings/components/meetings/meetings.component';
+
+import {ShoppingCartComponent} from './shopping_cart/pages/shopping-cart/shopping-cart.component';
+
 
 export const routes: Routes = [
   { path: 'sign-in', component: SignInComponent, },
@@ -27,6 +31,7 @@ export const routes: Routes = [
   { path: '**', component: PageNotFoundComponent },
   {path: 'products',component: ProductListComponent},
   {path: 'product-detail/:id', component: ProductDetailComponent},
+  {path: 'shopping-cart/:user_client_id', component: ShoppingCartComponent},
   {path: 'product-inventory',component: ProductInventoryComponent},
 ];
 

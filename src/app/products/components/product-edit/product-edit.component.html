@@ -1,0 +1,129 @@
+<p-card class="mb-3">
+  <form #productForm="ngForm" (ngSubmit)="onSubmit(productForm)">
+    <div class="grid formgrid">
+
+      <div class="field col-12 md:col-6">
+        <p-floatLabel>
+          <input
+            pInputText
+            id="productName"
+            [(ngModel)]="product.productName"
+            name="productName"
+            required
+            [disabled]="loading"
+            [class]="{'p-invalid': productForm.submitted && productForm.controls['productName']?.invalid}" />
+          <label for="productName">Nombre del Producto</label>
+        </p-floatLabel>
+        <small *ngIf="productForm.submitted && productForm.controls['productName']?.invalid" class="p-error">
+          Este campo es requerido
+        </small>
+      </div>
+
+      <div class="field col-12 md:col-6">
+        <p-floatLabel>
+          <input
+            pInputText
+            id="sku"
+            [(ngModel)]="product.sku"
+            name="sku"
+            required
+            [disabled]="loading"
+            [class]="{'p-invalid': productForm.submitted && productForm.controls['sku']?.invalid}" />
+          <label for="sku">SKU</label>
+        </p-floatLabel>
+        <small *ngIf="productForm.submitted && productForm.controls['sku']?.invalid" class="p-error">
+          Este campo es requerido
+        </small>
+      </div>
+
+      <div class="field col-12 md:col-6">
+        <p-floatLabel>
+          <input
+            pInputText
+            id="category"
+            [(ngModel)]="product.category"
+            name="category"
+            required
+            [disabled]="loading"
+            [class]="{'p-invalid': productForm.submitted && productForm.controls['category']?.invalid}" />
+          <label for="category">Categoría</label>
+        </p-floatLabel>
+        <small *ngIf="productForm.submitted && productForm.controls['category']?.invalid" class="p-error">
+          Este campo es requerido
+        </small>
+      </div>
+
+      <div class="field col-12 md:col-6">
+        <p-floatLabel>
+          <p-inputNumber
+            inputId="price"
+            [(ngModel)]="product.price"
+            name="price"
+            mode="currency"
+            currency="PEN"
+            locale="es-PE"
+            required
+            [disabled]="loading"
+            [class]="{'p-invalid': productForm.submitted && productForm.controls['price']?.invalid}">
+          </p-inputNumber>
+          <label for="price">Precio</label>
+        </p-floatLabel>
+        <small *ngIf="productForm.submitted && productForm.controls['price']?.invalid" class="p-error">
+          Este campo es requerido
+        </small>
+      </div>
+
+      <div class="field col-12">
+        <p-floatLabel>
+          <input
+            pInputText
+            id="photo"
+            [(ngModel)]="product.photo"
+            name="photo"
+            [disabled]="loading" />
+          <label for="photo">URL de la Imagen</label>
+        </p-floatLabel>
+      </div>
+
+      <div class="field col-12">
+        <p-floatLabel>
+          <textarea
+            pInputTextarea
+            id="description"
+            [(ngModel)]="product.description"
+            name="description"
+            rows="4"
+            required
+            [disabled]="loading"
+            [class]="{'p-invalid': productForm.submitted && productForm.controls['description']?.invalid}">
+          </textarea>
+          <label for="description">Descripción</label>
+        </p-floatLabel>
+        <small *ngIf="productForm.submitted && productForm.controls['description']?.invalid" class="p-error">
+          Este campo es requerido
+        </small>
+      </div>
+
+      <div class="field col-12 flex justify-content-end gap-2">
+        <button
+          pButton
+          type="button"
+          label="Cancelar"
+          icon="pi pi-times"
+          class="p-button-text"
+          (click)="onCancel()"
+          [disabled]="loading">
+        </button>
+        <button
+          pButton
+          type="submit"
+          label="Guardar"
+          icon="pi pi-save"
+          class="p-button-success"
+          [disabled]="productForm.invalid || loading">
+          <i *ngIf="loading" class="pi pi-spinner pi-spin ml-2"></i>
+        </button>
+      </div>
+    </div>
+  </form>
+</p-card>

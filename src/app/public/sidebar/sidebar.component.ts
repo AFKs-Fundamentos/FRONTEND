@@ -66,7 +66,7 @@ export class SidebarComponent  implements  OnInit {
           {
             label: 'My Buys',
             icon: 'pi pi-shopping-cart',
-            path: '/buys'
+            path: '/shopping-cart/:user_client_id'
           },
         ]
       },
