@@ -1,0 +1,54 @@
+
+<ng-container *ngIf="profile; else loading">
+  <app-card
+    *ngIf="!editMode && profile"
+    [contentTitle]="'Perfil'"
+    [contentSubtitle]="'Información personal'"
+    [image]="false"
+    (cancelClicked)="toggleEditMode()"
+    (saveClicked)="toggleEditMode()"
+    [cancelLabel]="'Editar'"
+  >
+    <div class="p-2">
+      <p><strong>Nombre:</strong> {{ profile.firstName }}</p>
+      <p><strong>Apellido:</strong> {{ profile.lastName }}</p>
+      <p><strong>Teléfono:</strong> {{ profile.phone }}</p>
+    </div>
+  </app-card>
+</ng-container>
+
+<ng-template #loading>
+  <p>Cargando perfil...</p>
+</ng-template>
+
+
+<app-card
+  *ngIf="editMode"
+  [contentTitle]="'Editar perfil'"
+  [contentSubtitle]="'Actualiza tu información'"
+  [image]="false"
+  (cancelClicked)="toggleEditMode()"
+  (saveClicked)="onSubmit()"
+  [cancelLabel]="'Cancelar'"
+>
+  <form [formGroup]="profileForm">
+    <p-fluid class="flex flex-column justify-content-center gap-2">
+
+      <p-iftalabel>
+        <input id="firstName" pInputText formControlName="firstName" />
+        <label for="firstName">Nombre</label>
+      </p-iftalabel>
+
+      <p-iftalabel>
+        <input id="lastName" pInputText formControlName="lastName" />
+        <label for="lastName">Apellido</label>
+      </p-iftalabel>
+
+      <p-iftalabel>
+        <input id="phone" pInputText formControlName="phone" />
+        <label for="phone">Teléfono</label>
+      </p-iftalabel>
+
+    </p-fluid>
+  </form>
+</app-card>
