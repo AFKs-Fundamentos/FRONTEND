@@ -17,6 +17,7 @@ import {ProductInventoryComponent} from './products/pages/product-inventory/prod
 //import {MeetingsComponent} from './meetings/components/meetings/meetings.component';
 
 import {ShoppingCartComponent} from './shopping_cart/pages/shopping-cart/shopping-cart.component';
+import {EditProfileComponent} from './profiles/components/edit-profile/edit-profile.component';
 
 
 export const routes: Routes = [
@@ -28,10 +29,11 @@ export const routes: Routes = [
   { path: 'ratings', component: RatingCardComponent, canActivate: [authenticationGuard] },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'ratings-page', component: RatingsPageComponent },
-  { path: '**', component: PageNotFoundComponent },
   {path: 'products',component: ProductListComponent},
   {path: 'product-detail/:id', component: ProductDetailComponent},
   {path: 'shopping-cart/:user_client_id', component: ShoppingCartComponent},
   {path: 'product-inventory',component: ProductInventoryComponent},
+  {path: 'profile',component: EditProfileComponent, canActivate: [roleGuard], data : { expectedRole: 'ROLE_TECHNICIAN' }},
+  { path: '**', component: PageNotFoundComponent },
 ];
 

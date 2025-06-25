@@ -73,6 +73,7 @@ export class SidebarComponent  implements  OnInit {
             icon: 'pi pi-shopping-cart',
             path: '/shopping-cart/:user_client_id'
           },
+
         ]
       },
     ];
