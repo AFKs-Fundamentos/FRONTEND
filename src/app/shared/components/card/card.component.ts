@@ -17,6 +17,8 @@ export class CardComponent {
   @Input() contentTitle: string = '';
   @Input() contentSubtitle: string = '';
   @Input() image: boolean = true;
+  @Input() cancelLabel: string = 'Cancel';
+  @Input() saveLabel: string = 'Save';
 
   @Output() cancelClicked = new EventEmitter<void>();
   @Output() saveClicked = new EventEmitter<void>();
