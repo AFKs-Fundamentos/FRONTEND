@@ -31,9 +31,13 @@ export const routes: Routes = [
   { path: 'ratings-page', component: RatingsPageComponent },
   {path: 'products',component: ProductListComponent},
   {path: 'product-detail/:id', component: ProductDetailComponent},
-  {path: 'shopping-cart/:user_client_id', component: ShoppingCartComponent},
+  {path: 'buys', component: ShoppingCartComponent},
   {path: 'product-inventory',component: ProductInventoryComponent},
+  {path: 'service-history', component: ServiceHistoryComponent },
+  {path: 'ratings', component: RatingCardComponent },
   {path: 'profile',component: EditProfileComponent, canActivate: [roleGuard], data : { expectedRole: 'ROLE_TECHNICIAN' }},
   { path: '**', component: PageNotFoundComponent },
+  {path: 'service-history', component: ServiceHistoryComponent },
+  {path: 'ratings', component: RatingCardComponent },
 ];
 
