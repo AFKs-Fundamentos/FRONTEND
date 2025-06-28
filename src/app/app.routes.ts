@@ -25,7 +25,7 @@ export const routes: Routes = [
   { path: 'sign-in', component: SignInComponent, },
   { path: 'sign-up', component: SignUpComponent},
   { path: 'home', component: HomeComponent, canActivate: [authenticationGuard]},
-  { path: 'meetings', component: MeetingsComponent, canActivate: [roleGuard], data : { expectedRole: 'ROLE_CLIENT' } },
+  { path: 'meetings', component: MeetingsComponent},
   { path: 'service-history', component: ServiceHistoryComponent, canActivate: [authenticationGuard] },
   { path: 'ratings', component: RatingCardComponent, canActivate: [authenticationGuard] },
   { path: 'ratings-page', component: RatingsPageComponent },
