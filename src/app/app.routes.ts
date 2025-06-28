@@ -18,6 +18,7 @@ import {ProductInventoryComponent} from './products/pages/product-inventory/prod
 
 import {ShoppingCartComponent} from './shopping_cart/pages/shopping-cart/shopping-cart.component';
 import {EditProfileComponent} from './profiles/components/edit-profile/edit-profile.component';
+import {ProfilesPageComponent} from './profiles/pages/profiles-page/profiles-page.component';
 
 
 export const routes: Routes = [
@@ -27,13 +28,13 @@ export const routes: Routes = [
   { path: 'meetings', component: MeetingsComponent, canActivate: [roleGuard], data : { expectedRole: 'ROLE_CLIENT' } },
   { path: 'service-history', component: ServiceHistoryComponent, canActivate: [authenticationGuard] },
   { path: 'ratings', component: RatingCardComponent, canActivate: [authenticationGuard] },
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'ratings-page', component: RatingsPageComponent },
   {path: 'products',component: ProductListComponent},
   {path: 'product-detail/:id', component: ProductDetailComponent},
-  {path: 'shopping-cart/:user_client_id', component: ShoppingCartComponent},
+  {path: 'buys', component: ShoppingCartComponent},
   {path: 'product-inventory',component: ProductInventoryComponent},
-  {path: 'profile',component: EditProfileComponent, canActivate: [roleGuard], data : { expectedRole: 'ROLE_TECHNICIAN' }},
+  {path: 'my-profile',component: ProfilesPageComponent, canActivate: [roleGuard], data : { expectedRole: 'ROLE_TECHNICIAN' }},
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent },
 ];
 
