@@ -18,8 +18,6 @@ import {Dialog} from 'primeng/dialog';
     SchedulesFormComponent,
     SchedulesComponent,
     Button,
-    Card,
-    Dialog,
   ],
   providers: [SchedulingService],
   templateUrl: './profiles-page.component.html',
@@ -29,6 +27,7 @@ export class ProfilesPageComponent {
 
   scheduleResponse: Schedule[] = [];
   showForm = false;
+  selectedAdvisorId?: number ;
 
 
 
@@ -50,6 +49,7 @@ export class ProfilesPageComponent {
     this.availabilityService.getAll().subscribe((data) => {
       this.scheduleResponse = data;
     });
+    this.selectedAdvisorId = this.authenticationService.getCurrentUserId;
   }
   handleCreated(newSchedule: Schedule) {
 

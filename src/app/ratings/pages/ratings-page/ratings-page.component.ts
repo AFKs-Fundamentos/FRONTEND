@@ -7,7 +7,6 @@ import {FormsModule} from '@angular/forms';
 @Component({
   selector: 'app-ratings-page',
   imports: [
-    Button,
     Card,
     Rating,
     FormsModule,

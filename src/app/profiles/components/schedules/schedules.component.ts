@@ -16,15 +16,18 @@ import {Schedule} from '../../model/schedule.entity';
 export class SchedulesComponent {
   @Input() schedules: Schedule[] = [];
 
+  @Input() advisorId?: number;
 
   get uniqueSchedules(): Schedule[] {
     const seen = new Set<string>();
-    const filtered = this.schedules.filter(s => {
-      const key = `${s.availableDate}|${s.startTime}|${s.endTime}`;
-      if (seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    });
+    const filtered = this.schedules
+      .filter(s => !this.advisorId || s.advisorId === this.advisorId) // ← Filtra por asesor
+      .filter(s => {
+        const key = `${s.availableDate}|${s.startTime}|${s.endTime}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
 
     return filtered.sort((a, b) => {
       const dateA = `${a.availableDate}T${a.startTime}`;
@@ -32,5 +35,6 @@ export class SchedulesComponent {
       return dateA.localeCompare(dateB);
     });
   }
+
 
 }
