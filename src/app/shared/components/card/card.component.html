@@ -10,6 +10,7 @@
 
     <ng-template #footer>
       <div class="flex gap-4 mt-1">
+        @if (showCancelButton) {
         <p-button
           [label]="cancelLabel"
           severity="secondary"
@@ -18,12 +19,15 @@
           styleClass="w-full"
           (onClick)="onCancel()"
         ></p-button>
-        <p-button
-          [label]="saveLabel"
-          class="w-full"
-          styleClass="w-full"
-          (onClick)="onSave()"
-        ></p-button>
+        }
+        @if (showSaveButton) {
+          <p-button
+            [label]="saveLabel"
+            class="w-full"
+            styleClass="w-full"
+            (onClick)="onSave()"
+          ></p-button>
+        }
       </div>
     </ng-template>
   </p-card>
