@@ -6,11 +6,11 @@ import {TableModule} from 'primeng/table';
 import {AdvisorService} from '../../services/advisor.service';
 import {Button} from 'primeng/button';
 import {Advisor} from '../../model/advisor.entity';
-import {CardComponent} from '../../../shared/components/card/card.component';
 import {DialogComponent} from '../../../shared/components/dialog/dialog.component';
 import {AdvisoryFormComponent} from '../advisory-form/advisory-form.component';
 import {CardAdvisorComponent} from '../card-advisor/card-advisor.component';
-import {Droppable} from 'primeng/dragdrop';
+import {Appointment} from '../../model/appointment.entity';
+import {AuthenticationService} from '../../../iam/services/authentication.service';
 
 @Component({
   selector: 'app-advisors-list',
@@ -25,7 +25,6 @@ export class AdvisorsListComponent implements OnInit, OnChanges{
 
   cols: any[] = [];
   advisors: Advisor[] = [];
-
   visibleInfo: boolean = false;
   visibleForm: boolean = false;
   matchModeOptions: SelectItem[] = [];
@@ -54,7 +53,6 @@ export class AdvisorsListComponent implements OnInit, OnChanges{
       return value.toString() === filter.toString();
     });
     this.filterService.register(customFilterDate, (value: any, filter: Date[]): boolean => {
-        // Validaciones de seguridad
         if (!Array.isArray(filter) || filter.length !== 2 || !value) {
           return false;
         }
@@ -70,13 +68,15 @@ export class AdvisorsListComponent implements OnInit, OnChanges{
       }
     );
 
+
+
+
     this.cols = [
       { field: 'firstName', header: 'Nombre' },
       { field: 'lastName', header: 'Apellido' },
-      { field: 'email', header: 'Email' },
+      { field: 'schedule', header: 'Horario' },
       { field: 'phone', header: 'Phone' },
       { field: 'actions', header: 'Actions' }
-
     ];
 
     this.matchModeOptions = [
