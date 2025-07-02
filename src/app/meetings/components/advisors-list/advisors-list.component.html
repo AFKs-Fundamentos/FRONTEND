@@ -32,7 +32,12 @@
               <p-button  type="button" label="" icon="pi pi-clock" (onClick)="onRequestMeeting(rowData)"></p-button>
               <p-button  type="button" label="" icon="pi pi-user"  (onClick)="onViewDetails(rowData)" ></p-button>
             </td>
-          } @else {
+          } @else if (col.field=='schedules'){
+            <td class="flex  flex-row gap-1 pl-6">
+              <p-button  type="button" label="Ver Horarios" icon="pi pi-calendar"  (onClick)="onViewSchedules(rowData)"  ></p-button>
+            </td>
+          }
+          @else {
             <td>
               {{ rowData[col.field] }}
             </td>
@@ -52,7 +57,7 @@
 
   <app-dialog
     [dialogTitle]="visibleInfo ? advisor.firstName : 'Angendar asesoría con ' + advisor.firstName "
-    [visibleFromFather]="visibleInfo || visibleForm"
+    [visibleFromFather]="visibleInfo || visibleForm || visibleSchedules"
     (dialogClosed)="onHandleCancel()">
 
     @if (visibleInfo) {
@@ -69,6 +74,12 @@
           (formSent)="onFormSent()"
         ></app-advisory-form>
       }
+    @else if (visibleSchedules) {
+      <app-schedules
+        [advisorId]="advisor.id"
+        [schedules]="schedules"
+      ></app-schedules>
+    }
 
   </app-dialog>
 
