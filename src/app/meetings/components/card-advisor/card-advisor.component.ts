@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {CardModule} from 'primeng/card';
 import {ButtonModule} from 'primeng/button';
-import {Advisor} from '../../model/advisor.entity';
 import {CardComponent} from '../../../shared/components/card/card.component';
+import {Advisor} from '../../../profiles/model/advisor.entity';
 
 @Component({
   selector: 'app-card-advisor',
@@ -35,7 +35,6 @@ export class CardAdvisorComponent implements OnChanges {
   onHandleCancel() {
     this.visible = false;
     this.dialogClosed.emit();
-
   }
   onHandleSave(){
     this.visible = false;
