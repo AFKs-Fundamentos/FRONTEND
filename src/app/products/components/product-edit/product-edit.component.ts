@@ -52,20 +52,12 @@ export class ProductEditComponent {
 
     this.productService.update(this.product.id, productData).subscribe({
       next: () => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Éxito',
-          detail: 'Producto actualizado correctamente'
-        });
+        this.showMessage('success', 'Éxito', 'Producto actualizado correctamente');
         this.save.emit();
       },
       error: (err) => {
         console.error('Error al actualizar el producto:', err);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'No se pudo actualizar el producto'
-        });
+        this.showMessage('error', 'Error', 'No se pudo actualizar el producto');
       },
       complete: () => {
         this.loading = false;
@@ -76,6 +68,9 @@ export class ProductEditComponent {
     Object.keys(form.controls).forEach(key => {
       form.controls[key].markAsTouched();
     });
+  }
+  private showMessage(severity: string, summary: string, detail: string): void {
+    this.messageService.add({ severity, summary, detail });
   }
   onCancel(): void {
     this.cancel.emit();

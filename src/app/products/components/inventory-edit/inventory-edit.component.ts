@@ -34,9 +34,9 @@ export class InventoryEditComponent {
   ) {
     this.inventoryForm = this.fb.group({
       id: [{value: '', disabled: true}],
-      stock_min: ['', [Validators.required, Validators.min(0)]],
+      stockMin: ['', [Validators.required, Validators.min(0)]],
       stock: ['', [Validators.required, Validators.min(0)]],
-      stock_max: ['', [Validators.required, Validators.min(0)]]
+      stockMax: ['', [Validators.required, Validators.min(0)]]
     });
   }
 
@@ -44,9 +44,9 @@ export class InventoryEditComponent {
     if (changes['inventory'] && this.inventory) {
       this.inventoryForm.patchValue({
         id: this.inventory.id,
-        stock_min: this.inventory.stock_min,
+        stockMin: this.inventory.stockMin,
         stock: this.inventory.stock,
-        stock_max: this.inventory.stock_max
+        stockMax: this.inventory.stockMax
       });
     }
   }
@@ -65,21 +65,14 @@ export class InventoryEditComponent {
 
     this.inventoryService.update(updatedInventory.id, updatedInventory).subscribe({
       next: () => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Éxito',
-          detail: 'Inventario actualizado correctamente'
-        });
+        console.log('Inventario actualizado correctamente:', updatedInventory);
+        this.showMessage('success', 'Éxito', 'Inventario actualizado correctamente');
         this.save.emit();
         this.loading = false;
       },
       error: (err) => {
         console.error('Error al actualizar inventario:', err);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'No se pudo actualizar el inventario'
-        });
+        this.showMessage('error', 'Error', 'No se pudo actualizar el inventario');
         this.loading = false;
       }
     });
@@ -93,5 +86,8 @@ export class InventoryEditComponent {
 
   onCancel(): void {
     this.cancel.emit();
+  }
+  private showMessage(severity: string, summary: string, detail: string): void {
+    this.messageService.add({ severity, summary, detail });
   }
 }

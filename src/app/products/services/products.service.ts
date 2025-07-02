@@ -14,7 +14,7 @@ export class ProductsService extends BaseService<Product> {
   }
 
   getProductById(id: number): Observable<Product> {
-    return this.http.get<Product>(`${this.basePath}${this.resourceEndpoint}?id=${id}`, this.httpOptions)
+    return this.http.get<Product>(`${this.basePath}${this.resourceEndpoint}/${id}`, this.httpOptions)
       .pipe(retry(2),catchError(this.handleError));
   }
 }

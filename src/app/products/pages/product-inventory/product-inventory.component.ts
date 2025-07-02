@@ -15,6 +15,8 @@ import { forkJoin } from 'rxjs';
 import {ProductEditComponent} from '../../components/product-edit/product-edit.component';
 import {InventoryEditComponent} from '../../components/inventory-edit/inventory-edit.component';
 import {ProductAddComponent} from '../../components/product-add/product-add.component';
+import {AuthenticationService} from '../../../iam/services/authentication.service';
+
 
 
 interface ProductInventory {
@@ -44,7 +46,7 @@ interface ProductInventory {
   providers: [MessageService]
 })
 export class ProductInventoryComponent implements OnInit {
-  userId: number = 1;
+  userId: number = 0;
   productsInventory: ProductInventory[] = [];
   loading: boolean = true;
   displayEditModal: boolean = false;
@@ -55,35 +57,62 @@ export class ProductInventoryComponent implements OnInit {
   constructor(
     private productService: ProductsService,
     private inventoryService: InventoryService,
+    private autheticationService: AuthenticationService,
     private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
+    this.userId = this.autheticationService.getCurrentUserId;
     this.loadUserProducts();
   }
 
   loadUserProducts(): void {
     this.loading = true;
 
+    console.log('ID de usuario:', this.userId);
+
     forkJoin({
       inventory: this.inventoryService.getInventoryByUserId(this.userId),
       products: this.productService.getAll()
     }).subscribe({
       next: ({ inventory, products }) => {
-        this.productsInventory = inventory.map((item: Inventory) => {
-          const product = products.find((p: Product) => p.id === item.product_id);
-          return product ? { product, inventory: item } : null;
-        }).filter((item): item is ProductInventory => item !== null);
+        console.log('Datos crudos - Inventario:', inventory);
+        console.log('Datos crudos - Productos:', products);
 
+        if (!inventory || !products) {
+          console.error('Datos incompletos recibidos');
+          this.productsInventory = [];
+          this.loading = false;
+          return;
+        }
+
+        this.productsInventory = inventory
+          .filter((inv: Inventory) => {
+
+            return inv.userTechnicalId === this.userId;
+          })
+          .map((inv: Inventory) => {
+
+            const product = products.find((p: Product) => p.id === inv.productId);
+
+            if (!product) {
+              console.warn(`Producto no encontrado para inventory con productId: ${inv.productId}`);
+              return null;
+            }
+
+            return {
+              product: product,
+              inventory: inv
+            };
+          })
+          .filter((item): item is ProductInventory => item !== null);
+
+        console.log('Datos combinados:', this.productsInventory);
         this.loading = false;
       },
       error: (err) => {
         console.error('Error loading data:', err);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error al cargar los datos'
-        });
+        this.showMessage('error', 'Error', 'Error al cargar los datos');
         this.loading = false;
       }
     });
@@ -98,20 +127,15 @@ export class ProductInventoryComponent implements OnInit {
   handleSave(): void {
     this.displayEditModal = false;
     this.loadUserProducts();
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Éxito',
-      detail: 'Cambios guardados correctamente'
-    });
   }
+
 
   handleProductAdded(): void {
     this.displayAddModal = false;
     this.loadUserProducts();
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Éxito',
-      detail: 'Producto agregado correctamente'
-    });
+    this.showMessage('success', 'Éxito', 'Producto agregado correctamente');
+  }
+  private showMessage(severity: string, summary: string, detail: string): void {
+    this.messageService.add({ severity, summary, detail });
   }
 }

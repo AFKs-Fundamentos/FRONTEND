@@ -38,8 +38,8 @@ export class ProductAddComponent {
   loading = false;
   initialStockValues = {
     stock: 1,
-    stock_min: 5,
-    stock_max: 50
+    stockMin: 5,
+    stockMax: 50
   };
 
   constructor(
@@ -60,41 +60,29 @@ export class ProductAddComponent {
     this.productService.create(this.product).subscribe({
       next: (createdProduct: Product) => {
         const newInventory: Inventory = {
-          user_technical_id: this.userId,
-          product_id: createdProduct.id,
+          userTechnicalId: this.userId,
+          productId: createdProduct.id,
           stock: this.initialStockValues.stock,
-          stock_min: this.initialStockValues.stock_min,
-          stock_max: this.initialStockValues.stock_max
+          stockMin: this.initialStockValues.stockMin,
+          stockMax: this.initialStockValues.stockMax
         };
 
         this.inventoryService.create(newInventory).subscribe({
           next: () => {
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Éxito',
-              detail: 'Producto e inventario creados correctamente'
-            });
+            this.showMessage('success', 'Éxito', 'Producto e inventario creados correctamente');
             this.productAdded.emit();
             this.resetForm(form);
           },
           error: (err) => {
             console.error('Error creating inventory:', err);
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: 'Producto creado pero error al crear inventario'
-            });
+            this.showMessage('error', 'Error', 'Producto creado pero error al crear inventario');
             this.loading = false;
           }
         });
       },
       error: (err) => {
         console.error('Error creating product:', err);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error al crear el producto'
-        });
+        this.showMessage('error', 'Error', 'Error al crear el producto');
         this.loading = false;
       }
     });
@@ -114,5 +102,8 @@ export class ProductAddComponent {
 
   onCancel(): void {
     this.cancel.emit();
+  }
+  private showMessage(severity: string, summary: string, detail: string): void {
+    this.messageService.add({ severity, summary, detail });
   }
 }
