@@ -29,6 +29,7 @@ export const routes: Routes = [
   { path: 'ratings', component: RatingCardComponent, canActivate: [authenticationGuard] },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'ratings-page', component: RatingsPageComponent },
+  { path: 'inventories', component: ProductInventoryComponent},
   {path: 'products',component: ProductListComponent},
   {path: 'product-detail/:id', component: ProductDetailComponent},
   {path: 'buys', component: ShoppingCartComponent},
