@@ -1,12 +1,11 @@
 <app-card
   [contentTitle]="advisor ? advisor.lastName : '' "
-  [contentSubtitle]="advisor ? advisor.email : '' "
+  [contentSubtitle]="advisor ? advisor.firstName : '' "
   [image] = false
   (cancelClicked)="onHandleCancel()"
   (saveClicked)="onHandleSave()"
 >
   <p> {{ advisor?.id }} </p>
   <p> {{ advisor?.firstName }} </p>
-  <p> {{ advisor?.email }} </p>
 
 </app-card>
