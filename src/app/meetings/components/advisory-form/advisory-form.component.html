@@ -1,25 +1,33 @@
 <form [formGroup]="appointmentForm" (ngSubmit)="onSubmit()">
   <p-fluid class="flex flex-column justify-content-center gap-2">
 
-    <!-- Fecha -->
-    <p-datepicker
+    <!-- Selección de Fecha -->
+    <p-select
+      [options]="availableDates"
       formControlName="appointmentDate"
-      [showButtonBar]="true"
-      [inline]="true"
-      placeholder="Fecha de la cita"
-      dateFormat="dd.mm.yy">
-    </p-datepicker>
+      optionLabel="label"
+      placeholder="Seleccione una fecha"
+      class="w-full"
+      (onChange)="onDateChange($event.value)"
+    />
 
-    <!-- Hora -->
-    <p-datepicker
+    <!-- Selección de Hora -->
+    <p-select
+      [options]="availableTimes"
       formControlName="appointmentTime"
-      [timeOnly]="true"
-      placeholder="Hora de inicio">
-    </p-datepicker>
+      optionLabel="label"
+      placeholder="Seleccione una hora"
+      class="w-full"
+    />
 
     <!-- Descripción -->
     <p-iftalabel>
-      <textarea pTextarea id="description" rows="4" formControlName="description"></textarea>
+      <textarea
+        pTextarea
+        id="description"
+        rows="4"
+        formControlName="description"
+      ></textarea>
       <label for="description">Descripción</label>
     </p-iftalabel>
 
