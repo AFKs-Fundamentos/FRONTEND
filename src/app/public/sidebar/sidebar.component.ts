@@ -43,55 +43,50 @@ export class SidebarComponent  implements  OnInit {
       {
         label: 'General',
         items: [
-          {
-            label: 'Home',
-            icon: 'pi pi-home',
-            path: '/home'
-          },
-          {
-            label: 'Meetings',
-            icon: 'pi pi-video',
-            path: '/meetings'
-          },
-          {
-            label: 'Service History',
-            icon: 'pi pi-history',
-            path: 'service-history'
-          },
-          {
-            label: 'Ratings',
-            icon: 'pi pi-star',
-            path: '/ratings-page'
-          },
-          {
-            label: 'Products',
-            icon: 'pi pi-desktop',
-            path: '/products'
-          },
-          {
-            label: 'My Buys',
-            icon: 'pi pi-shopping-cart',
-            path: '/buys'
-          },
-
+          {label: 'Home', icon: 'pi pi-home', path: '/home'},
+          {label: 'Meetings', icon: 'pi pi-video', path: '/meetings'},
+          {label: 'Service History', icon: 'pi pi-history', path: 'service-history'},
+          {label: 'Ratings', icon: 'pi pi-star', path: '/ratings-page'},
+          {label: 'Products', icon: 'pi pi-desktop', path: '/products'},
+          {label: 'My Buys', icon: 'pi pi-shopping-cart', path: '/buys'},
         ]
       },
     ];
     this.currentUserRole=="ROLE_TECHNICIAN" ? this.role = "TÉCNICO" : this.role = "CLIENTE";
+    if (this.currentUserRole == "ROLE_TECHNICIAN") {
+      //menu para el técnico
+      this.items = [
+        { separator: true },
+        { label: 'Home', icon: 'pi pi-home', path: '/home' },
+        { label: 'Meetings', icon: 'pi pi-video', path: '/meetings' },
+        { label: 'Service History', icon: 'pi pi-history', path: '/service-history' },
+        { label: 'Ratings', icon: 'pi pi-star', path: '/ratings' },
+        { label: 'Inventory', icon: 'pi pi-box', path: '/inventories' },
+        { label: 'Products', icon: 'pi pi-desktop', path: '/products' },
+        { label: 'My Buys', icon: 'pi pi-shopping-cart', path: '/buys' },
+        { separator: true },
+        { label: 'Settings', icon: 'pi pi-cog', path: '/settings' },
+        { label: 'Help', icon: 'pi pi-inbox', path: '/help' },
+        { label: 'Logout', icon: 'pi pi-sign-out', command: () => this.onSignOut() }
+      ];
+    } else {
+      //menu para el cliente
+      this.items = [
+        { separator: true },
+        { label: 'Home', icon: 'pi pi-home', path: '/home' },
+        { label: 'Meetings', icon: 'pi pi-video', path: '/meetings' },
+        { label: 'Service History', icon: 'pi pi-history', path: '/service-history' },
+        { label: 'Ratings', icon: 'pi pi-star', path: '/ratings' },
+        { label: 'Inventory', icon: 'pi pi-box', path: '/inventories' },
+        { label: 'Products', icon: 'pi pi-desktop', path: '/products' },
+        { label: 'My Buys', icon: 'pi pi-shopping-cart', path: '/buys' },
+        { separator: true },
+        { label: 'Settings', icon: 'pi pi-cog', path: '/settings' },
+        { label: 'Help', icon: 'pi pi-inbox', path: '/help' },
+        { label: 'Logout', icon: 'pi pi-sign-out', command: () => this.onSignOut() }
+      ];
+    }
 
-    this.items = [
-      { separator: true },
-      { label: 'Home', icon: 'pi pi-home', path: '/home' },
-      { label: 'Meetings', icon: 'pi pi-video', path: '/meetings' },
-      { label: 'Service History', icon: 'pi pi-history', path: '/service-history' },
-      { label: 'Ratings', icon: 'pi pi-star', path: '/ratings' },
-      { label: 'Products', icon: 'pi pi-desktop', path: '/products' },
-      { label: 'My Buys', icon: 'pi pi-shopping-cart', path: '/buys' },
-      { separator: true },
-      { label: 'Settings', icon: 'pi pi-cog', path: '/settings' },
-      { label: 'Help', icon: 'pi pi-inbox', path: '/help' },
-      { label: 'Logout', icon: 'pi pi-sign-out', command: () => this.onSignOut() }
-    ];
   }
 
 
