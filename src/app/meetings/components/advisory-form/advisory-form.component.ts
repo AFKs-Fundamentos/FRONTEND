@@ -35,10 +35,9 @@ export class AdvisoryFormComponent implements OnInit {
   @Output() formSent = new EventEmitter();
 
   availableDates: { label: string, value: string }[] = [];
-  availableTimes: { label: string, value: string }[] = [];
+  availableTimes: { label: string, value: string, scheduleHourId: number }[] = [];
   allSchedules: AdvisorSchedule[] = [];
   selectedDate: string = '';
-
 
   appointmentForm: FormGroup = new FormGroup({
     description: new FormControl(''),
@@ -49,10 +48,9 @@ export class AdvisoryFormComponent implements OnInit {
   constructor(
     private appointmentService: AppointmentService,
     private authService: AuthenticationService,
-    private scheduleService:SchedulingService,
+    private scheduleService: SchedulingService,
     private timeSlotService: TimeSlotService,
   ) {}
-
 
   ngOnInit() {
     this.loadScheduling();
@@ -65,16 +63,8 @@ export class AdvisoryFormComponent implements OnInit {
     }
 
     const formValues = this.appointmentForm.value;
-
-    const appointmentDateRaw = formValues.appointmentDate;
-    const appointmentDate = typeof appointmentDateRaw === 'object' && appointmentDateRaw?.value
-      ? appointmentDateRaw.value
-      : appointmentDateRaw;
-
-    const appointmentTimeRaw = formValues.appointmentTime;
-    const appointmentStartTime = typeof appointmentTimeRaw === 'object' && appointmentTimeRaw?.value
-      ? appointmentTimeRaw.value
-      : appointmentTimeRaw;
+    const appointmentDate = formValues.appointmentDate?.value || formValues.appointmentDate;
+    const appointmentStartTime = formValues.appointmentTime?.value || formValues.appointmentTime;
 
     if (!appointmentDate || !appointmentStartTime) {
       console.error('Falta fecha u hora');
@@ -90,13 +80,24 @@ export class AdvisoryFormComponent implements OnInit {
     };
 
     this.appointmentService.create(appointment).subscribe((newAppointment) => {
-      console.log('✅ Cita creada:', newAppointment);
+      console.log('cita creada:', newAppointment);
       this.formSent.emit(newAppointment);
+
+      const selectedTimeSlot = this.availableTimes.find(t => t.value === appointmentStartTime);
+
+      if (selectedTimeSlot) {
+        this.timeSlotService.putTimeSlot(selectedTimeSlot.scheduleHourId, false).subscribe({
+          next: (res) => {
+            console.log('horario actualizado:', res);
+            this.loadScheduling();
+            },
+          error: (err) => {
+            console.error('eror al actualizar horario:', err);
+          }
+        });
+      }
     });
-
-
   }
-
 
   loadScheduling() {
     const advisorId = this.advisor?.id ?? 0;
@@ -120,21 +121,25 @@ export class AdvisoryFormComponent implements OnInit {
   onDateChange(selectedDate: { label: string; value: string }) {
     const dateValue = selectedDate.value;
 
-    console.log('Fecha seleccionada:', dateValue);
+    console.log('fecha seleccionada:', dateValue);
 
-    const filteredHours = this.allSchedules
+    const filteredHours: { label: string, value: string, scheduleHourId: number }[] = [];
+
+    this.allSchedules
       .filter(s => s.availableDate === dateValue && s.isAvailable)
-      .map(s => ({
-        label: `${s.startTime} - ${s.endTime}`,
-        value: s.startTime
-      }));
+      .forEach(schedule => {
+        schedule.scheduleHours?.forEach(hour => {
+          if (hour.available) {
+            filteredHours.push({
+              label: `${hour.startTime} - ${hour.endTime}`,
+              value: hour.startTime,
+              scheduleHourId: hour.id
+            });
+          }
+        });
+      });
 
     this.availableTimes = filteredHours;
     this.appointmentForm.get('appointmentTime')?.setValue(null);
-
-
   }
-
-
-
 }
