@@ -57,11 +57,22 @@ export class ProductAddComponent {
     this.loading = true;
 
 
-    this.productService.create(this.product).subscribe({
+    console.log(this.product.id);
+    const  productData = {
+      productName : this.product.productName,
+      photo: this.product.photo,
+      sku: this.product.sku,
+      category: this.product.category,
+      price: this.product.price,
+      description: this.product.description
+    };
+    console.log('Datos de producto a agregar',productData);
+
+    this.productService.create(productData).subscribe({
       next: (createdProduct: Product) => {
         const newInventory: Inventory = {
           userTechnicalId: this.userId,
-          productId: createdProduct.id,
+          productId: createdProduct.id!,
           stock: this.initialStockValues.stock,
           stockMin: this.initialStockValues.stockMin,
           stockMax: this.initialStockValues.stockMax
