@@ -5,16 +5,17 @@ import {TableModule} from 'primeng/table';
 
 import {AdvisorService} from '../../services/advisor.service';
 import {Button} from 'primeng/button';
-import {Advisor} from '../../model/advisor.entity';
-import {CardComponent} from '../../../shared/components/card/card.component';
 import {DialogComponent} from '../../../shared/components/dialog/dialog.component';
 import {AdvisoryFormComponent} from '../advisory-form/advisory-form.component';
 import {CardAdvisorComponent} from '../card-advisor/card-advisor.component';
-import {Droppable} from 'primeng/dragdrop';
+import {Advisor} from '../../../profiles/model/advisor.entity';
+import {SchedulesComponent} from '../../../profiles/components/schedules/schedules.component';
+import {AdvisorSchedule} from '../../model/advisorSchedule.entity';
+import {SchedulingService} from '../../../profiles/services/scheduling.service';
 
 @Component({
   selector: 'app-advisors-list',
-  imports: [TableModule, CommonModule, Button, DialogComponent, AdvisoryFormComponent, CardAdvisorComponent],
+  imports: [TableModule, CommonModule, Button, DialogComponent, AdvisoryFormComponent, CardAdvisorComponent, SchedulesComponent],
   providers: [FilterService, AdvisorService],
   templateUrl: './advisors-list.component.html',
   standalone: true,
@@ -25,10 +26,11 @@ export class AdvisorsListComponent implements OnInit, OnChanges{
 
   cols: any[] = [];
   advisors: Advisor[] = [];
-
   visibleInfo: boolean = false;
   visibleForm: boolean = false;
+  visibleSchedules: boolean = false;
   matchModeOptions: SelectItem[] = [];
+  schedules:AdvisorSchedule[] = [];
   @Input() advisor?: Advisor;
   @Output() dialogClosed = new EventEmitter<void>();
 
@@ -36,7 +38,8 @@ export class AdvisorsListComponent implements OnInit, OnChanges{
 
   constructor(
     private filterService: FilterService,
-    private advisorService: AdvisorService
+    private advisorService: AdvisorService,
+    private scheduleService: SchedulingService
   ) {}
 
   ngOnInit() {
@@ -54,7 +57,6 @@ export class AdvisorsListComponent implements OnInit, OnChanges{
       return value.toString() === filter.toString();
     });
     this.filterService.register(customFilterDate, (value: any, filter: Date[]): boolean => {
-        // Validaciones de seguridad
         if (!Array.isArray(filter) || filter.length !== 2 || !value) {
           return false;
         }
@@ -70,13 +72,15 @@ export class AdvisorsListComponent implements OnInit, OnChanges{
       }
     );
 
+
+
+
     this.cols = [
       { field: 'firstName', header: 'Nombre' },
       { field: 'lastName', header: 'Apellido' },
-      { field: 'email', header: 'Email' },
+      { field: 'schedules', header: 'Horario' },
       { field: 'phone', header: 'Phone' },
       { field: 'actions', header: 'Actions' }
-
     ];
 
     this.matchModeOptions = [
@@ -110,20 +114,35 @@ export class AdvisorsListComponent implements OnInit, OnChanges{
   onHandleCancel() {
     this.visibleInfo = false;
     this.visibleForm = false;
+    this.visibleSchedules = false;
   }
 
   onFormSent() {
     this.visibleForm = false;
     console.log("Form sent" , this.advisor);
   }
+  onViewSchedules(asesor: Advisor): void {
+    this.advisor = asesor;
+    this.visibleSchedules = true;
 
-
-
+    // Llamar al servicio para obtener los horarios
+    this.scheduleService.getScheduleByAdvisorId(asesor.id).subscribe(
+      (data: AdvisorSchedule[]) => {
+        this.schedules = data;
+      },
+      error => {
+        console.error('Error cargando horarios:', error);
+        this.schedules = [];
+      }
+    );
+  }
   ngOnChanges(changes: SimpleChanges) {
     if (changes['visible']) {
       this.visibleInfo = changes['visible'].currentValue;
     }
   }
+
+
 
 }
 

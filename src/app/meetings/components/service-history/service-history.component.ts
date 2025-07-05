@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {CardAdvisorComponent} from '../card-advisor/card-advisor.component';
 import {CardComponent} from '../../../shared/components/card/card.component';
-import {Advisor} from '../../model/advisor.entity';
 import {AdvisorService} from '../../services/advisor.service';
 import {Advisory} from '../../model/advisory.entity';
 import {AdvisoryService} from '../../services/advisory.service';
 import {CommonModule} from '@angular/common';
+import {Advisor} from '../../../profiles/model/advisor.entity';
 
 @Component({
   selector: 'app-service-history',

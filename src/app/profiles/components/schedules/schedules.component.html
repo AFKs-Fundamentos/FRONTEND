@@ -1,0 +1,23 @@
+<p-table [value]="uniqueSchedules" responsiveLayout="scroll" class="p-datatable-striped p-datatable-gridlines ">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Fecha</th>
+      <th>Hora de Inicio</th>
+      <th>Hora de Fin</th>
+      <th>Estado</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-row>
+    <tr>
+      <td>{{ row.availableDate }}</td>
+      <td>{{ row.startTime }}</td>
+      <td>{{ row.endTime }}</td>
+      <td>
+        <span class="badge"
+              [ngClass]="row.isAvailable ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">
+          {{ row.isAvailable ? 'Disponible' : 'No disponible' }}
+        </span>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

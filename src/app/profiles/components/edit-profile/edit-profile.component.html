@@ -1,6 +1,7 @@
 
 <ng-container *ngIf="profile; else loading">
   <app-card
+    [showSaveButton]="editMode"
     *ngIf="!editMode && profile"
     [contentTitle]="'Perfil'"
     [contentSubtitle]="'Información personal'"
@@ -9,7 +10,7 @@
     (saveClicked)="toggleEditMode()"
     [cancelLabel]="'Editar'"
   >
-    <div class="p-2">
+    <div class="p-2 px-2 w-5">
       <p><strong>Nombre:</strong> {{ profile.firstName }}</p>
       <p><strong>Apellido:</strong> {{ profile.lastName }}</p>
       <p><strong>Teléfono:</strong> {{ profile.phone }}</p>
