@@ -11,10 +11,10 @@ export class InventoryService extends BaseService<Inventory>{
 
   constructor(http: HttpClient ) {
     super(http);
-    this.resourceEndpoint = '/inventory';
+    this.resourceEndpoint = '/inventories';
   }
   getInventoryByUserId(userId: number): Observable<Inventory[]> {
-    return this.http.get<Inventory[]>(`${this.basePath}${this.resourceEndpoint}?user_technical_id=${userId}`, this.httpOptions)
-      .pipe(retry(2),catchError(this.handleError));
+    return this.http.get<Inventory[]>(`${this.basePath}${this.resourceEndpoint}/userTechnicalId/${userId}`, this.httpOptions)
+      .pipe(retry(1),catchError(this.handleError));
   }
 }

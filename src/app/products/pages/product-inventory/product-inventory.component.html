@@ -13,6 +13,8 @@
       </button>
     </div>
 
+
+
     @if (loading) {
       <div class="flex justify-content-center p-8">
         <p-progressSpinner></p-progressSpinner>
@@ -56,14 +58,14 @@
             <td>{{ item.product.price | currency:'S/.' }}</td>
             <td
               [ngClass]="{
-                'text-green-500': item.inventory.stock > item.inventory.stock_min,
-                'text-yellow-500': item.inventory.stock === item.inventory.stock_min,
-                'text-red-500': item.inventory.stock < item.inventory.stock_min
+                'text-green-500': item.inventory.stock > item.inventory.stockMin,
+                'text-yellow-500': item.inventory.stock === item.inventory.stockMin,
+                'text-red-500': item.inventory.stock < item.inventory.stockMax
               }">
               {{ item.inventory.stock }}
             </td>
-            <td>{{ item.inventory.stock_min }}</td>
-            <td>{{ item.inventory.stock_max }}</td>
+            <td>{{ item.inventory.stockMin }}</td>
+            <td>{{ item.inventory.stockMax }}</td>
             <td>
               <div class="flex gap-2">
                 <button
@@ -88,6 +90,7 @@
         </ng-template>
 
         <ng-template pTemplate="emptymessage">
+
           <tr>
             <td colspan="9" class="text-center py-5">No se encontraron productos</td>
           </tr>
