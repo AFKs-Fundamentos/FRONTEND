@@ -14,6 +14,4 @@ export class ProductItemService extends BaseService<ProductItem>{
     this.resourceEndpoint = '/productItems';
   }
 
-
-
 }

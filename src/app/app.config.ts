@@ -12,9 +12,13 @@ import { authenticationInterceptor } from "./iam/services/authentication.interce
 import {HttpClient, provideHttpClient} from "@angular/common/http";
 import { importProvidersFrom } from '@angular/core';
 
+//Import Stripe
+import { provideNgxStripe } from 'ngx-stripe';
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
+    provideNgxStripe('pk_test_51RUZFxIEToX9rM9yY9wxdNWBtJAIOaPM8gCDngBIhwnKa6Sk5ZwrIagphpXEJkH7R901Pqa99nib0hVypBD4CAQZ00HcJHu3ps'),
     provideRouter(routes),
     provideHttpClient( withInterceptors([authenticationInterceptor]) ),
     provideAnimationsAsync(),
