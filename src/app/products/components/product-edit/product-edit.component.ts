@@ -10,6 +10,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import {Card} from 'primeng/card';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import {DropdownModule} from 'primeng/dropdown';
 
 
 @Component({
@@ -23,7 +24,8 @@ import { FloatLabelModule } from 'primeng/floatlabel';
     InputTextarea,
     ButtonModule,
     Card,
-    FloatLabelModule
+    FloatLabelModule,
+    DropdownModule
   ],
   templateUrl: './product-edit.component.html',
   styleUrls: ['./product-edit.component.css']
@@ -32,6 +34,8 @@ export class ProductEditComponent {
   @Input() product!: Product;
   @Output() save = new EventEmitter<void>();
   @Output() cancel = new EventEmitter<void>();
+  categories: string[] = ['CPU', 'GPU', 'RAM', 'MOTHERBOARD', 'STORAGE', 'POWER_SUPPLY', 'COOLING', 'OPTICAL_DRIVE', 'SOUND_CARD', 'NETWORK_CARD', 'EXPANSION_CARD', 'MONITOR', 'KEYBOARD', 'MOUSE', 'WEBCAM', 'HEADSET', 'PRINTER', 'SCANNER', 'CASE', 'CABLES', 'UPS', 'THERMAL_PASTE', 'MOUNTS', 'EXTERNAL_STORAGE', 'LAPTOP_CHARGER', 'DOCKING_STATION', 'BUNDLE', 'OTHER'];
+  categoryOptions = this.categories.map(cat => ({ label: cat, value: cat }));
 
   loading: boolean = false;
 
