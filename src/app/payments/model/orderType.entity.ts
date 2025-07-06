@@ -1,0 +1,4 @@
+export enum OrderType {
+  ADVISORY_ORDER = "ADVISORY_ORDER",
+  PRODUCT_ORDER = "PRODUCT_ORDER"
+}

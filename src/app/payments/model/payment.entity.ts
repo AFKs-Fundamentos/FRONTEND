@@ -1,18 +1,11 @@
-export class Payment {
-  orderId: string;
+import {OrderType} from './orderType.entity';
+
+export interface Payment {
+  orderId: any;
   amount: number;
   clientSecret: string;
   currency: string;
   status: string;
   description: string;
-  orderType: string;
-  constructor() {
-    this.orderId = '';
-    this.amount = 0;
-    this.clientSecret = '';
-    this.currency = '';
-    this.status = '';
-    this.description = '';
-    this.orderType = '';
-  }
+  orderType: OrderType;
 }
