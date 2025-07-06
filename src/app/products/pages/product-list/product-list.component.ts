@@ -11,19 +11,20 @@ import {ProductItem} from '../../../shopping_cart/model/product-item.entity';
 import {ProductItemService} from '../../../shopping_cart/services/product-item.service';
 import {ShoppingCartService} from '../../../shopping_cart/services/shopping-cart.service';
 import {AuthenticationService} from '../../../iam/services/authentication.service';
+import {Tooltip} from 'primeng/tooltip';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [CommonModule, CardModule, NgForOf, CurrencyPipe, Button, ButtonModule],
+  imports: [CommonModule, CardModule, NgForOf, CurrencyPipe, Button, ButtonModule, Tooltip],
   providers: [MessageService],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css'
 })
 export class ProductListComponent implements OnInit{
-  userClientId: number = 100;
   productData: Product[] = [];
   userId: number = 0;
+  currentUserRole: string = '';
 
   constructor(
     private productService: ProductsService,
@@ -32,7 +33,11 @@ export class ProductListComponent implements OnInit{
     private shoppingCartService: ShoppingCartService,
     private router: Router,
     private messageService: MessageService
-  ) {}
+  ) {
+    this.authenticationService.currentUserRole.subscribe(
+      (currentUserRole) => this.currentUserRole = currentUserRole,
+    )
+  }
 
   ngOnInit() {
     this.userId = this.authenticationService.getCurrentUserId;
@@ -41,7 +46,7 @@ export class ProductListComponent implements OnInit{
   loadProducts() {
     this.productService.getAll().subscribe(
       (data: Product[]) => {
-        this.productData = data.map(product => ({ ...product, isFavorite: false }));
+        this.productData = data;
         console.log(this.productData);
       },
       (error: any) => {
