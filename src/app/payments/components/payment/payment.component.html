@@ -1,1 +1,28 @@
-<p>payment works!</p>
+<div class="p-card">
+  <h3>Resumen de Pago</h3>
+
+  <p><strong>Fecha:</strong> {{ advisoryDetails?.appointmentDate }}</p>
+  <p><strong>Hora:</strong> {{ advisoryDetails?.appointmentTime }}</p>
+  <p><strong>Descripción:</strong> {{ advisoryDetails?.description }}</p>
+  <p><strong>Monto:</strong> {{ price | currency: 'USD' }}</p>
+
+  <!-- Stripe Card Element -->
+  <ngx-stripe-card
+    [options]="cardOptions"
+    [elementsOptions]="elementsOptions">
+  </ngx-stripe-card>
+
+  <div class="p-d-flex p-ai-center p-jc-between mt-3">
+    <p-button
+      label="Cancelar"
+      class="p-button-secondary"
+      (click)="cancelar()">
+    </p-button>
+
+    <p-button
+      label="Confirmar Pago"
+      class="p-button-success"
+      (click)="confirmar()">
+    </p-button>
+  </div>
+</div>

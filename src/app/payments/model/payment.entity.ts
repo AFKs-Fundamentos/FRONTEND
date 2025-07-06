@@ -1,16 +1,18 @@
 export class Payment {
-  cartShoppingId string;
+  orderId: string;
   amount: number;
+  clientSecret: string;
   currency: string;
   status: string;
   description: string;
-  receiptEmail:string;
+  orderType: string;
   constructor() {
-    this.cartShoppingId = '';
+    this.orderId = '';
     this.amount = 0;
+    this.clientSecret = '';
     this.currency = '';
     this.status = '';
     this.description = '';
-    this.receiptEmail = '';
+    this.orderType = '';
   }
 }

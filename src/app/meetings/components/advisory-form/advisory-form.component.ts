@@ -13,10 +13,13 @@ import {SchedulingService} from '../../../profiles/services/scheduling.service';
 import {AdvisorSchedule} from '../../model/advisorSchedule.entity';
 import {OnInit} from '@angular/core';
 import {TimeSlotService} from '../../services/timeSlot.service';
-
+import { CommonModule } from '@angular/common';
+import { DialogModule } from 'primeng/dialog';
+import { PaymentComponent } from '../../../payments/components/payment/payment.component'; // Importing PaymentComponent for reference
 @Component({
   selector: 'app-advisory-form',
   imports: [
+    CommonModule,
     ReactiveFormsModule,
     FormsModule,
     Textarea,
@@ -24,6 +27,8 @@ import {TimeSlotService} from '../../services/timeSlot.service';
     IftaLabel,
     Button,
     Select,
+    PaymentComponent,
+    DialogModule
   ],
   providers: [AppointmentService, TimeSlotService],
   standalone: true,
@@ -32,8 +37,11 @@ import {TimeSlotService} from '../../services/timeSlot.service';
 })
 export class AdvisoryFormComponent implements OnInit {
   @Input() advisor?: Advisor;
+  clientSecret!: string;
+  displayPaymentDialog: boolean = false;
   @Output() formSent = new EventEmitter();
-
+  paymentIntentId: string = '';
+  paymentOrderId!: string;
   availableDates: { label: string, value: string }[] = [];
   availableTimes: { label: string, value: string, scheduleHourId: number }[] = [];
   allSchedules: AdvisorSchedule[] = [];
@@ -72,6 +80,7 @@ export class AdvisoryFormComponent implements OnInit {
     }
 
     const appointment: Appointment = {
+      id: '', //para el back
       appointmentDate,
       appointmentStartTime,
       description: formValues.description,
@@ -81,6 +90,10 @@ export class AdvisoryFormComponent implements OnInit {
 
     this.appointmentService.create(appointment).subscribe((newAppointment) => {
       console.log('cita creada:', newAppointment);
+      // newAppointment.id es el id del appointment creado
+      this.paymentIntentId = '';
+      this.paymentOrderId = newAppointment.id; //duda
+      this.clientSecret = '';
       this.formSent.emit(newAppointment);
 
       const selectedTimeSlot = this.availableTimes.find(t => t.value === appointmentStartTime);
@@ -96,6 +109,7 @@ export class AdvisoryFormComponent implements OnInit {
           }
         });
       }
+      this.displayPaymentDialog = true;
     });
   }
 
@@ -142,4 +156,8 @@ export class AdvisoryFormComponent implements OnInit {
     this.availableTimes = filteredHours;
     this.appointmentForm.get('appointmentTime')?.setValue(null);
   }
+
+  onPaymentSuccess(paymentIntentId: string) {
+    console.log('Pago exitoso! PaymentIntent ID:', paymentIntentId);
+    }
 }

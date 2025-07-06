@@ -32,6 +32,24 @@
     </p-iftalabel>
 
     <!-- Botón de envío -->
-    <p-button type="submit" label="ENVIAR"></p-button>
+    <p-button type="submit" label="Pagar"></p-button>
+
   </p-fluid>
 </form>
+
+<p-dialog
+  [(visible)]="displayPaymentDialog"
+  header="Realizar Pago"
+  [modal]="true"
+  [closable]="false"
+  [style]="{ width: '400px' }"
+>
+  <app-payment
+    [advisoryDetails]="appointmentForm.value"
+    [price]="50"
+    [paymentIntentId]="paymentIntentId"
+    [clientSecret]="clientSecret"
+    [orderId]="paymentOrderId"
+  (paymentSuccess)="onPaymentSuccess($event)"
+  ></app-payment>
+</p-dialog>
