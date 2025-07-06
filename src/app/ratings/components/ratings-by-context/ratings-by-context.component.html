@@ -1,0 +1,17 @@
+<div class="m-0 bg-black-alpha-30">
+    
+    <div class="flex flex-row justify-content-center align-items-center ">
+        <h2>Reseñas de Clientes</h2>
+    </div>
+
+    <div class="justify-center ml-7">
+        <div class="grid grid-cols-2">
+            <ng-container *ngFor="let ratings of ratingsByType">
+                <div  class="w-5 h-24 m-2 overflow-hidden">
+                    <app-rating-card [ratings]="ratings"></app-rating-card>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+    
+</div>

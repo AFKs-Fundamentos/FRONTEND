@@ -1,12 +1,12 @@
 <div class="bg-black-alpha-20 px-6 border-round-3xl">
-
-  <div class="flex flex-column justify-content-center align-items-center ">
-    <h2>Calificaciones Globales</h2>
     
-    <div class="flex gap-2 m-3" >
-      <p-button [routerLink]="'/my-ratings'" icon="pi pi-arrow-up-right" label="Mis Reseñas" class="w-full" styleClass="w-full" />
+    <div class="flex flex-column justify-content-center align-items-center ">
+        <h2>Mis Calificaciones</h2>
+
+        <div class="flex gap-2 m-3" >
+            <p-button [routerLink]="'/ratings'" icon="pi pi-arrow-up-right" label="Ver Reseñas Globales" class="w-full" styleClass="w-full" />
+        </div>
     </div>
-  </div>
 
   <div class="card">
     <p-tabs [(value)]="selectedTab" (valueChange)="getByTab()">
@@ -21,13 +21,14 @@
                   
                   <div class="justify-center ml-7">
                     <div class="grid grid-cols-2">
-                      <ng-container *ngFor="let ratings of allRatings">
+                      <ng-container *ngFor="let ratings of myRatings">
                         <div  class="w-5 h-24 m-2 overflow-hidden">
-                          <app-rating-card [ratings]="ratings" [type]="type">  </app-rating-card>
+                          <app-rating-card [ratings]="ratings" [show]="show">  </app-rating-card>
                         </div>
                       </ng-container>
                     </div>
                   </div>
+                    
                   
                 </div>
             </p-tabpanel>
@@ -36,9 +37,9 @@
 
                   <div class="justify-center ml-7">
                     <div class="grid grid-cols-2">
-                      <ng-container *ngFor="let ratings of allRatings">
+                      <ng-container *ngFor="let ratings of myRatings">
                         <div  class="w-5 h-24 m-2 overflow-hidden">
-                          <app-rating-card [ratings]="ratings" [type]="type"></app-rating-card>
+                          <app-rating-card [ratings]="ratings" [show]="show"></app-rating-card>
                         </div>
                       </ng-container>
                     </div>
@@ -51,9 +52,9 @@
 
                   <div class="justify-center ml-7">
                     <div class="grid grid-cols-2">
-                      <ng-container *ngFor="let ratings of allRatings">
+                      <ng-container *ngFor="let ratings of myRatings">
                         <div  class="w-5 h-24 m-2 overflow-hidden">
-                          <app-rating-card [ratings]="ratings" [type]="type"></app-rating-card>
+                          <app-rating-card [ratings]="ratings" [show]="show"></app-rating-card>
                         </div>
                       </ng-container>
                     </div>

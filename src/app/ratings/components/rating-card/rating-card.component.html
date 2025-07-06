@@ -7,13 +7,15 @@
         </div>
     </ng-template>
     
-    <ng-template #title> Ha valorado un {{ratings.type}} </ng-template>
+    <ng-template pTemplate="title" *ngIf="show">
+        <i class="pi pi-user" style="font-size: 1.5rem"></i>
+    </ng-template>
     
-    <p>
+    <h3>
         {{ratings.description}}
-    </p>
+    </h3>
     
     <ng-template #footer>
-        <div class="m-2"> {{ratings.createdAt}} </div>
+        <div class="m-2"> Creado el {{ratings.createdAt}} </div>
     </ng-template>
 </p-card>
