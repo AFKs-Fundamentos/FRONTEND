@@ -1,73 +1,75 @@
-import { Component, Input, Output, EventEmitter,ViewChild } from '@angular/core';
-import { PaymentService } from '../../services/payment.service';
-import { StripeService, StripeCardComponent } from 'ngx-stripe';
-import {
-  StripeCardElementOptions,
-  StripeElementsOptions
-} from '@stripe/stripe-js';
+import { Component, OnInit, Input, inject, signal,ViewChild } from '@angular/core';
 import {ButtonModule} from 'primeng/button';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormGroup,FormBuilder, Validators } from '@angular/forms';
+// Importing necessary modules and services for payment
+import { PaymentService } from '../../services/payment.service';
+import {
+  injectStripe,
+  StripeElementsDirective,
+  StripePaymentElementComponent
+} from 'ngx-stripe';
+
+import {
+  StripePaymentElementOptions ,
+  StripeElementsOptions
+} from '@stripe/stripe-js';
+
 
 @Component({
   selector: 'app-payment',
-  imports: [StripeCardComponent,ButtonModule,CommonModule],
+  standalone: true,
+  imports: [ButtonModule,CommonModule],
   templateUrl: './payment.component.html',
   styleUrl: './payment.component.css'
 })
-export class PaymentComponent {
-  @Input() orderId!: string;
-  @Input() advisoryDetails: any;
-  @Input() price!: number;
+export class PaymentComponent implements OnInit{
+  @Input() advisoryOrderId!: number;
   @Input() paymentIntentId!: string;
-  @Input() clientSecret!: string;
+  clientSecret?: string;
 
-  @Output() paymentSuccess = new EventEmitter<string>();
-  @ViewChild(StripeCardComponent) card!: StripeCardComponent;
+  constructor(private paymentService: PaymentService) {}
 
-  constructor(private paymentService: PaymentService,private stripeService: StripeService
-    ) {}
+  ngOnInit(): void {
+      const payment = {
+        orderId: 1,
+        amount: 100, // Ajusta el monto según corresponda
+        currency: 'USD',
+        status: '',
+        description: 'Pago de asesoría',
+        orderType: 'ADVISORY_ORDER'
+      };
 
-  cardOptions: StripeCardElementOptions = {
-      style: {
-        base: {
-          iconColor: '#666EE8',
-          color: '#31325F',
-          fontWeight: '400',
-          fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-          fontSize: '16px',
-          '::placeholder': {
-            color: '#CFD7E0'
-          }
+      this.paymentService.create(payment).subscribe({
+        next: (response) => {
+          this.clientSecret = response.clientSecret;
+        },
+        error: (error) => {
+          console.error('Error al crear el pago:', error);
         }
-      }
-    };
-
-    elementsOptions: StripeElementsOptions = {
-      locale: 'es'
-    };
-
+      });
+    }
 
   confirmar(): void {
-    this.paymentService.confirm(this.clientSecret).subscribe({
-      next: (response) => {
-        console.log('Pago confirmado en backend:', response);
-        this.paymentSuccess.emit(this.clientSecret);
-      },
-      error: (error) => {
-        console.error('Error al confirmar en backend:', error);
-      }
-    });
-  }
+      this.paymentService.confirm(this.paymentIntentId).subscribe({
+        next: (response) => {
+          console.log('Pago confirmado en backend:', response);
+        },
+        error: (error) => {
+          console.error('Error al confirmar en backend:', error);
+        }
+      });
+    }
 
-  cancelar(): void {
-    this.paymentService.cancel(this.clientSecret).subscribe({
-      next: (response) => {
-        console.log('Pago cancelado en backend:', response);
-      },
-      error: (error) => {
-        console.error('Error al cancelar en backend:', error);
-      }
-    });
-  }
+    cancelar(): void {
+      this.paymentService.cancel(this.paymentIntentId).subscribe({
+        next: (response) => {
+          console.log('Pago cancelado en backend:', response);
+        },
+        error: (error) => {
+          console.error('Error al cancelar en backend:', error);
+        }
+      });
+    }
 
 }

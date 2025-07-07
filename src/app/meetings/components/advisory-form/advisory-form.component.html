@@ -32,7 +32,7 @@
     </p-iftalabel>
 
     <!-- Botón de envío -->
-    <p-button type="submit" label="Pagar"></p-button>
+    <p-button type="submit" label="Siguiente"></p-button>
 
   </p-fluid>
 </form>
@@ -41,15 +41,10 @@
   [(visible)]="displayPaymentDialog"
   header="Realizar Pago"
   [modal]="true"
-  [closable]="false"
+  [closable]="true"
   [style]="{ width: '400px' }"
 >
   <app-payment
-    [advisoryDetails]="appointmentForm.value"
-    [price]="50"
-    [paymentIntentId]="paymentIntentId"
-    [clientSecret]="clientSecret"
-    [orderId]="paymentOrderId"
-  (paymentSuccess)="onPaymentSuccess($event)"
-  ></app-payment>
+    *ngIf="displayPaymentDialog"
+    [advisoryOrderId]="advisoryOrderId"></app-payment>
 </p-dialog>

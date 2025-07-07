@@ -6,6 +6,11 @@ import {IftaLabel} from 'primeng/iftalabel';
 import {Button} from 'primeng/button';
 import {AuthenticationService} from '../../../iam/services/authentication.service';
 import {AppointmentService} from '../../services/appointment.service';
+
+//Advisory Order service and entity
+import {AdvisoryOrderService } from '../../services/advisory-order.service';
+import { AdvisoryOrder } from '../../model/advisoryOrder.entity';
+
 import {Appointment} from '../../model/appointment.entity';
 import {Advisor} from '../../../profiles/model/advisor.entity';
 import {Select} from 'primeng/select';
@@ -37,11 +42,10 @@ import { PaymentComponent } from '../../../payments/components/payment/payment.c
 })
 export class AdvisoryFormComponent implements OnInit {
   @Input() advisor?: Advisor;
-  clientSecret!: string;
-  displayPaymentDialog: boolean = false;
+  public displayPaymentDialog: boolean = false;
+
   @Output() formSent = new EventEmitter();
-  paymentIntentId: string = '';
-  paymentOrderId!: string;
+  advisoryOrderId!: number;
   availableDates: { label: string, value: string }[] = [];
   availableTimes: { label: string, value: string, scheduleHourId: number }[] = [];
   allSchedules: AdvisorSchedule[] = [];
@@ -58,6 +62,7 @@ export class AdvisoryFormComponent implements OnInit {
     private authService: AuthenticationService,
     private scheduleService: SchedulingService,
     private timeSlotService: TimeSlotService,
+    private advisoryOrderService: AdvisoryOrderService
   ) {}
 
   ngOnInit() {
@@ -68,7 +73,7 @@ export class AdvisoryFormComponent implements OnInit {
     if (this.appointmentForm.invalid) {
       console.error('Formulario inválido');
       return;
-    }
+  }
 
     const formValues = this.appointmentForm.value;
     const appointmentDate = formValues.appointmentDate?.value || formValues.appointmentDate;
@@ -80,23 +85,25 @@ export class AdvisoryFormComponent implements OnInit {
     }
 
     const appointment: Appointment = {
-      id: '', //para el back
+      id: 0, // El id se asignará automáticamente al crear la cita
       appointmentDate,
       appointmentStartTime,
       description: formValues.description,
       advisorId: Number(this.advisor?.id ?? 0),
       customerId: this.authService.getCurrentUserId,
     };
-
+    //Crear appointment
     this.appointmentService.create(appointment).subscribe((newAppointment) => {
       console.log('cita creada:', newAppointment);
       // newAppointment.id es el id del appointment creado
-      this.paymentIntentId = '';
-      this.paymentOrderId = newAppointment.id; //duda
-      this.clientSecret = '';
       this.formSent.emit(newAppointment);
 
       const selectedTimeSlot = this.availableTimes.find(t => t.value === appointmentStartTime);
+      // Crear advisoryOrder usando el id del appointment creado
+      const advisoryOrder: AdvisoryOrder = {
+          appointmentId: Number(newAppointment.id),
+          price: 50 // Aquí puedes establecer el precio si es necesario
+      };
 
       if (selectedTimeSlot) {
         this.timeSlotService.putTimeSlot(selectedTimeSlot.scheduleHourId, false).subscribe({
@@ -109,8 +116,16 @@ export class AdvisoryFormComponent implements OnInit {
           }
         });
       }
-      this.displayPaymentDialog = true;
+      this.advisoryOrderService.create(advisoryOrder).subscribe((order) => {
+          this.advisoryOrderId = order.id!; // Guarda el id
+          console.log('AdvisoryOrder ID:', this.advisoryOrderId);
+          console.log('AdvisoryOrder creado:', order);
+          // Aquí puedes manejar la respuesta si lo necesitas
+        });
+
     });
+    // Abrir el diálogo de pago
+    this.displayPaymentDialog = true;
   }
 
   loadScheduling() {
@@ -156,8 +171,4 @@ export class AdvisoryFormComponent implements OnInit {
     this.availableTimes = filteredHours;
     this.appointmentForm.get('appointmentTime')?.setValue(null);
   }
-
-  onPaymentSuccess(paymentIntentId: string) {
-    console.log('Pago exitoso! PaymentIntent ID:', paymentIntentId);
-    }
 }
