@@ -13,6 +13,16 @@ import { forkJoin } from 'rxjs';
 import { AuthenticationService } from '../../../iam/services/authentication.service';
 import { ProductItemService } from '../../services/product-item.service';
 import { ProductItem } from '../../model/product-item.entity';
+import { DialogModule } from 'primeng/dialog';
+
+
+//Product Order
+import { ProductOrder } from '../../../order/model/product-order.entity';
+import { ProductOrderService } from '../../../order/services/product-order.service';
+
+import { PaymentService } from '../../../payments/services/payment.service'; // Importing PaymentService for payment handling
+import { Payment } from '../../../payments/model/payment.entity';
+import { OrderType } from '../../../payments/model/orderType.entity';
 
 @Component({
   selector: 'app-shopping-cart',
@@ -25,7 +35,8 @@ import { ProductItem } from '../../model/product-item.entity';
     CurrencyPipe,
     FormsModule,
     ToastModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    DialogModule
   ],
   templateUrl: './shopping-cart.component.html',
   styleUrls: ['./shopping-cart.component.css'],
@@ -35,6 +46,8 @@ export class ShoppingCartComponent implements OnInit {
   cartItems: ProductItem[] = [];
   currentCart?: ShoppingCart;
   loading: boolean = true;
+  showPaymentDialog = false;
+  paymentClientSecret: string = '';
   readonly PENDING_STATUS = 'PENDING';
   readonly COMPLETED_STATUS = 'COMPLETED';
 
@@ -42,7 +55,9 @@ export class ShoppingCartComponent implements OnInit {
     private shoppingCartService: ShoppingCartService,
     private productItemService: ProductItemService,
     private authenticationService: AuthenticationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private productOrderService: ProductOrderService, // Injecting ProductOrderService for future use
+    private paymentService: PaymentService // Injecting PaymentService for payment handling
   ) {}
 
   ngOnInit(): void {
@@ -138,8 +153,43 @@ export class ShoppingCartComponent implements OnInit {
 
     forkJoin(updateObservables).subscribe({
       next: () => {
-        this.showMessage('success', 'Éxito', 'Compra realizada con éxito');
-        this.loadCartItems();
+        const nuevoPedido = new ProductOrder();
+              nuevoPedido.userClientId = this.userId ?? 0;
+              nuevoPedido.totalPrice = this.getTotal();
+              nuevoPedido.currency = 'USD';
+              nuevoPedido.shoppingCartId = this.currentCart?.id ?? 0;
+              nuevoPedido.status = this.COMPLETED_STATUS;
+
+              this.productOrderService.create(nuevoPedido).subscribe({
+                next: (order) => {
+                  console.log('Holao pedido creado:', order);
+                  // Aquí crea el pago y obtiene el client_secret
+                  const nuevoPago: Payment = {
+                        orderId: order.id!,
+                        amount: order.totalPrice,
+                        currency: 'USD',
+                        status: 'requires_payment_method',
+                        description: 'Pago de pedido',
+                        orderType: order.orderType as OrderType
+                      };
+                  this.paymentService.create(nuevoPago).subscribe({
+                    next: (payment) => {
+                      this.paymentClientSecret = payment.client_secret ?? '';
+                      console.log(this.paymentClientSecret);
+                      this.showPaymentDialog = true; // Muestra el diálogo
+                      this.loading = false;
+                    },
+                    error: () => {
+                      this.showMessage('error', 'Error', 'Error al crear el pago');
+                      this.loading = false;
+                    }
+                  });
+                },
+                error: () => {
+                  this.showMessage('error', 'Error', 'Error al crear el pedido');
+                  this.loading = false;
+                }
+              });
       },
       error: () => {
         this.showMessage('error', 'Error', 'Error al finalizar la compra');
@@ -151,4 +201,19 @@ export class ShoppingCartComponent implements OnInit {
   private showMessage(severity: string, summary: string, detail: string): void {
     this.messageService.add({ severity, summary, detail });
   }
+
+  // 3. Métodos para confirmar o cancelar el pago
+  confirmarPago(): void {
+    // Lógica para confirmar usando this.paymentClientSecret
+    this.showPaymentDialog = false;
+    this.showMessage('success', 'Pago confirmado', 'El pago fue confirmado');
+  }
+
+  cancelarPago(): void {
+    // Lógica para cancelar usando this.paymentClientSecret
+    this.showPaymentDialog = false;
+    this.showMessage('info', 'Pago cancelado', 'El pago fue cancelado');
+  }
+
+
 }
