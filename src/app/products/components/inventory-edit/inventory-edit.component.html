@@ -12,16 +12,16 @@
 
   <!-- Stock Mínimo -->
   <div class="field col-12 md:col-4">
-    <label for="stock_min">Stock Mínimo</label>
+    <label for="stockMin">Stock Mínimo</label>
     <p-inputNumber
-      inputId="stock_min"
-      formControlName="stock_min"
+      inputId="stockMin"
+      formControlName="stockMin"
       mode="decimal"
       [min]="0"
       [showButtons]="true"
-      [class]="{'p-invalid': inventoryForm.controls['stock_min'].invalid && (inventoryForm.controls['stock_min'].dirty || inventoryForm.controls['stock_min'].touched)}">
+      [class]="{'p-invalid': inventoryForm.controls['stockMin'].invalid && (inventoryForm.controls['stockMin'].dirty || inventoryForm.controls['stockMin'].touched)}">
     </p-inputNumber>
-    <small *ngIf="inventoryForm.controls['stock_min'].invalid && (inventoryForm.controls['stock_min'].dirty || inventoryForm.controls['stock_min'].touched)"
+    <small *ngIf="inventoryForm.controls['stockMin'].invalid && (inventoryForm.controls['stockMin'].dirty || inventoryForm.controls['stockMin'].touched)"
            class="p-error">
       Valor mínimo requerido: 0
     </small>
@@ -46,16 +46,16 @@
 
   <!-- Stock Máximo -->
   <div class="field col-12 md:col-4">
-    <label for="stock_max">Stock Máximo</label>
+    <label for="stockMax">Stock Máximo</label>
     <p-inputNumber
-      inputId="stock_max"
-      formControlName="stock_max"
+      inputId="stockMax"
+      formControlName="stockMax"
       mode="decimal"
       [min]="0"
       [showButtons]="true"
-      [class]="{'p-invalid': inventoryForm.controls['stock_max'].invalid && (inventoryForm.controls['stock_max'].dirty || inventoryForm.controls['stock_max'].touched)}">
+      [class]="{'p-invalid': inventoryForm.controls['stockMax'].invalid && (inventoryForm.controls['stockMax'].dirty || inventoryForm.controls['stockMax'].touched)}">
     </p-inputNumber>
-    <small *ngIf="inventoryForm.controls['stock_max'].invalid && (inventoryForm.controls['stock_max'].dirty || inventoryForm.controls['stock_max'].touched)"
+    <small *ngIf="inventoryForm.controls['stockMax'].invalid && (inventoryForm.controls['stockMax'].dirty || inventoryForm.controls['stockMax'].touched)"
            class="p-error">
       Valor mínimo requerido: 0
     </small>

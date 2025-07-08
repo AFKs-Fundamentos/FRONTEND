@@ -18,9 +18,11 @@
   </div>
 
   <ng-template #footer>
-    <p-button icon="pi pi-shopping-cart"
-              label="Añadir al carrito"
-              (click)="addToCart(product)">
+    <p-button
+      *ngIf="currentUserRole !== 'ROLE_TECHNICIAN'"
+      icon="pi pi-shopping-cart"
+      label="Añadir al carrito"
+      (click)="addToCart(product)">
     </p-button>
   </ng-template>
 </p-card>

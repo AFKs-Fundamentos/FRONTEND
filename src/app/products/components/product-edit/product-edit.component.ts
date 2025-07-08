@@ -10,6 +10,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import {Card} from 'primeng/card';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import {DropdownModule} from 'primeng/dropdown';
 
 
 @Component({
@@ -23,7 +24,8 @@ import { FloatLabelModule } from 'primeng/floatlabel';
     InputTextarea,
     ButtonModule,
     Card,
-    FloatLabelModule
+    FloatLabelModule,
+    DropdownModule
   ],
   templateUrl: './product-edit.component.html',
   styleUrls: ['./product-edit.component.css']
@@ -32,6 +34,8 @@ export class ProductEditComponent {
   @Input() product!: Product;
   @Output() save = new EventEmitter<void>();
   @Output() cancel = new EventEmitter<void>();
+  categories: string[] = ['CPU', 'GPU', 'RAM', 'MOTHERBOARD', 'STORAGE', 'POWER_SUPPLY', 'COOLING', 'OPTICAL_DRIVE', 'SOUND_CARD', 'NETWORK_CARD', 'EXPANSION_CARD', 'MONITOR', 'KEYBOARD', 'MOUSE', 'WEBCAM', 'HEADSET', 'PRINTER', 'SCANNER', 'CASE', 'CABLES', 'UPS', 'THERMAL_PASTE', 'MOUNTS', 'EXTERNAL_STORAGE', 'LAPTOP_CHARGER', 'DOCKING_STATION', 'BUNDLE', 'OTHER'];
+  categoryOptions = this.categories.map(cat => ({ label: cat, value: cat }));
 
   loading: boolean = false;
 
@@ -52,20 +56,12 @@ export class ProductEditComponent {
 
     this.productService.update(this.product.id, productData).subscribe({
       next: () => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Éxito',
-          detail: 'Producto actualizado correctamente'
-        });
+        this.showMessage('success', 'Éxito', 'Producto actualizado correctamente');
         this.save.emit();
       },
       error: (err) => {
         console.error('Error al actualizar el producto:', err);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'No se pudo actualizar el producto'
-        });
+        this.showMessage('error', 'Error', 'No se pudo actualizar el producto');
       },
       complete: () => {
         this.loading = false;
@@ -76,6 +72,9 @@ export class ProductEditComponent {
     Object.keys(form.controls).forEach(key => {
       form.controls[key].markAsTouched();
     });
+  }
+  private showMessage(severity: string, summary: string, detail: string): void {
+    this.messageService.add({ severity, summary, detail });
   }
   onCancel(): void {
     this.cancel.emit();

@@ -11,8 +11,27 @@
       <p>Precio: {{product.price | currency}}</p>
     </ng-template>
     <ng-template #footer>
-      <p-button icon="pi pi-shopping-cart"  (click)="addToCart(product)"></p-button>
-      <p-button icon="pi pi-eye" (click)="seeDetail(product)"></p-button>
+      <div class="flex gap-2">
+
+        <p-button
+          *ngIf="currentUserRole !== 'ROLE_TECHNICIAN'"
+          icon="pi pi-shopping-cart"
+          (click)="addToCart(product)"
+          pTooltip="Añadir al carrito"
+          tooltipPosition="top"
+          [tooltipOptions]="{showDelay: 500, hideDelay: 300}"
+          styleClass="p-button-rounded p-button-outlined">
+        </p-button>
+
+        <p-button
+          icon="pi pi-eye"
+          (click)="seeDetail(product)"
+          pTooltip="Ver detalles del producto"
+          tooltipPosition="top"
+          [tooltipOptions]="{showDelay: 500, hideDelay: 300}"
+          styleClass="p-button-rounded p-button-outlined">
+        </p-button>
+      </div>
     </ng-template>
   </p-card>
 </div>

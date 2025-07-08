@@ -29,12 +29,16 @@ export const routes: Routes = [
   { path: 'service-history', component: ServiceHistoryComponent, canActivate: [authenticationGuard] },
   { path: 'ratings', component: RatingCardComponent, canActivate: [authenticationGuard] },
   { path: 'ratings-page', component: RatingsPageComponent },
+  { path: 'inventories', component: ProductInventoryComponent},
   {path: 'products',component: ProductListComponent},
   {path: 'product-detail/:id', component: ProductDetailComponent},
   {path: 'buys', component: ShoppingCartComponent},
   {path: 'product-inventory',component: ProductInventoryComponent},
+  {path: 'profile',component: EditProfileComponent, canActivate: [roleGuard], data : { expectedRole: 'ROLE_TECHNICIAN' }},
   {path: 'my-profile',component: ProfilesPageComponent, canActivate: [roleGuard], data : { expectedRole: 'ROLE_TECHNICIAN' }},
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent },
+  {path: 'service-history', component: ServiceHistoryComponent },
+  {path: 'ratings', component: RatingCardComponent },
 ];
 

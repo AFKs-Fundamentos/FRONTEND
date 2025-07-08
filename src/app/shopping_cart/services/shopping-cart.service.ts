@@ -11,14 +11,24 @@ export class ShoppingCartService extends BaseService<ShoppingCart> {
 
   constructor(http: HttpClient) {
     super(http);
-    this.resourceEndpoint = '/shopping_carts';
+    this.resourceEndpoint = '/shopping';
   }
 
-  getByStatusCartShoppingItemAndUserClientId(userClientId: number, statusCartShoppingItem: string): Observable<ShoppingCart[]> {
-    const url = `${this.basePath}${this.resourceEndpoint}?user_client_id=${userClientId}&status_shopping_cart_item=${statusCartShoppingItem}`;
+  getByUserClientIdAndStatus(userClientId: number, statusCartShopping: string): Observable<ShoppingCart[]> {
+    const url = `${this.basePath}${this.resourceEndpoint}/user/${userClientId}/status/${statusCartShopping}`;
     return this.http.get<ShoppingCart[]>(url).pipe(
       retry(2),
       catchError(this.handleError)
     );
   }
+
+  getShoppingCartByUserId(userId: number): Observable<ShoppingCart> {
+    const url = `${this.basePath}${this.resourceEndpoint}/user/${userId}`;
+    return this.http.get<ShoppingCart>(url).pipe(
+      retry(2),
+      catchError(this.handleError)
+    );
+  }
+
+
 }

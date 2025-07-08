@@ -10,6 +10,9 @@ import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { forkJoin } from 'rxjs';
+import { AuthenticationService } from '../../../iam/services/authentication.service';
+import { ProductItemService } from '../../services/product-item.service';
+import { ProductItem } from '../../model/product-item.entity';
 
 @Component({
   selector: 'app-shopping-cart',
@@ -29,13 +32,16 @@ import { forkJoin } from 'rxjs';
   providers: [MessageService]
 })
 export class ShoppingCartComponent implements OnInit {
-  cartItems: ShoppingCart[] = [];
+  cartItems: ProductItem[] = [];
+  currentCart?: ShoppingCart;
   loading: boolean = true;
-  userId: number = 100;
   readonly PENDING_STATUS = 'PENDING';
+  readonly COMPLETED_STATUS = 'COMPLETED';
 
   constructor(
     private shoppingCartService: ShoppingCartService,
+    private productItemService: ProductItemService,
+    private authenticationService: AuthenticationService,
     private messageService: MessageService
   ) {}
 
@@ -43,102 +49,106 @@ export class ShoppingCartComponent implements OnInit {
     this.loadCartItems();
   }
 
+  private get userId(): number | null {
+    return this.authenticationService.getCurrentUserId;
+  }
+
   loadCartItems(): void {
     this.loading = true;
-    console.log('Parametros enviados:', this.userId, this.PENDING_STATUS);
-    this.shoppingCartService
-      .getByStatusCartShoppingItemAndUserClientId(this.userId, this.PENDING_STATUS)
+    this.cartItems = [];
+
+    if (!this.userId) {
+      this.showMessage('warn', 'Advertencia', 'No hay usuario autenticado');
+      this.loading = false;
+      return;
+    }
+
+    this.shoppingCartService.getByUserClientIdAndStatus(this.userId, this.PENDING_STATUS)
       .subscribe({
-        next: (items) => {
-          console.log('Datos recibidos para mostrar:', items);
-          this.cartItems = items;
-          this.loading = false;
-        },
-        error: (err) => {
-          console.error('Error loading cart items:', err);
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'No se pudieron cargar los items del carrito'
-          });
-          this.loading = false;
-        }
+        next: (carts) => this.handleCartResponse(carts),
+        error: () => this.handleCartError()
       });
   }
 
-  updateQuantity(item: ShoppingCart): void {
-    this.shoppingCartService.update(item.id, item).subscribe({
-      next: () => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Éxito',
-          detail: 'Cantidad actualizada'
-        });
-      },
-      error: (err) => {
-        console.error('Error updating quantity:', err);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'No se pudo actualizar la cantidad'
-        });
-      }
+  private handleCartResponse(carts: ShoppingCart[]): void {
+    if (!carts || carts.length === 0) {
+      this.showMessage('info', 'Información', 'No hay productos en el carrito');
+      this.loading = false;
+      return;
+    }
+
+    this.currentCart = carts[0];
+    this.cartItems = (this.currentCart.productItems || []).map(item => ({
+      ...item,
+      shoppingCartId: this.currentCart?.id ?? 0
+    }));
+    this.loading = false;
+  }
+
+  private handleCartError(): void {
+    this.showMessage('error', 'Error', 'No se pudieron cargar los items del carrito');
+    this.loading = false;
+  }
+
+  updateQuantity(item: ProductItem): void {
+    if (item.quantity <= 0) {
+      this.removeItem(item.id!);
+      return;
+    }
+
+    this.productItemService.update(item.id!, item).subscribe({
+      next: () => this.showMessage('success', 'Éxito', 'Cantidad actualizada'),
+      error: () => this.showMessage('error', 'Error', 'No se pudo actualizar la cantidad')
     });
   }
 
   removeItem(itemId: number): void {
-    this.shoppingCartService.delete(itemId).subscribe({
+    this.loading = true;
+    this.productItemService.delete(itemId).subscribe({
       next: () => {
         this.cartItems = this.cartItems.filter(item => item.id !== itemId);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Éxito',
-          detail: 'Producto eliminado del carrito'
-        });
+        this.showMessage('success', 'Éxito', 'Producto eliminado del carrito');
+        this.loading = false;
       },
-      error: (err) => {
-        console.error('Error removing item:', err);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'No se pudo eliminar el producto'
-        });
+      error: () => {
+        this.showMessage('error', 'Error', 'No se pudo eliminar el producto');
+        this.loading = false;
       }
     });
   }
 
   getTotal(): number {
     return this.cartItems.reduce(
-      (total, item) => total + (item.product_price * item.product_quantity),
+      (total, item) => total + (item.productPrice * item.quantity),
       0
     );
   }
 
   checkout(): void {
+    if (this.cartItems.length === 0) {
+      this.showMessage('warn', 'Advertencia', 'No hay productos para comprar');
+      return;
+    }
+
     this.loading = true;
     const updateObservables = this.cartItems.map(item => {
-      item.status_shopping_cart_item = 'COMPLETED';// estado luego de la compra realizada con exito simulacion despues de la pasarela de pago
-      return this.shoppingCartService.update(item.id, item);
+      item.statusCartShoppingItem = this.COMPLETED_STATUS;
+      return this.productItemService.update(item.id!, item);
     });
 
     forkJoin(updateObservables).subscribe({
       next: () => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Éxito',
-          detail: 'Compra realizada con éxito'
-        });
+        this.showMessage('success', 'Éxito', 'Compra realizada con éxito');
         this.loadCartItems();
       },
-      error: (err) => {
-        console.error('Error during checkout:', err);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error al finalizar la compra'
-        });
+      error: () => {
+        this.showMessage('error', 'Error', 'Error al finalizar la compra');
         this.loading = false;
       }
     });
+  }
+
+  private showMessage(severity: string, summary: string, detail: string): void {
+    this.messageService.add({ severity, summary, detail });
   }
 }
