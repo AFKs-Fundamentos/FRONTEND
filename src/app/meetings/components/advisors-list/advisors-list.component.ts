@@ -12,10 +12,11 @@ import {Advisor} from '../../../profiles/model/advisor.entity';
 import {SchedulesComponent} from '../../../profiles/components/schedules/schedules.component';
 import {AdvisorSchedule} from '../../model/advisorSchedule.entity';
 import {SchedulingService} from '../../../profiles/services/scheduling.service';
+import {PaymentComponent} from '../../../payments/components/payment/payment.component';
 
 @Component({
   selector: 'app-advisors-list',
-  imports: [TableModule, CommonModule, Button, DialogComponent, AdvisoryFormComponent, CardAdvisorComponent, SchedulesComponent],
+  imports: [TableModule, CommonModule, Button, DialogComponent, AdvisoryFormComponent, CardAdvisorComponent, SchedulesComponent, PaymentComponent],
   providers: [FilterService, AdvisorService],
   templateUrl: './advisors-list.component.html',
   standalone: true,
@@ -31,9 +32,11 @@ export class AdvisorsListComponent implements OnInit, OnChanges{
   visibleSchedules: boolean = false;
   matchModeOptions: SelectItem[] = [];
   schedules:AdvisorSchedule[] = [];
+  activarPayment: boolean = false;
+  myClientSecret: string = '';
+
   @Input() advisor?: Advisor;
   @Output() dialogClosed = new EventEmitter<void>();
-
 
 
   constructor(
@@ -45,6 +48,7 @@ export class AdvisorsListComponent implements OnInit, OnChanges{
   ngOnInit() {
     const customFilterDate = 'betweenDates'
     const customFilterName = 'custom-equals';
+
     this.filterService.register(customFilterName, (value:any, filter:any): boolean => {
       if (filter === undefined || filter === null || filter.trim() === '') {
         return true;
@@ -115,11 +119,14 @@ export class AdvisorsListComponent implements OnInit, OnChanges{
     this.visibleInfo = false;
     this.visibleForm = false;
     this.visibleSchedules = false;
+    this.displayPaymentDialog = false;
+    this.dialogClosed.emit();
   }
 
   onFormSent() {
-    this.visibleForm = false;
+    this.visibleForm = true;
     console.log("Form sent" , this.advisor);
+    this.activarPayment = true
   }
   onViewSchedules(asesor: Advisor): void {
     this.advisor = asesor;
@@ -142,7 +149,9 @@ export class AdvisorsListComponent implements OnInit, OnChanges{
     }
   }
 
-
+  recibirClientSecret(event:string){
+    this.myClientSecret= event;
+  }
 
 }
 

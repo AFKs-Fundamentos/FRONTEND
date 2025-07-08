@@ -72,6 +72,8 @@
         <app-advisory-form
           [advisor]="advisor"
           (formSent)="onFormSent()"
+          (clientSecretToParent)="recibirClientSecret($event)"
+
         ></app-advisory-form>
       }
     @else if (visibleSchedules) {
@@ -79,12 +81,13 @@
         [advisorId]="advisor.id"
         [schedules]="schedules"
       ></app-schedules>
+    } @else if (activarPayment){
+
+      <app-payment
+        [clientSecret]="myClientSecret">
+      </app-payment>
     }
-
   </app-dialog>
-
-
-
 }
 
 
