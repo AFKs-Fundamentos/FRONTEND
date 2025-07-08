@@ -19,6 +19,9 @@ import {ProductInventoryComponent} from './products/pages/product-inventory/prod
 import {ShoppingCartComponent} from './shopping_cart/pages/shopping-cart/shopping-cart.component';
 import {EditProfileComponent} from './profiles/components/edit-profile/edit-profile.component';
 import {ProfilesPageComponent} from './profiles/pages/profiles-page/profiles-page.component';
+import { WishListComponent } from './wishlist/pages/wish-list/wish-list.component';
+import { MyRatingsPageComponent } from './ratings/pages/my-ratings-page/my-ratings-page.component';
+import { ShippingPageComponent } from './shipping/pages/shipping-page/shipping-page.component';
 
 
 export const routes: Routes = [
@@ -27,8 +30,10 @@ export const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [authenticationGuard]},
   { path: 'meetings', component: MeetingsComponent},
   { path: 'service-history', component: ServiceHistoryComponent, canActivate: [authenticationGuard] },
-  { path: 'ratings', component: RatingCardComponent, canActivate: [authenticationGuard] },
-  { path: 'ratings-page', component: RatingsPageComponent },
+  { path: 'ratings', component: RatingsPageComponent, canActivate: [authenticationGuard] },
+  { path: 'wishlist', component: WishListComponent },
+  { path: 'my-ratings', component: MyRatingsPageComponent },
+  { path: 'shipping', component: ShippingPageComponent },
   { path: 'inventories', component: ProductInventoryComponent},
   {path: 'products',component: ProductListComponent},
   {path: 'product-detail/:id', component: ProductDetailComponent},

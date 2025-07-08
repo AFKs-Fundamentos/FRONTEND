@@ -2,7 +2,6 @@
   <p-card class="custom-card" *ngFor="let product of productData">
     <ng-template #header>
       <div class="img-button-header">
-        <!--AÑADIR BOTTON DE CORAZON-->
         <img [src]="product.photo" alt="Imagen del producto" class="product-photo"/>
       </div>
     </ng-template>
@@ -31,6 +30,8 @@
           [tooltipOptions]="{showDelay: 500, hideDelay: 300}"
           styleClass="p-button-rounded p-button-outlined">
         </p-button>
+
+        <app-add-wishlist-button [productId]="product.id"></app-add-wishlist-button>
       </div>
     </ng-template>
   </p-card>

@@ -10,11 +10,12 @@ import {AuthenticationService} from '../../../iam/services/authentication.servic
 import {ShoppingCartService} from '../../../shopping_cart/services/shopping-cart.service';
 import {ProductItem} from '../../../shopping_cart/model/product-item.entity';
 import {MessageService} from 'primeng/api';
+import { RatingsByContextComponent } from '../../../ratings/components/ratings-by-context/ratings-by-context.component';
 
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [Card, NgIf, CurrencyPipe, Button],
+  imports: [Card, NgIf, CurrencyPipe, Button, RatingsByContextComponent],
   providers: [MessageService],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.css'

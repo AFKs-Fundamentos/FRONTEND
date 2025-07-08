@@ -12,11 +12,12 @@ import {ProductItemService} from '../../../shopping_cart/services/product-item.s
 import {ShoppingCartService} from '../../../shopping_cart/services/shopping-cart.service';
 import {AuthenticationService} from '../../../iam/services/authentication.service';
 import {Tooltip} from 'primeng/tooltip';
+import { AddButtonComponent } from '../../../wishlist/components/add-button/add-button.component';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [CommonModule, CardModule, NgForOf, CurrencyPipe, Button, ButtonModule, Tooltip],
+  imports: [CommonModule, CardModule, NgForOf, CurrencyPipe, Button, ButtonModule, Tooltip, AddButtonComponent],
   providers: [MessageService],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css'

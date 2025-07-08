@@ -16,7 +16,7 @@ export class WishlistService extends BaseService<Wishlist>{
   }
 
   getAlltWishlist(): Observable<Wishlist>{
-    return this.httpToWishList.get<Wishlist>(`${this.basePath}${this.resourceEndpoint}/user?userId=${2}`, this.httpOptions)
+    return this.httpToWishList.get<Wishlist>(`${this.basePath}${this.resourceEndpoint}/user?userId=${this.auth.getCurrentUserId}`, this.httpOptions)
     .pipe(retry(2), catchError(this.handleError));
   }
    

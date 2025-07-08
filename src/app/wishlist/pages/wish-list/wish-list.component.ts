@@ -17,6 +17,7 @@ export class WishListComponent implements OnInit{
   productList: any[] = [];
   wishProductIds: Set<number> = new Set<number>();
   wishListProducts: any[] = [];
+  quantity: number = 0;
   
 
   constructor(private wishListService: WishlistService, private productService: ProductsService){  }
@@ -32,6 +33,7 @@ export class WishListComponent implements OnInit{
         this.productList = response;
         
         this.wishListProducts = this.productList.filter(product => this.wishProductIds.has(product.id))
+        this.quantity = this.wishListProducts.length
 
       });
 

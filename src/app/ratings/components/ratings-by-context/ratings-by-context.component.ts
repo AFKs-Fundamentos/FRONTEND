@@ -13,12 +13,11 @@ export class RatingsByContextComponent implements OnInit{
 
   ratingsByType: any[];
   @Input() context: string;
-  @Input() contextId: number;
+  @Input() contextId: any;
 
   constructor(private ratingServie: RatingsService){
     this.ratingsByType = [];
     this.context = '';
-    this.contextId = -1;
   }
 
   ngOnInit(): void {

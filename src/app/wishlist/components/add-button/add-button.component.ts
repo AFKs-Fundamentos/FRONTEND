@@ -4,16 +4,17 @@ import { InputTextModule } from 'primeng/inputtext';
 import { WishlistService } from '../../services/wishlist.service';
 import { AuthenticationService } from '../../../iam/services/authentication.service';
 import { Wishlist } from '../../model/wishlist.model';
+import { Tooltip } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-add-wishlist-button',
-  imports: [ButtonModule, InputTextModule],
+  imports: [ButtonModule, InputTextModule, Tooltip],
   templateUrl: './add-button.component.html',
   styleUrl: './add-button.component.css'
 })
 export class AddButtonComponent {
 
-  @Input() productId: number;
+  @Input() productId: any;
   id: number;
 
   constructor(private wishListService: WishlistService, private auth: AuthenticationService){

@@ -1,0 +1,74 @@
+<div >
+    
+    <div class="w-11 max-w-md p-6">
+        <h3 class="text-xl font-semibold mb-4">Registre sus datos para entregar su pedido</h3>
+
+        <form [formGroup]="shippingForm" (ngSubmit)="createShipping()" class="flex-col items-center gap-4">
+
+            <div class="card grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                <p-inputgroup>
+                    <p-inputgroup-addon>
+                        <i class="pi pi-user"></i>
+                    </p-inputgroup-addon>
+                    <input pInputText formControlName="recipientName" placeholder="Nombre del Destinatario" />
+                </p-inputgroup>
+                
+                <p-inputgroup>
+                    <p-inputgroup-addon>
+                        <i class="pi pi-map"></i>
+                    </p-inputgroup-addon>
+                    <p-select formControlName="city" [options]="districts" optionLabel="name" optionValue="value" placeholder="Seleccione su distrito" />
+                </p-inputgroup>
+                
+                <p-inputgroup>
+                    <p-inputgroup-addon>
+                        <i class="pi pi-directions"></i>
+                    </p-inputgroup-addon>
+                    <input pInputText formControlName="postalCode" placeholder="Escriba su Código Postal" />
+                </p-inputgroup>
+                
+                <div class="m-2">
+                    <p-card header="Código de pedido:">
+                        <p class="m-2">
+                            {{ randomTracking }}
+                        </p>
+                    </p-card>
+                </div>
+
+                <div class="m-2">
+                    <p-card header="Costo del envío:">
+                        <p class="m-2">
+                            S/. {{ shippingForm.get('shippingCost')?.value }}
+                        </p>
+                    </p-card>
+                </div>
+
+                <p-inputgroup>
+                    <p-inputgroup-addon>
+                        <i class="pi pi-truck"></i>
+                    </p-inputgroup-addon>
+                    <p-select formControlName="carrier" [options]="carrierOptions" optionLabel="name" optionValue="value" placeholder="Seleccione una opcion de transporte" />
+                </p-inputgroup>
+                
+                <p-inputgroup>
+                    <p-inputgroup-addon>
+                        <i class="pi pi-map-marker"></i>
+                    </p-inputgroup-addon>
+                    <input pInputText formControlName="address" placeholder="Escriba su Dirección" />
+                </p-inputgroup>
+            
+            </div>
+
+            
+            <div class="gap-4 m-4 text-center">
+                <p-button type="submit" label="Realizar pedido" icon="pi pi-check"></p-button>
+            </div>
+
+        </form>
+        
+    </div>
+    
+    
+
+</div>

@@ -14,6 +14,7 @@
       <p><strong>Descripción:</strong> {{ product.description }}</p>
       <p><strong>Categoría:</strong> {{ product.category }}</p>
       <p><strong>SKU:</strong> {{ product.sku }}</p>
+      <p><strong>Id:</strong> {{ product.id }}</p>
     </div>
   </div>
 
@@ -26,3 +27,8 @@
     </p-button>
   </ng-template>
 </p-card>
+
+<ng-container *ngIf="product">
+  <br/>
+  <app-ratings-by-context [context]="'product'" [contextId]="product.id"></app-ratings-by-context>
+</ng-container>
