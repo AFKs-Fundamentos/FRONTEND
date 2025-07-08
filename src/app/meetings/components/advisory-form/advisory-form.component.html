@@ -31,16 +31,8 @@
       <label for="description">Descripción</label>
     </p-iftalabel>
 
-    <!-- Botón de envío -->
-    <p-button type="submit" label="Siguiente"></p-button>
+    <p-button type="submit" label="Siguiente" (onClick)="submitYMostrarPago()"  ></p-button>
 
   </p-fluid>
 </form>
 
-<!-- advisory-form.component.html -->
-<p-dialog [(visible)]="displayPaymentDialog" [modal]="true" [closable]="false" [style]="{width: '400px'}">
-  <app-payment
-    [clientSecret]="clientSecret"
-    (paymentCompleted)="displayPaymentDialog = false">
-  </app-payment>
-</p-dialog>
