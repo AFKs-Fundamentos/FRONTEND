@@ -17,4 +17,8 @@ export class ProductsService extends BaseService<Product> {
     return this.http.get<Product>(`${this.basePath}${this.resourceEndpoint}/${id}`, this.httpOptions)
       .pipe(retry(2),catchError(this.handleError));
   }
+  getProductsByStock(): Observable<Product[]> {
+    return this.http.get<Product[]>(`${this.basePath}${this.resourceEndpoint}/stock-greater-than-two`, this.httpOptions)
+      .pipe(retry(2), catchError(this.handleError));
+  }
 }

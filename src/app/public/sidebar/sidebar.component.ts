@@ -63,7 +63,6 @@ export class SidebarComponent  implements  OnInit {
         { label: 'Ratings', icon: 'pi pi-star', path: '/ratings' },
         { label: 'Inventory', icon: 'pi pi-box', path: '/inventories' },
         { label: 'Products', icon: 'pi pi-desktop', path: '/products' },
-        { label: 'My Buys', icon: 'pi pi-shopping-cart', path: '/buys' },
         { separator: true },
         { label: 'Settings', icon: 'pi pi-cog', path: '/settings' },
         { label: 'Help', icon: 'pi pi-inbox', path: '/help' },
