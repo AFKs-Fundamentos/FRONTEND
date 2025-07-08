@@ -6,6 +6,15 @@ import {IftaLabel} from 'primeng/iftalabel';
 import {Button} from 'primeng/button';
 import {AuthenticationService} from '../../../iam/services/authentication.service';
 import {AppointmentService} from '../../services/appointment.service';
+
+//Advisory Order service and entity
+import {AdvisoryOrderService } from '../../../order/services/advisory-order.service';
+import { AdvisoryOrder } from '../../../order/model/advisory-order.entity';
+
+//Payment service
+import { PaymentService } from '../../../payments/services/payment.service'; // Asegúrate de importar el servicio PaymentService
+
+
 import {Appointment} from '../../model/appointment.entity';
 import {Advisor} from '../../../profiles/model/advisor.entity';
 import {Select} from 'primeng/select';
@@ -13,10 +22,16 @@ import {SchedulingService} from '../../../profiles/services/scheduling.service';
 import {AdvisorSchedule} from '../../model/advisorSchedule.entity';
 import {OnInit} from '@angular/core';
 import {TimeSlotService} from '../../services/timeSlot.service';
+import { CommonModule } from '@angular/common';
 
+import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
+
+import { PaymentComponent } from '../../../payments/components/payment/payment.component'; // Importing PaymentComponent for reference
 @Component({
   selector: 'app-advisory-form',
   imports: [
+    CommonModule,
     ReactiveFormsModule,
     FormsModule,
     Textarea,
@@ -24,6 +39,9 @@ import {TimeSlotService} from '../../services/timeSlot.service';
     IftaLabel,
     Button,
     Select,
+    PaymentComponent,
+    DialogModule,
+    InputTextModule
   ],
   providers: [AppointmentService, TimeSlotService],
   standalone: true,
@@ -32,8 +50,11 @@ import {TimeSlotService} from '../../services/timeSlot.service';
 })
 export class AdvisoryFormComponent implements OnInit {
   @Input() advisor?: Advisor;
-  @Output() formSent = new EventEmitter();
+  public displayPaymentDialog: boolean = false;
+  public clientSecret: string = '';
 
+  @Output() formSent = new EventEmitter();
+  advisoryOrderId!: number;
   availableDates: { label: string, value: string }[] = [];
   availableTimes: { label: string, value: string, scheduleHourId: number }[] = [];
   allSchedules: AdvisorSchedule[] = [];
@@ -50,6 +71,8 @@ export class AdvisoryFormComponent implements OnInit {
     private authService: AuthenticationService,
     private scheduleService: SchedulingService,
     private timeSlotService: TimeSlotService,
+    private advisoryOrderService: AdvisoryOrderService,
+    private paymentService: PaymentService
   ) {}
 
   ngOnInit() {
@@ -79,11 +102,19 @@ export class AdvisoryFormComponent implements OnInit {
       customerId: this.authService.getCurrentUserId,
     };
 
+    //Crear appointment
     this.appointmentService.create(appointment).subscribe((newAppointment) => {
       console.log('cita creada:', newAppointment);
+      // newAppointment.id es el id del appointment creado
       this.formSent.emit(newAppointment);
 
       const selectedTimeSlot = this.availableTimes.find(t => t.value === appointmentStartTime);
+      // Crear advisoryOrder usando el id del appointment creado
+      const advisoryOrder: AdvisoryOrder = {
+          appointmentId: newAppointment.id,
+          price: 50, // Aquí puedes establecer el precio si es necesario
+          status: 'PENDING' // Estado inicial del pedido
+      };
 
       if (selectedTimeSlot) {
         this.timeSlotService.putTimeSlot(selectedTimeSlot.scheduleHourId, false).subscribe({
@@ -96,7 +127,26 @@ export class AdvisoryFormComponent implements OnInit {
           }
         });
       }
+      console.log("probando");
+
+      this.advisoryOrderService.create(advisoryOrder).subscribe((order) => {
+        this.advisoryOrderId = order.id!;
+        console.log('AdvisoryOrder creado:', order);
+        const payment = {
+                        orderId: order.id!, // Asegúrate de que order.id esté definido
+                        amount: 100, // Ajusta el monto según corresponda
+                        currency: 'USD',
+                        status: 'requires_payment_method',
+                        description: 'Pago de asesoría',
+                        orderType: 'ADVISORY_ORDER'
+         };
+        // Ahora, crea el Payment solo después de que el advisoryOrder se haya creado
+        this.createPayment(payment); // Pasamos el ID del advisoryOrder para crear el pago
+      }, (error) => {
+        console.error("Error al crear el advisoryOrder:", error);
+      });
     });
+
   }
 
   loadScheduling() {
@@ -141,5 +191,19 @@ export class AdvisoryFormComponent implements OnInit {
 
     this.availableTimes = filteredHours;
     this.appointmentForm.get('appointmentTime')?.setValue(null);
+  }
+
+  // Crear el Payment después de crear el AdvisoryOrder
+  createPayment(payment : any) {
+    this.paymentService.create(payment).subscribe({
+      next: (response) => {
+        this.clientSecret = response.client_secret ?? ''; // Es importante que uses el nombre correcto aquí
+        console.log('Client Secret recibido:', this.clientSecret);
+        this.displayPaymentDialog = true; // Muestra el diálogo de pago
+      },
+      error: (error) => {
+        console.error('Error al crear el pago:', error);
+      }
+    });
   }
 }
