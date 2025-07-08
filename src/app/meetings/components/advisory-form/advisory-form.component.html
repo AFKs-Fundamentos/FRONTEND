@@ -37,14 +37,10 @@
   </p-fluid>
 </form>
 
-<p-dialog
-  [(visible)]="displayPaymentDialog"
-  header="Realizar Pago"
-  [modal]="true"
-  [closable]="true"
-  [style]="{ width: '400px' }"
->
+<!-- advisory-form.component.html -->
+<p-dialog [(visible)]="displayPaymentDialog" [modal]="true" [closable]="false" [style]="{width: '400px'}">
   <app-payment
-    *ngIf="displayPaymentDialog"
-    [advisoryOrderId]="advisoryOrderId"></app-payment>
+    [clientSecret]="clientSecret"
+    (paymentCompleted)="displayPaymentDialog = false">
+  </app-payment>
 </p-dialog>

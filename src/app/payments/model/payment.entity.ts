@@ -1,9 +1,9 @@
 import {OrderType} from './orderType.entity';
 
 export interface Payment {
-  orderId: any;
+  orderId: number;
   amount: number;
-  clientSecret?: string;
+  client_secret?: string;
   currency: string;
   status: string;
   description: string;

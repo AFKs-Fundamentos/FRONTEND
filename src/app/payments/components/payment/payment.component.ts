@@ -23,53 +23,41 @@ import {
   templateUrl: './payment.component.html',
   styleUrl: './payment.component.css'
 })
-export class PaymentComponent implements OnInit{
+export class PaymentComponent{
   @Input() advisoryOrderId!: number;
   @Input() paymentIntentId!: string;
-  clientSecret?: string;
+  @Input() clientSecret!: string; // Esto permite que clientSecret sea pasado desde el componente padre
+
 
   constructor(private paymentService: PaymentService) {}
 
-  ngOnInit(): void {
-      const payment = {
-        orderId: 1,
-        amount: 100, // Ajusta el monto según corresponda
-        currency: 'USD',
-        status: '',
-        description: 'Pago de asesoría',
-        orderType: 'ADVISORY_ORDER'
-      };
-
-      this.paymentService.create(payment).subscribe({
-        next: (response) => {
-          this.clientSecret = response.clientSecret;
-        },
-        error: (error) => {
-          console.error('Error al crear el pago:', error);
-        }
-      });
-    }
-
   confirmar(): void {
-      this.paymentService.confirm(this.paymentIntentId).subscribe({
-        next: (response) => {
-          console.log('Pago confirmado en backend:', response);
-        },
-        error: (error) => {
-          console.error('Error al confirmar en backend:', error);
-        }
-      });
+      if (this.clientSecret) {
+        this.paymentService.confirm(this.clientSecret).subscribe({
+          next: (response) => {
+            console.log('Pago confirmado en backend:', response);
+          },
+          error: (error) => {
+            console.error('Error al confirmar en backend:', error);
+          }
+        });
+      } else {
+        console.error('clientSecret no está definido');
+      }
     }
 
     cancelar(): void {
-      this.paymentService.cancel(this.paymentIntentId).subscribe({
-        next: (response) => {
-          console.log('Pago cancelado en backend:', response);
-        },
-        error: (error) => {
-          console.error('Error al cancelar en backend:', error);
+        if (this.clientSecret) {
+          this.paymentService.cancel(this.clientSecret).subscribe({
+            next: (response) => {
+              console.log('Pago cancelado en backend:', response);
+            },
+            error: (error) => {
+              console.error('Error al cancelar en backend:', error);
+            }
+          });
+        } else {
+          console.error('clientSecret no está definido');
         }
-      });
-    }
-
+      }
 }
