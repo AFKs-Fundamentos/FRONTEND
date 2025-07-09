@@ -5,7 +5,7 @@ export class ProductOrder {
   currency: string;
   shoppingCartId?: number;
   status: string;
-  orderType: string;
+  orderType?: string;
 
   constructor() {
     this.id = 0;
