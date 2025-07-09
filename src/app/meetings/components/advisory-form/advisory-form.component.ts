@@ -53,6 +53,7 @@ export class AdvisoryFormComponent implements OnInit {
   @Input() advisor?: Advisor;
   displayPaymentDialog: boolean = false;
   public clientSecret: string = '';
+  public paymentId: string = ''; // Asegúrate de que este campo sea del tipo correcto
   @Output() dialogClosed = new EventEmitter<void>();
   @Output() formSent = new EventEmitter();
   @Output() clientSecretToParent = new EventEmitter<string>();
@@ -138,7 +139,7 @@ export class AdvisoryFormComponent implements OnInit {
       this.advisoryOrderService.create(advisoryOrder).subscribe((order) => {
         this.advisoryOrderId = order.id!;
         console.log('AdvisoryOrder creado:', order);
-        const payment = {
+        /*const payment = {
           orderId: order.id!, // Asegúrate de que order.id esté definido
           amount: 100, // Ajusta el monto según corresponda
           currency: 'USD',
@@ -147,7 +148,7 @@ export class AdvisoryFormComponent implements OnInit {
           orderType: 'ADVISORY_ORDER'
         };
         // Ahora, crea el Payment solo después de que el advisoryOrder se haya creado
-        this.createPayment(payment); // Pasamos el ID del advisoryOrder para crear el pago
+        this.createPayment(payment);*/ // Pasamos el ID del advisoryOrder para crear el pago
       }, (error) => {
         console.error("Error al crear el advisoryOrder:", error);
       });
@@ -204,8 +205,8 @@ export class AdvisoryFormComponent implements OnInit {
 
     this.paymentService.create(payment).subscribe({
       next: (response) => {
-        this.clientSecret = response.client_secret ?? ''; // Es importante que uses el nombre correcto aquí
-        console.log('Client Secret recibido:', this.clientSecret);
+        this.paymentId = response.id ?? ''; // Es importante que uses el nombre correcto aquí
+        console.log('Client Secret recibido:', this.paymentId);
         this.displayPaymentDialog = true;
         console.log('dialog booleab:', this.displayPaymentDialog);
 
@@ -217,13 +218,13 @@ export class AdvisoryFormComponent implements OnInit {
   }
 
   enviarClientSecret() {
-      this.clientSecretToParent.emit(this.clientSecret);
+      this.clientSecretToParent.emit(this.paymentId);
   }
 
-  submitYMostrarPago() {
+  /*submitYMostrarPago() {
     this.createPayment();
     this.enviarClientSecret();
-  }
+  }*/
 
 
 }
