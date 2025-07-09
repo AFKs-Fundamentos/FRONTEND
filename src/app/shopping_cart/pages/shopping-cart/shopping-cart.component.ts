@@ -13,6 +13,9 @@ import { forkJoin } from 'rxjs';
 import { AuthenticationService } from '../../../iam/services/authentication.service';
 import { ProductItemService } from '../../services/product-item.service';
 import { ProductItem } from '../../model/product-item.entity';
+
+import { RouterLink} from '@angular/router';
+
 import { DialogModule } from 'primeng/dialog';
 
 
@@ -23,6 +26,7 @@ import { ProductOrderService } from '../../../order/services/product-order.servi
 import { PaymentService } from '../../../payments/services/payment.service'; // Importing PaymentService for payment handling
 import { Payment } from '../../../payments/model/payment.entity';
 import { OrderType } from '../../../payments/model/orderType.entity';
+
 
 @Component({
   selector: 'app-shopping-cart',
@@ -36,6 +40,7 @@ import { OrderType } from '../../../payments/model/orderType.entity';
     FormsModule,
     ToastModule,
     ProgressSpinnerModule,
+    RouterLink,
     DialogModule
   ],
   templateUrl: './shopping-cart.component.html',
@@ -50,7 +55,7 @@ export class ShoppingCartComponent implements OnInit {
   paymentClientSecret: string = '';
   paymentId: string = '';
   readonly PENDING_STATUS = 'PENDING';
-  readonly COMPLETED_STATUS = 'COMPLETED';
+  readonly PROCESS_STATUS = 'PROCESS';
 
   constructor(
     private shoppingCartService: ShoppingCartService,
@@ -148,7 +153,7 @@ export class ShoppingCartComponent implements OnInit {
 
     this.loading = true;
     const updateObservables = this.cartItems.map(item => {
-      item.statusCartShoppingItem = this.COMPLETED_STATUS;
+      item.statusCartShoppingItem = this.PROCESS_STATUS;
       return this.productItemService.update(item.id!, item);
     });
 
@@ -159,7 +164,7 @@ export class ShoppingCartComponent implements OnInit {
               nuevoPedido.totalPrice = this.getTotal();
               nuevoPedido.currency = 'USD';
               nuevoPedido.shoppingCartId = this.currentCart?.id ?? 0;
-              nuevoPedido.status = this.COMPLETED_STATUS;
+              nuevoPedido.status = this.PENDING_STATUS;
 
               this.productOrderService.create(nuevoPedido).subscribe({
                 next: (order) => {
@@ -193,7 +198,7 @@ export class ShoppingCartComponent implements OnInit {
               });
       },
       error: () => {
-        this.showMessage('error', 'Error', 'Error al finalizar la compra');
+        this.showMessage('error', 'Error', 'Error al finalizar la ORDEN');
         this.loading = false;
       }
     });

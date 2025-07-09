@@ -11,11 +11,13 @@ import {ShoppingCartService} from '../../../shopping_cart/services/shopping-cart
 import {ProductItem} from '../../../shopping_cart/model/product-item.entity';
 import {MessageService} from 'primeng/api';
 import { RatingsByContextComponent } from '../../../ratings/components/ratings-by-context/ratings-by-context.component';
+import { RatingFormComponent } from '../../../ratings/components/rating-form/rating-form.component';
+import { Dialog } from 'primeng/dialog';
 
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [Card, NgIf, CurrencyPipe, Button, RatingsByContextComponent],
+  imports: [Card, NgIf, CurrencyPipe, Button, RatingsByContextComponent, RatingFormComponent, Dialog,],
   providers: [MessageService],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.css'
@@ -24,6 +26,7 @@ export class ProductDetailComponent implements OnInit{
   product: Product | undefined;
   userId: number = 0;
   currentUserRole: string = '';
+  showRatingD: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -84,6 +87,17 @@ export class ProductDetailComponent implements OnInit{
       }
     });
 
+  }
+
+  addRating(): void{}
+
+  showRating(): void{
+    this.showRatingD = true;
+  }
+
+  closeDialogRating(){
+    this.showRatingD = false;
+    console.log('To show rating', this.showRatingD)
   }
 
   private showMessage(severity: string, summary: string, detail: string): void {

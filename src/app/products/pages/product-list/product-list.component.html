@@ -1,12 +1,62 @@
+<div class="grid p-fluid">
+  <div style="display: flex; align-items: center; width: 100%;">
+
+    <div style="flex: 1; position: relative;">
+      <input type="text"
+             pInputText
+             placeholder="Buscar productos..."
+             [(ngModel)]="searchTerm"
+             (input)="filterProducts()"
+             style="padding-left: 2.2rem; width: 100%;" />
+      <i class="pi pi-search"
+         style="position: absolute; left: 0.7rem; top: 50%; transform: translateY(-50%); color: #888;"></i>
+    </div>
+
+    <div style="margin-left: 1rem; min-width: 250px;">
+      <p-dropdown
+        [options]="categories"
+        [(ngModel)]="selectedCategory"
+        placeholder="Filtrar por categoría"
+        (onChange)="filterProducts()"
+        [showClear]="true"
+        [filter]="true"
+        appendTo="body">
+        <ng-template pTemplate="dropdownicon">
+          <div style="display: flex; align-items: center;">
+            <i class="pi pi-filter" style="font-size: 1rem; margin-right: 0.5rem;"></i>
+          </div>
+        </ng-template>
+      </p-dropdown>
+    </div>
+  </div>
+
+  <div class="col-12" *ngIf="filteredProducts?.length === 0">
+    <div class="text-center p-3 border-round  text-color-secondary">
+      <i class="pi pi-info-circle mr-2"></i>
+      <span *ngIf="searchTerm && searchTerm.length > 0">
+        No se encontraron productos para "{{searchTerm}}"
+      </span>
+      <span *ngIf="selectedCategory && (!searchTerm || searchTerm.length === 0)">
+        No hay productos disponibles en la categoría seleccionada
+      </span>
+      <span *ngIf="!searchTerm && !selectedCategory">
+        No hay productos disponibles
+      </span>
+    </div>
+  </div>
+
+</div>
+
+
 <div class="product-gallery">
-  <p-card class="custom-card" *ngFor="let product of productData">
+  <p-card class="custom-card" *ngFor="let product of filteredProducts">
     <ng-template #header>
       <div class="img-button-header">
         <img [src]="product.photo" alt="Imagen del producto" class="product-photo"/>
       </div>
     </ng-template>
     <ng-template #title>
-      <h3>{{product.productName}}</h3>
+      <h3 class="product-title">{{product.productName}}</h3>
       <p>Precio: {{product.price | currency}}</p>
     </ng-template>
     <ng-template #footer>
