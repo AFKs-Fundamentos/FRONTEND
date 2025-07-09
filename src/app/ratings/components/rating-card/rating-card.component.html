@@ -1,5 +1,5 @@
 <p-card>
-    <ng-template #header>
+    <ng-template #header *ngIf="show">
       <div class="flex justify-center pt-4 pl-4" >
 
       <i class="pi pi-user" style="font-size: 1.5rem"></i>
@@ -7,7 +7,7 @@
 
     </ng-template>
 
-    <ng-template pTemplate="title" *ngIf="show">
+    <ng-template pTemplate="title">
         <div class="">
           <p-rating [(ngModel)]="ratings.punctuation" [readonly]="true"/>
         </div>
