@@ -14,11 +14,11 @@ export class PaymentService extends BaseService<Payment>{
   }
 
   confirm(id:string): Observable<string> {
-    return this.http.post<string>(`${this.basePath}${this.resourceEndpoint}/confirm/${id}`,id)
+    return this.http.post<string>(`${this.basePath}${this.resourceEndpoint}/confirm/${id}`,{})
       .pipe(retry(2), catchError(this.handleError));
   }
   cancel(id:string): Observable<string> {
-    return this.http.post<string>(`${this.basePath}${this.resourceEndpoint}/cancel/${id}`,id)
+    return this.http.post<string>(`${this.basePath}${this.resourceEndpoint}/cancel/${id}`,{})
       .pipe(retry(2), catchError(this.handleError));
   }
 }
