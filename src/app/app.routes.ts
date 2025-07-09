@@ -11,6 +11,7 @@ import {RatingsPageComponent} from './ratings/pages/ratings-page/ratings-page.co
 import {roleGuard} from './shared/services/role.guard';
 import {guestGuard} from './shared/services/guest.guard';
 import {HomeComponent} from './public/pages/home/home.component';
+import {HelpComponent} from './public/pages/help/help.component';
 import {ProductListComponent} from './products/pages/product-list/product-list.component';
 import {ProductDetailComponent} from './products/components/product-detail/product-detail.component';
 import {ProductInventoryComponent} from './products/pages/product-inventory/product-inventory.component';
@@ -28,6 +29,7 @@ export const routes: Routes = [
   { path: 'sign-in', component: SignInComponent, },
   { path: 'sign-up', component: SignUpComponent},
   { path: 'home', component: HomeComponent, canActivate: [authenticationGuard]},
+  { path: 'help' , component: HelpComponent},
   { path: 'meetings', component: MeetingsComponent},
   { path: 'service-history', component: ServiceHistoryComponent, canActivate: [authenticationGuard] },
   { path: 'ratings', component: RatingsPageComponent, canActivate: [authenticationGuard] },
