@@ -224,10 +224,15 @@ export class AdvisoryFormComponent implements OnInit {
       this.clientSecretToParent.emit(this.paymentId);
   }
 
-  /*submitYMostrarPago() {
-    this.createPayment();
-    this.enviarClientSecret();
-  }*/
+  onDialogClose() {
+    this.displayPaymentDialog = false;
+    this.dialogClosed.emit();
+  }
+
+  onPaymentCompleted() {
+    this.displayPaymentDialog = false;
+    // Aquí puedes emitir otros eventos o lógica adicional
+  }
 
 
 }

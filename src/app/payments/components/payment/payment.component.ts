@@ -15,11 +15,16 @@ import {
   StripeElementsOptions
 } from '@stripe/stripe-js';
 
+import { ConfirmDialog } from 'primeng/confirmdialog';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+
 
 @Component({
   selector: 'app-payment',
   standalone: true,
-  imports: [ButtonModule,CommonModule],
+  imports: [ButtonModule,CommonModule, ConfirmDialog, ToastModule],
+  providers: [ConfirmationService, MessageService],
   templateUrl: './payment.component.html',
   styleUrl: './payment.component.css'
 })
@@ -30,39 +35,58 @@ export class PaymentComponent{
   @Input() paymentId!: string;
   @Output() close = new EventEmitter<void>();
   visible = true;
+  @Output() cancel = new EventEmitter<void>();
+  @Output() paymentCompleted = new EventEmitter<void>();
 
 
-  constructor(private paymentService: PaymentService) {}
+  constructor(private paymentService: PaymentService,private confirmationService: ConfirmationService, private messageService: MessageService) {}
 
   confirmar(): void {
-      if (this.paymentId) {
-        this.paymentService.confirm(this.paymentId).subscribe({
-          next: (response) => {
-            console.log('Pago confirmado en backend:', response);
-            this.close.emit(); // Cierra el diálogo al confirmar
-          },
-          error: (error) => {
-            console.error('Error al confirmar en backend:', error);
+      this.confirmationService.confirm({
+        message: '¿Confirmar el pago?',
+        acceptLabel: 'Sí',
+        rejectLabel: 'No',
+        accept: () => {
+          if (this.paymentId) {
+            this.paymentService.confirm(this.paymentId).subscribe({
+              next: (response) => {
+                this.paymentCompleted.emit();
+                this.messageService.add({ severity: 'success', summary: 'Pago Confirmado', detail: 'El pago fue procesado correctamente' });
+                this.close.emit();
+              },
+              error: (error) => {
+                console.error('Error al confirmar en backend:', error);
+              }
+            });
+          } else {
+            console.error('paymentId no está definido');
           }
-        });
-      } else {
-        console.error('paymentId no está definido');
-      }
+        }
+      });
     }
 
     cancelar(): void {
-        if (this.paymentId) {
-          this.paymentService.cancel(this.paymentId).subscribe({
-            next: (response) => {
-              console.log('Pago cancelado en backend:', response);
-              this.close.emit(); // Cierra el diálogo al confirmar
-            },
-            error: (error) => {
-              console.error('Error al cancelar en backend:', error);
+        this.confirmationService.confirm({
+          message: '¿Estás seguro de que deseas cancelar?',
+          acceptLabel: 'Sí',
+          rejectLabel: 'No',
+          accept: () => {
+            if (this.paymentId) {
+              this.paymentService.cancel(this.paymentId).subscribe({
+                next: (response) => {
+                  this.cancel.emit();
+                  this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo confirmar el pago' });
+                  this.close.emit();
+
+                },
+                error: (error) => {
+                  console.error('Error al cancelar en backend:', error);
+                }
+              });
+            } else {
+              console.error('paymentId no está definido');
             }
-          });
-        } else {
-          console.error('paymentId no está definido');
-        }
+          }
+        });
       }
 }
