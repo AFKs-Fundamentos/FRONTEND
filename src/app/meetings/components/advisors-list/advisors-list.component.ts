@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 import {FilterMatchMode, FilterService, SelectItem} from 'primeng/api';
 import {CommonModule} from '@angular/common';
 import {TableModule} from 'primeng/table';
-
+import { forkJoin } from 'rxjs';
 import {AdvisorService} from '../../services/advisor.service';
 import {Button} from 'primeng/button';
 import {DialogComponent} from '../../../shared/components/dialog/dialog.component';
@@ -12,6 +12,8 @@ import {Advisor} from '../../../profiles/model/advisor.entity';
 import {SchedulesComponent} from '../../../profiles/components/schedules/schedules.component';
 import {AdvisorSchedule} from '../../model/advisorSchedule.entity';
 import {SchedulingService} from '../../../profiles/services/scheduling.service';
+import {AuthenticationService} from '../../../iam/services/authentication.service';
+import {UserService} from '../../../iam/services/user.service';
 
 @Component({
   selector: 'app-advisors-list',
@@ -39,7 +41,8 @@ export class AdvisorsListComponent implements OnInit, OnChanges{
   constructor(
     private filterService: FilterService,
     private advisorService: AdvisorService,
-    private scheduleService: SchedulingService
+    private scheduleService: SchedulingService,
+    private userService: UserService,
   ) {}
 
   ngOnInit() {
@@ -93,8 +96,19 @@ export class AdvisorsListComponent implements OnInit, OnChanges{
       { label: 'Between Dates', value: 'betweenDates' }
 
     ];
-    this.advisorService.getAll().subscribe(data => {
-      this.advisors = data;
+
+
+    this.userService.getAll().subscribe(users => {
+      console.log('Usuarios desde IAM:', users);
+      const advisorIds = users
+        .filter(user => user.roles.includes('ROLE_TECHNICIAN'))
+        .map(user => user.id);
+
+      this.advisorService.getAll().subscribe(profiles => {
+        console.log('Perfiles desde Profiles:', profiles);
+        this.advisors = profiles.filter(profile => advisorIds.includes(profile.id));
+        console.log('Perfiles filtrados con ROLE_TECHNICIAN:', this.advisors);
+      });
     });
 
   }
@@ -121,11 +135,11 @@ export class AdvisorsListComponent implements OnInit, OnChanges{
     this.visibleForm = false;
     console.log("Form sent" , this.advisor);
   }
+
   onViewSchedules(asesor: Advisor): void {
     this.advisor = asesor;
     this.visibleSchedules = true;
 
-    // Llamar al servicio para obtener los horarios
     this.scheduleService.getScheduleByAdvisorId(asesor.id).subscribe(
       (data: AdvisorSchedule[]) => {
         this.schedules = data;

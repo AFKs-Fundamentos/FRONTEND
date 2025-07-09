@@ -100,6 +100,8 @@ export class AdvisoryFormComponent implements OnInit {
       description: formValues.description,
       advisorId: Number(this.advisor?.id ?? 0),
       customerId: this.authService.getCurrentUserId,
+      appointmentEndTime: '',
+      appointmentStatus: 'PENDING'
     };
 
     //Crear appointment
