@@ -210,6 +210,7 @@ export class AdvisoryFormComponent implements OnInit {
         this.clientSecretToParent.emit(this.paymentId);
         console.log('Client Secret recibido:', this.paymentId);
         this.displayPaymentDialog = true;
+
         console.log('dialog booleab:', this.displayPaymentDialog);
 
       },
