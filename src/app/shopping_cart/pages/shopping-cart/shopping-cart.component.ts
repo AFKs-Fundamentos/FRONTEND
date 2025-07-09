@@ -168,7 +168,7 @@ export class ShoppingCartComponent implements OnInit {
                   const nuevoPago: Payment = {
                         orderId: order.id!,
                         amount: order.totalPrice * 100,
-                        currency: 'USD',
+                        currency: 'PEN',
                         status: 'requires_payment_method',
                         description: 'Pago de pedido',
                         orderType: order.orderType as OrderType

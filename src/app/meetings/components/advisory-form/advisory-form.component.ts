@@ -119,7 +119,7 @@ export class AdvisoryFormComponent implements OnInit {
       // Crear advisoryOrder usando el id del appointment creado
       const advisoryOrder: AdvisoryOrder = {
         appointmentId: newAppointment.id,
-        price: 50, // Aquí puedes establecer el precio si es necesario
+        price: 5000, // Aquí puedes establecer el precio si es necesario
         status: 'PENDING' // Estado inicial del pedido
       };
 
@@ -140,8 +140,8 @@ export class AdvisoryFormComponent implements OnInit {
         console.log('AdvisoryOrder creado:', order);
         const payment = {
           orderId: order.id!, // Asegúrate de que order.id esté definido
-          amount: 100, // Ajusta el monto según corresponda
-          currency: 'USD',
+          amount: 5000, // Ajusta el monto según corresponda
+          currency: 'PEN',
           status: 'requires_payment_method',
           description: 'Pago de asesoría',
           orderType: 'ADVISORY_ORDER'
