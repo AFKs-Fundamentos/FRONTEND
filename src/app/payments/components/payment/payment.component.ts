@@ -30,12 +30,11 @@ import { ToastModule } from 'primeng/toast';
   styleUrl: './payment.component.css'
 })
 export class PaymentComponent{
-  @Input() advisoryOrderId!: number;
-  @Input() paymentIntentId!: string;
-  @Input() clientSecret!: string; // Esto permite que clientSecret sea pasado desde el componente padre
   @Input() paymentId!: string;
+  @Input() amount!: number;
+  @Input() currency!: string;
+  @Input() description!: string;
   @Output() close = new EventEmitter<void>();
-  visible = true;
   @Output() cancel = new EventEmitter<void>();
   @Output() paymentCompleted = new EventEmitter<void>();
 
