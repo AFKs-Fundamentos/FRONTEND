@@ -69,7 +69,6 @@ export class SidebarComponent  implements  OnInit {
         { label: 'Logout', icon: 'pi pi-sign-out', command: () => this.onSignOut() }
       ];
     } else {
-      //menu para el cliente
       this.items = [
         { separator: true },
         { label: 'Home', icon: 'pi pi-home', path: '/home' },
@@ -78,6 +77,7 @@ export class SidebarComponent  implements  OnInit {
         { label: 'Ratings', icon: 'pi pi-star', path: '/ratings' },
         { label: 'Products', icon: 'pi pi-desktop', path: '/products' },
         { label: 'My Buys', icon: 'pi pi-shopping-cart', path: '/buys' },
+        {label: 'Product History', icon: 'pi pi-file', path: '/product-history' },
         { separator: true },
         { label: 'Settings', icon: 'pi pi-cog', path: '/settings' },
         { label: 'Help', icon: 'pi pi-inbox', path: '/help' },
@@ -86,8 +86,6 @@ export class SidebarComponent  implements  OnInit {
     }
 
   }
-
-
   onSignOut() {
     // Sign out the user.
     this.authenticationService.signOut();
