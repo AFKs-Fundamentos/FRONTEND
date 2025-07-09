@@ -65,7 +65,6 @@ export class SidebarComponent  implements  OnInit {
         { label: 'Products', icon: 'pi pi-desktop', path: '/products' },
         { label: 'Shipping', icon: 'pi pi-box', path: '/shipping' },
         { separator: true },
-        { label: 'Settings', icon: 'pi pi-cog', path: '/settings' },
         { label: 'Help', icon: 'pi pi-inbox', path: '/help' },
         { label: 'Logout', icon: 'pi pi-sign-out', command: () => this.onSignOut() }
       ];
@@ -82,7 +81,6 @@ export class SidebarComponent  implements  OnInit {
         { label: 'Product History', icon: 'pi pi-file', path: '/product-history' },
         { label: 'Shipping', icon: 'pi pi-box', path: '/shipping' },
         { separator: true },
-        { label: 'Settings', icon: 'pi pi-cog', path: '/settings' },
         { label: 'Help', icon: 'pi pi-inbox', path: '/help' },
         { label: 'Logout', icon: 'pi pi-sign-out', command: () => this.onSignOut() }
       ];
