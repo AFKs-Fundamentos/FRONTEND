@@ -29,7 +29,9 @@
         @for (col of columns; track col.field){
         @if(col.field=='actions'){
         <td class="flex  flex-row gap-1">
-          <p-button  type="button" label="" icon="pi pi-clock" (onClick)="onRequestMeeting(rowData)"></p-button>
+          @if (userRole ==='ROLE_CLIENT'){
+            <p-button   type="button" label="" icon="pi pi-clock" (onClick)="onRequestMeeting(rowData)"></p-button>
+          }
           <p-button  type="button" label="" icon="pi pi-user"  (onClick)="onViewDetails(rowData)" ></p-button>
         </td>
         } @else if (col.field=='schedules'){
@@ -84,6 +86,6 @@
   </app-dialog>
 
   }
-  
+
 
 </div>

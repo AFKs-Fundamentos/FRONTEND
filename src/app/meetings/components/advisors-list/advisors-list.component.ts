@@ -27,7 +27,7 @@ import { PaymentComponent } from '../../../payments/components/payment/payment.c
 })
 
 export class AdvisorsListComponent implements OnInit, OnChanges{
-
+  userRole: string = '';
   cols: any[] = [];
   advisors: Advisor[] = [];
   visibleInfo: boolean = false;
@@ -46,9 +46,11 @@ export class AdvisorsListComponent implements OnInit, OnChanges{
     private advisorService: AdvisorService,
     private scheduleService: SchedulingService,
     private userService: UserService,
+    private authenticationService: AuthenticationService
   ) {}
 
   ngOnInit() {
+    this.userRole= this.authenticationService.getCurrentUserRole
     const customFilterDate = 'betweenDates'
     const customFilterName = 'custom-equals';
     this.filterService.register(customFilterName, (value:any, filter:any): boolean => {
