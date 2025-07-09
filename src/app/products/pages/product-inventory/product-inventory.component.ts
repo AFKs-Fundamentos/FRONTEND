@@ -10,12 +10,13 @@ import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TooltipModule } from 'primeng/tooltip';
-import { MessageService } from 'primeng/api';
+import {ConfirmationService, MessageService} from 'primeng/api';
 import { forkJoin } from 'rxjs';
 import {ProductEditComponent} from '../../components/product-edit/product-edit.component';
 import {InventoryEditComponent} from '../../components/inventory-edit/inventory-edit.component';
 import {ProductAddComponent} from '../../components/product-add/product-add.component';
 import {AuthenticationService} from '../../../iam/services/authentication.service';
+import {ConfirmDialog} from 'primeng/confirmdialog';
 
 
 
@@ -39,11 +40,12 @@ interface ProductInventory {
     ProductEditComponent,
     InventoryEditComponent,
     ProductAddComponent,
-    NgClass
+    NgClass,
+    ConfirmDialog
   ],
   templateUrl: './product-inventory.component.html',
   styleUrls: ['./product-inventory.component.css'],
-  providers: [MessageService]
+  providers: [MessageService,ConfirmationService]
 })
 export class ProductInventoryComponent implements OnInit {
   userId: number = 0;
@@ -58,7 +60,8 @@ export class ProductInventoryComponent implements OnInit {
     private productService: ProductsService,
     private inventoryService: InventoryService,
     private autheticationService: AuthenticationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
   ) {}
 
   ngOnInit(): void {
@@ -123,6 +126,29 @@ export class ProductInventoryComponent implements OnInit {
     this.editMode = mode;
     this.displayEditModal = true;
   }
+confirmDelete(item: ProductInventory): void {
+  this.confirmationService.confirm({
+    message: '¿Estás seguro de que deseas eliminar este producto?',
+    header: 'Confirmar eliminación',
+    icon: 'pi pi-exclamation-triangle',
+    accept: () => {
+      this.deleteItem(item);
+    }
+  });
+}
+deleteItem(item: ProductInventory): void {
+  this.productService.delete(item.product.id).subscribe({
+    next: () => {
+      this.productsInventory = this.productsInventory.filter(
+        p => p.product.id !== item.product.id
+      );
+      this.showMessage('success', 'Eliminado', 'Producto e inventario eliminados correctamente');
+    },
+    error: () => {
+      this.showMessage('error', 'Error', 'No se pudo eliminar el producto');
+    }
+  });
+}
 
   handleSave(): void {
     this.displayEditModal = false;
