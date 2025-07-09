@@ -32,8 +32,10 @@
         @for (col of columns; track col.field){
         @if(col.field=='actions'){
         <td class="flex  flex-row gap-1">
-          <p-button  type="button" label="" icon="pi pi-clock" size="large" (onClick)="onRequestMeeting(rowData)"></p-button>
-          <p-button  type="button" label="" icon="pi pi-user" severity="help" size="large" (onClick)="onViewDetails(rowData)" ></p-button>
+          @if (userRole ==='ROLE_CLIENT'){
+            <p-button   type="button" label="" icon="pi pi-clock" (onClick)="onRequestMeeting(rowData)"></p-button>
+          }
+          <p-button  type="button" label="" icon="pi pi-user"  (onClick)="onViewDetails(rowData)" ></p-button>
         </td>
         } @else if (col.field=='schedules'){
         <td class="flex  flex-row gap-1 pl-6">

@@ -20,6 +20,7 @@ import {ProductInventoryComponent} from './products/pages/product-inventory/prod
 import {ShoppingCartComponent} from './shopping_cart/pages/shopping-cart/shopping-cart.component';
 import {EditProfileComponent} from './profiles/components/edit-profile/edit-profile.component';
 import {ProfilesPageComponent} from './profiles/pages/profiles-page/profiles-page.component';
+import {ProductHistoryComponent} from './purchase_history/pages/product-history/product-history.component';
 import { WishListComponent } from './wishlist/pages/wish-list/wish-list.component';
 import { MyRatingsPageComponent } from './ratings/pages/my-ratings-page/my-ratings-page.component';
 import { ShippingPageComponent } from './shipping/pages/shipping-page/shipping-page.component';
@@ -40,6 +41,7 @@ export const routes: Routes = [
   {path: 'products',component: ProductListComponent},
   {path: 'product-detail/:id', component: ProductDetailComponent},
   {path: 'buys', component: ShoppingCartComponent},
+  {path: 'product-history', component: ProductHistoryComponent },
   {path: 'product-inventory',component: ProductInventoryComponent},
   {path: 'profile',component: EditProfileComponent, canActivate: [roleGuard], data : { expectedRole: 'ROLE_TECHNICIAN' }},
   {path: 'my-profile',component: ProfilesPageComponent, canActivate: [roleGuard], data : { expectedRole: 'ROLE_TECHNICIAN' }},

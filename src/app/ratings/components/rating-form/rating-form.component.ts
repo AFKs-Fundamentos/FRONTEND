@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -24,6 +24,7 @@ export class RatingFormComponent {
 
   @Input() id: number;
   @Input() context: string;
+  @Output() dialogClosed = new EventEmitter<void>();
   
   constructor(private fb: FormBuilder, private ratingService: RatingsService, private auth: AuthenticationService){
     this.ratingForm = this.fb.group({
@@ -87,6 +88,7 @@ export class RatingFormComponent {
         next: (res) => {
           console.log('Rating creado:', res);
           this.ratingForm.reset({ punctuation: 0, description: '' });
+          this.dialogClosed.emit();
         },
         error: (err) => {
           console.error('Error al crear rating:', err);

@@ -7,7 +7,6 @@ export class Product {
   price: number;
   description: string;
   constructor() {
-    this.id=0;
     this.productName='';
     this.photo='';
     this.sku='';

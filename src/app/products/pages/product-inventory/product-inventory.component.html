@@ -1,5 +1,6 @@
 <div class="p-4">
   <p-toast></p-toast>
+  <p-confirmDialog></p-confirmDialog>
 
   <div class="card">
     <div class="flex justify-content-between align-items-center mb-4">
@@ -83,6 +84,14 @@
                   pTooltip="Editar inventario"
                   tooltipPosition="top"
                   (click)="editItem(item, 'inventory')">
+                </button>
+                <button
+                  pButton
+                  icon="pi pi-trash"
+                  class="p-button-rounded p-button-danger p-button-sm"
+                  pTooltip="Eliminar producto"
+                  tooltipPosition="top"
+                  (click)="confirmDelete(item)">
                 </button>
               </div>
             </td>
