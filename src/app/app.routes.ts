@@ -11,6 +11,7 @@ import {RatingsPageComponent} from './ratings/pages/ratings-page/ratings-page.co
 import {roleGuard} from './shared/services/role.guard';
 import {guestGuard} from './shared/services/guest.guard';
 import {HomeComponent} from './public/pages/home/home.component';
+import {HelpComponent} from './public/pages/help/help.component';
 import {ProductListComponent} from './products/pages/product-list/product-list.component';
 import {ProductDetailComponent} from './products/components/product-detail/product-detail.component';
 import {ProductInventoryComponent} from './products/pages/product-inventory/product-inventory.component';
@@ -20,17 +21,22 @@ import {ShoppingCartComponent} from './shopping_cart/pages/shopping-cart/shoppin
 import {EditProfileComponent} from './profiles/components/edit-profile/edit-profile.component';
 import {ProfilesPageComponent} from './profiles/pages/profiles-page/profiles-page.component';
 import {ProductHistoryComponent} from './purchase_history/pages/product-history/product-history.component';
-
+import { WishListComponent } from './wishlist/pages/wish-list/wish-list.component';
+import { MyRatingsPageComponent } from './ratings/pages/my-ratings-page/my-ratings-page.component';
+import { ShippingPageComponent } from './shipping/pages/shipping-page/shipping-page.component';
 
 
 export const routes: Routes = [
   { path: 'sign-in', component: SignInComponent, },
   { path: 'sign-up', component: SignUpComponent},
   { path: 'home', component: HomeComponent, canActivate: [authenticationGuard]},
+  { path: 'help' , component: HelpComponent},
   { path: 'meetings', component: MeetingsComponent},
   { path: 'service-history', component: ServiceHistoryComponent, canActivate: [authenticationGuard] },
-  { path: 'ratings', component: RatingCardComponent, canActivate: [authenticationGuard] },
-  { path: 'ratings-page', component: RatingsPageComponent },
+  { path: 'ratings', component: RatingsPageComponent, canActivate: [authenticationGuard] },
+  { path: 'wishlist', component: WishListComponent },
+  { path: 'my-ratings', component: MyRatingsPageComponent },
+  { path: 'shipping', component: ShippingPageComponent },
   { path: 'inventories', component: ProductInventoryComponent},
   {path: 'products',component: ProductListComponent},
   {path: 'product-detail/:id', component: ProductDetailComponent},

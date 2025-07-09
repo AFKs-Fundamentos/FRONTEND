@@ -38,6 +38,9 @@ export class AuthenticationService {
   get getCurrentUserId(): number  {
     return this.signedInUserId.value;
   }
+  get getCurrentUserRole(): string {
+    return this.signedInUserRole.value;
+  }
 
   get currentUsername() {
     return this.signedInUsername.asObservable();

@@ -15,11 +15,12 @@ import {Tooltip} from 'primeng/tooltip';
 import {DropdownModule} from "primeng/dropdown";
 import {FormsModule} from "@angular/forms";
 import {InputTextModule} from 'primeng/inputtext';
+import { AddButtonComponent } from '../../../wishlist/components/add-button/add-button.component';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [CommonModule, CardModule, NgForOf, CurrencyPipe, Button, ButtonModule, Tooltip, DropdownModule, FormsModule, InputTextModule],
+  imports: [CommonModule, CardModule, NgForOf, CurrencyPipe, Button, ButtonModule, Tooltip, DropdownModule, FormsModule, InputTextModule,AddButtonComponent],
   providers: [MessageService],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css'

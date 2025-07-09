@@ -7,18 +7,18 @@
       </tr>
       <tr >
         @for(col of columns; track col.field){
-          @if(col.field=='actions'){
-            <th></th>
-          } @else {
-            <th>
-              <p-columnFilter
-                type="text"
-                [field]="col.field"
-                [matchModeOptions]="matchModeOptions"
-                [matchMode]="'custom-equals'"
-              />
-            </th>
-          }
+        @if(col.field=='actions'){
+        <th></th>
+        } @else {
+        <th>
+          <p-columnFilter
+            type="text"
+            [field]="col.field"
+            [matchModeOptions]="matchModeOptions"
+            [matchMode]="'custom-equals'"
+          />
+        </th>
+        }
 
         }
       </tr>
@@ -27,21 +27,21 @@
     <ng-template pTemplate="body" let-rowData let-columns="columns">
       <tr [pSelectableRow]="rowData">
         @for (col of columns; track col.field){
-          @if(col.field=='actions'){
-            <td class="flex  flex-row gap-1">
-              <p-button  type="button" label="" icon="pi pi-clock" (onClick)="onRequestMeeting(rowData)"></p-button>
-              <p-button  type="button" label="" icon="pi pi-user"  (onClick)="onViewDetails(rowData)" ></p-button>
-            </td>
-          } @else if (col.field=='schedules'){
-            <td class="flex  flex-row gap-1 pl-6">
-              <p-button  type="button" label="Ver Horarios" icon="pi pi-calendar"  (onClick)="onViewSchedules(rowData)"  ></p-button>
-            </td>
-          }
-          @else {
-            <td>
-              {{ rowData[col.field] }}
-            </td>
-          }
+        @if(col.field=='actions'){
+        <td class="flex  flex-row gap-1">
+          <p-button  type="button" label="" icon="pi pi-clock" (onClick)="onRequestMeeting(rowData)"></p-button>
+          <p-button  type="button" label="" icon="pi pi-user"  (onClick)="onViewDetails(rowData)" ></p-button>
+        </td>
+        } @else if (col.field=='schedules'){
+        <td class="flex  flex-row gap-1 pl-6">
+          <p-button  type="button" label="Ver Horarios" icon="pi pi-calendar"  (onClick)="onViewSchedules(rowData)"  ></p-button>
+        </td>
+        }
+        @else {
+        <td>
+          {{ rowData[col.field] }}
+        </td>
+        }
         }
       </tr>
 
@@ -53,7 +53,7 @@
 
 
 
-@if (advisor){
+  @if (advisor){
 
   <app-dialog
     [dialogTitle]="visibleInfo ? advisor.firstName : 'Angendar asesoría con ' + advisor.firstName "
@@ -61,36 +61,29 @@
     (dialogClosed)="onHandleCancel()">
 
     @if (visibleInfo) {
-      <app-card-advisor
+    <app-card-advisor
       [advisor]="advisor"
       (dialogClosed)="onHandleCancel()"
       (onSave)="onHandleCancel()"
     > </app-card-advisor>
 
     }
-      @else if (visibleForm) {
-        <app-advisory-form
-          [advisor]="advisor"
-          (formSent)="onFormSent()"
-        ></app-advisory-form>
-      }
+    @else if (visibleForm) {
+    <app-advisory-form
+      [advisor]="advisor"
+      (clientSecretToParent)="onClientSecretReceived($event)"
+    ></app-advisory-form>
+    }
     @else if (visibleSchedules) {
-      <app-schedules
-        [advisorId]="advisor.id"
-        [schedules]="schedules"
-      ></app-schedules>
+    <app-schedules
+      [advisorId]="advisor.id"
+      [schedules]="schedules"
+    ></app-schedules>
     }
 
   </app-dialog>
 
-
-
-}
-
-
-
+  }
+  
 
 </div>
-
-
-

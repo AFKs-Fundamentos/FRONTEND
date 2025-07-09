@@ -13,9 +13,20 @@ import { forkJoin } from 'rxjs';
 import { AuthenticationService } from '../../../iam/services/authentication.service';
 import { ProductItemService } from '../../services/product-item.service';
 import { ProductItem } from '../../model/product-item.entity';
-import { ProductOrder} from '../../../order/model/product-order.entity';
-import { ProductOrderService } from '../../../order/services/product-order.service';
+
 import { RouterLink} from '@angular/router';
+
+import { DialogModule } from 'primeng/dialog';
+
+
+//Product Order
+import { ProductOrder } from '../../../order/model/product-order.entity';
+import { ProductOrderService } from '../../../order/services/product-order.service';
+
+import { PaymentService } from '../../../payments/services/payment.service'; // Importing PaymentService for payment handling
+import { Payment } from '../../../payments/model/payment.entity';
+import { OrderType } from '../../../payments/model/orderType.entity';
+
 
 @Component({
   selector: 'app-shopping-cart',
@@ -29,7 +40,8 @@ import { RouterLink} from '@angular/router';
     FormsModule,
     ToastModule,
     ProgressSpinnerModule,
-    RouterLink
+    RouterLink,
+    DialogModule
   ],
   templateUrl: './shopping-cart.component.html',
   styleUrls: ['./shopping-cart.component.css'],
@@ -39,6 +51,9 @@ export class ShoppingCartComponent implements OnInit {
   cartItems: ProductItem[] = [];
   currentCart?: ShoppingCart;
   loading: boolean = true;
+  showPaymentDialog = false;
+  paymentClientSecret: string = '';
+  paymentId: string = '';
   readonly PENDING_STATUS = 'PENDING';
   readonly PROCESS_STATUS = 'PROCESS';
 
@@ -47,7 +62,8 @@ export class ShoppingCartComponent implements OnInit {
     private productItemService: ProductItemService,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
-    private productOrderService: ProductOrderService,
+    private productOrderService: ProductOrderService, // Injecting ProductOrderService for future use
+    private paymentService: PaymentService // Injecting PaymentService for payment handling
   ) {}
 
   ngOnInit(): void {
@@ -143,25 +159,43 @@ export class ShoppingCartComponent implements OnInit {
 
     forkJoin(updateObservables).subscribe({
       next: () => {
-        // Crear la orden después de actualizar los items
-        const order: ProductOrder = {
-          userClientId: this.userId!,
-          totalPrice: this.getTotal(),
-          currency: 'PEN',
-          shoppingCartId: this.currentCart?.id,
-          status: this.PENDING_STATUS,
-        };
+        const nuevoPedido = new ProductOrder();
+              nuevoPedido.userClientId = this.userId ?? 0;
+              nuevoPedido.totalPrice = this.getTotal();
+              nuevoPedido.currency = 'USD';
+              nuevoPedido.shoppingCartId = this.currentCart?.id ?? 0;
+              nuevoPedido.status = this.COMPLETED_STATUS;
 
-        this.productOrderService.create(order).subscribe({
-          next: () => {
-            this.showMessage('success', 'Éxito', 'Orden creada con éxito');
-
-          },
-          error: () => {
-            this.showMessage('error', 'Error', 'Error al crear la orden');
-            this.loading = false;
-          }
-        });
+              this.productOrderService.create(nuevoPedido).subscribe({
+                next: (order) => {
+                  console.log('Holao pedido creado:', order);
+                  // Aquí crea el pago y obtiene el client_secret
+                  const nuevoPago: Payment = {
+                        orderId: order.id!,
+                        amount: order.totalPrice * 100,
+                        currency: 'PEN',
+                        status: 'requires_payment_method',
+                        description: 'Pago de pedido',
+                        orderType: order.orderType as OrderType
+                      };
+                  this.paymentService.create(nuevoPago).subscribe({
+                    next: (payment) => {
+                      this.paymentId = payment.id ?? '';
+                      console.log(this.paymentId);
+                      this.showPaymentDialog = true; // Muestra el diálogo
+                      this.loading = false;
+                    },
+                    error: () => {
+                      this.showMessage('error', 'Error', 'Error al crear el pago');
+                      this.loading = false;
+                    }
+                  });
+                },
+                error: () => {
+                  this.showMessage('error', 'Error', 'Error al crear el pedido');
+                  this.loading = false;
+                }
+              });
       },
       error: () => {
         this.showMessage('error', 'Error', 'Error al finalizar la ORDEN');
@@ -173,4 +207,37 @@ export class ShoppingCartComponent implements OnInit {
   private showMessage(severity: string, summary: string, detail: string): void {
     this.messageService.add({ severity, summary, detail });
   }
+
+  // 3. Métodos para confirmar o cancelar el pago
+  confirmar(): void {
+        if (this.paymentId) {
+          this.paymentService.confirm(this.paymentId).subscribe({
+            next: (response) => {
+              console.log('Pago confirmado en backend:', response);
+            },
+            error: (error) => {
+              console.error('Error al confirmar en backend:', error);
+            }
+          });
+        } else {
+          console.error('ID PAYMENT NEW no está definido');
+        }
+      }
+
+      cancelar(): void {
+          if (this.paymentId) {
+            this.paymentService.cancel(this.paymentId).subscribe({
+              next: (response) => {
+                console.log('Pago cancelado en backend:', response);
+              },
+              error: (error) => {
+                console.error('Error al cancelar en backend:', error);
+              }
+            });
+          } else {
+            console.error('ID PAYMENT NEW no está definido');
+          }
+      }
+
+
 }

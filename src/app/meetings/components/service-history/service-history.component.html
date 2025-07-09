@@ -3,25 +3,27 @@
 
 <div class="flex flex-column align-items-center gap-3 w-full">
 
-  <p class="inline w-full text-center">Servicios Pendientes</p>
+  <p class="inline w-full text-center">Servicios Programados</p>
 
-  @for (a of advisoriesPending; track a.id) {
+  @for (a of advisoriesSchedulled; track a.advisoryId) {
     <app-card
       class="w-20rem"
       [image]="false"
       [contentTitle]="advisor ? advisor.firstName : ''"
+      [showSaveButton]="true"
+      [showCancelButton]="true"
+      (cancelClicked)="onMarkAsCanceled(a.advisoryId)"
+      (saveClicked)="onMarkAsCompleted(a.advisoryId)"
+      [saveLabel]="'Marcar como Completado'"
+      [cancelLabel]="'Rechazar Servicio'"
     >
-      <p><strong>Tipo:</strong> {{ a.advisoryType === 'IN_PERSON' ? 'Presencial' : 'Virtual' }}</p>
       <p><strong>Descripción:</strong> {{ a.advisoryDescription }}</p>
       <p><strong>Estado:</strong>
         <span [ngClass]="{
-            'text-orange-500': a.advisoryStatus === 'PENDING',
             'text-green-600': a.advisoryStatus === 'COMPLETED',
             'text-red-500': a.advisoryStatus === 'CANCELLED',
-            'text-blue-500': a.advisoryStatus === 'IN_PROGRESS'
           }">
             {{
-            a.advisoryStatus === 'PENDING' ? 'Pendiente' :
               a.advisoryStatus === 'COMPLETED' ? 'Completado' :
                 a.advisoryStatus === 'CANCELLED' ? 'Cancelado' :
                   'En progreso'
@@ -30,9 +32,7 @@
       </p>
       <p *ngIf="a.advisoryDate"><strong>Fecha:</strong> {{ a.advisoryDate | date:'dd/MM/yyyy' }}</p>
       <p *ngIf="a.advisoryTime"><strong>Hora:</strong> {{ a.advisoryTime }}</p>
-      <p *ngIf="a.location"><strong>Ubicación:</strong> {{ a.location }}</p>
-      <p *ngIf="a.meetUrl"><strong>Enlace:</strong> <a [href]="a.meetUrl" target="_blank">Ir a la reunión</a></p>
-      <p><strong>Cliente:</strong> {{ a.clientEmail }}</p>
+      <p *ngIf="a.meetUrl" class="text-center"> <a [href]="a.meetUrl" class="mx-1 text-decoration: no-underline" target="_blank" pButton> <span pButtonLabel>Ir a la reunión</span> </a></p>
     </app-card>
   }
 </div>
@@ -41,23 +41,21 @@
 
     <p class="inline w-full text-center">Servicios Completados</p>
 
-    @for (a of advisoriesCompleted; track a.id) {
+    @for (a of advisoriesCompleted; track a.advisoryId) {
       <app-card
         class="w-20rem"
         [image]="false"
         [contentTitle]="advisor ? advisor.firstName : ''"
+        [showCancelButton]="false"
+        [showSaveButton]="false"
       >
-        <p><strong>Tipo:</strong> {{ a.advisoryType === 'IN_PERSON' ? 'Presencial' : 'Virtual' }}</p>
         <p><strong>Descripción:</strong> {{ a.advisoryDescription }}</p>
         <p><strong>Estado:</strong>
           <span [ngClass]="{
-            'text-orange-500': a.advisoryStatus === 'PENDING',
             'text-green-600': a.advisoryStatus === 'COMPLETED',
             'text-red-500': a.advisoryStatus === 'CANCELLED',
-            'text-blue-500': a.advisoryStatus === 'IN_PROGRESS'
           }">
             {{
-              a.advisoryStatus === 'PENDING' ? 'Pendiente' :
               a.advisoryStatus === 'COMPLETED' ? 'Completado' :
               a.advisoryStatus === 'CANCELLED' ? 'Cancelado' :
               'En progreso'
@@ -66,9 +64,6 @@
         </p>
         <p *ngIf="a.advisoryDate"><strong>Fecha:</strong> {{ a.advisoryDate | date:'dd/MM/yyyy' }}</p>
         <p *ngIf="a.advisoryTime"><strong>Hora:</strong> {{ a.advisoryTime }}</p>
-        <p *ngIf="a.location"><strong>Ubicación:</strong> {{ a.location }}</p>
-        <p *ngIf="a.meetUrl"><strong>Enlace:</strong> <a [href]="a.meetUrl" target="_blank">Ir a la reunión</a></p>
-        <p><strong>Cliente:</strong> {{ a.clientEmail }}</p>
 
       </app-card>
     }

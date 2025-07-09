@@ -32,6 +32,15 @@
     </p-iftalabel>
 
     <!-- Botón de envío -->
-    <p-button type="submit" label="ENVIAR"></p-button>
+    <p-button type="submit" label="Siguiente"></p-button>
+
   </p-fluid>
 </form>
+
+<!-- advisory-form.component.html -->
+<p-dialog [(visible)]="displayPaymentDialog" [modal]="true" [closable]="false" [style]="{width: '400px'}">
+  <app-payment
+    [paymentId]="paymentId"
+    (paymentCompleted)="displayPaymentDialog = false">
+  </app-payment>
+</p-dialog>

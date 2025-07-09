@@ -1,0 +1,19 @@
+<div class="p-card">
+  <h3>Resumen de Pago</h3>
+  <p><strong>PaymentId: </strong> {{ paymentId }}</p>
+
+
+  <div class="p-d-flex p-ai-center p-jc-between p-mt-4">
+    <p-button
+      label="Cancelar"
+      class="p-button-secondary"
+      (click)="cancelar()"
+    ></p-button>
+
+    <p-button
+      label="Confirmar Pago"
+      class="p-button-success"
+      (click)="confirmar()"
+    ></p-button>
+  </div>
+</div>

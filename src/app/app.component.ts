@@ -8,7 +8,7 @@ import {Drawer} from 'primeng/drawer';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, SidebarComponent, Button],
+  imports: [RouterOutlet, SidebarComponent],
   templateUrl: './app.component.html',
   standalone: true,
   styleUrl: './app.component.css'

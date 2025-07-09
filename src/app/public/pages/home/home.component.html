@@ -1,33 +1,27 @@
-<div class="flex flex-column bg-black-alpha-20 px-6 border-round-3xl">
-
-  <div class="flex flex-column justify-content-center align-items-center ">
+<div class="cards-container bg-black-alpha-20 px-6 border-round-3xl">
+  <div class="flex flex-column justify-content-center align-items-center">
     <h2>PC Master</h2>
   </div>
 
   <div class="flex flex-row flex-wrap justify-content-center gap-4">
-    
     <div *ngFor="let item of items">
-        
-        <p-card [style]="{ width: '25rem', height: '24rem', overflow: 'hidden', margin: '3px' }">
-            <ng-template #header>
-                <img [src]="item.image" alt="Card image" style="width: 100%; height: 200px; object-fit: cover; object-position: center;"/>
-            </ng-template>
-            
-            <ng-template #title> {{ item.title }} </ng-template>
-            
-            <p> {{ item.text }} </p>
-            
-            <ng-template #footer>
-                <div class="flex gap-2 mt-2" >
-                    <p-button [routerLink]="item.route" icon="pi pi-arrow-up-right" label="Ir" class="w-full" styleClass="w-full" />
-                </div>
-            </ng-template>
-        
-        </p-card>
+      <p-card class="fixed-card">
+        <ng-template #header>
+          <img [src]="item.image" alt="{{ item.title }}" loading="lazy" />
+        </ng-template>
 
+        <ng-template #title>
+          <h3 class="title">{{ item.title }}</h3>
+        </ng-template>
+
+        <p class="description">{{ item.text }}</p>
+
+        <ng-template #footer>
+          <div class="footer-button">
+            <p-button [routerLink]="item.route" icon="pi pi-arrow-up-right" label="Ir" />
+          </div>
+        </ng-template>
+      </p-card>
     </div>
-
-
   </div>
-  
 </div>

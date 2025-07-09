@@ -1,14 +1,13 @@
 export interface Advisory {
-  id: any;
-  advisoryType: 'IN_PERSON' | 'VIRTUAL';
-  advisoryStatus: 'PENDING' | 'IN_PROGRESS' | 'CANCELLED' | 'COMPLETED';
+  advisoryId: any;
   advisorId: any ;
   customerId: any;
+  appointmentId: any;
   advisoryDate: string; // ISO date string
   advisoryTime: string; // ISO time string
   meetUrl?: string; // Optional for virtual meetings
-  clientEmail: string;
+  advisoryStatus: 'SCHEDULLED' | 'CANCELLED' | 'COMPLETED';
   advisoryDescription: string;
-  location?: string; // Optional for in-person meetings
 }
+
 
