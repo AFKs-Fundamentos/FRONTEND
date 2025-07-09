@@ -41,4 +41,12 @@ export class WishListComponent implements OnInit{
 
   }
 
+  removeFromWishList(productId: number): void {
+    this.wishListProducts = this.wishListProducts.filter(
+      product => product.id !== productId
+    );
+    this.quantity = this.wishListProducts.length
+    console.log("Producto eliminado:", this.wishListProducts);
+  }
+
 }
