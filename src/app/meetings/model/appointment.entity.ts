@@ -1,8 +1,10 @@
   export interface Appointment {
-    id?: number;
+    id?: any;
     appointmentDate: string;
     appointmentStartTime: string;
+    appointmentEndTime: string;
     description: string;
-    advisorId: number;
-    customerId: number;
+    appointmentStatus: 'PENDING' | 'REJECTED' | 'PAID';
+    advisorId: any;
+    customerId: any;
   }
