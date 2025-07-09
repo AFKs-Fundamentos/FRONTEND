@@ -36,7 +36,7 @@ export class ProductHistoryComponent implements  OnInit {
   cartItems: ProductItem[] = [];
   currentCart?: ShoppingCart;
   loading: boolean = true;
-  readonly PENDING_STATUS = 'COMPLETED';
+  readonly COMPLETED_STATUS = 'COMPLETED';
 
   constructor(
     private shoppingCartService: ShoppingCartService,
@@ -59,7 +59,7 @@ export class ProductHistoryComponent implements  OnInit {
       return;
     }
 
-    this.shoppingCartService.getByUserClientIdAndStatus(this.userId, this.PENDING_STATUS)
+    this.shoppingCartService.getByUserClientIdAndStatus(this.userId, this.COMPLETED_STATUS)
       .subscribe({
         next: (carts) => this.handleCartResponse(carts),
         error: () => this.handleCartError()

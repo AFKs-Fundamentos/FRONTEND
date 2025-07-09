@@ -108,10 +108,12 @@ export class ShoppingCartComponent implements OnInit {
     }
 
     this.currentCart = carts[0];
-    this.cartItems = (this.currentCart.productItems || []).map(item => ({
-      ...item,
-      shoppingCartId: this.currentCart?.id ?? 0
-    }));
+    this.cartItems = (this.currentCart.productItems || [])
+      .filter(item => item.statusCartShoppingItem !== this.COMPLETED_STATUS) // 👈 EXCLUYE COMPLETADOS
+      .map(item => ({
+        ...item,
+        shoppingCartId: this.currentCart?.id ?? 0
+      }));
     this.loading = false;
   }
 
@@ -161,56 +163,43 @@ export class ShoppingCartComponent implements OnInit {
     }
 
     this.loading = true;
-    const updateObservables = this.cartItems.map(item => {
-      item.statusCartShoppingItem = this.PENDING_STATUS;
-      return this.productItemService.update(item.id!, item);
-    });
 
-    forkJoin(updateObservables).subscribe({
-      next: () => {
-        const nuevoPedido = new ProductOrder();
-              nuevoPedido.userClientId = this.userId ?? 0;
-              nuevoPedido.totalPrice = this.getTotal();
-              nuevoPedido.currency = 'USD';
-              nuevoPedido.shoppingCartId = this.currentCart?.id ?? 0;
-              nuevoPedido.status = this.PENDING_STATUS;
+    const nuevoPedido = new ProductOrder();
+    nuevoPedido.userClientId = this.userId ?? 0;
+    nuevoPedido.totalPrice = this.getTotal();
+    nuevoPedido.currency = 'USD';
+    nuevoPedido.shoppingCartId = this.currentCart?.id ?? 0;
+    nuevoPedido.status = this.PENDING_STATUS;
 
-              this.productOrderService.create(nuevoPedido).subscribe({
-                next: (order) => {
-                  console.log('Holao pedido creado:', order);
-                  // Aquí crea el pago y obtiene el client_secret
-                  const nuevoPago: Payment = {
-                        orderId: order.id!,
-                        amount: order.totalPrice * 100,
-                        currency: 'PEN',
-                        status: 'requires_payment_method',
-                        description: 'Pago de pedido',
-                        orderType: order.orderType as OrderType
-                      };
-                  this.paymentAmount = nuevoPago.amount;
-                  this.paymentCurrency = nuevoPago.currency;
-                  this.paymentDescription = nuevoPago.description;
-                  this.paymentService.create(nuevoPago).subscribe({
-                    next: (payment) => {
-                      this.paymentId = payment.id ?? '';
-                      console.log(this.paymentId);
-                      this.showPaymentDialog = true; // Muestra el diálogo
-                      this.loading = false;
-                    },
-                    error: () => {
-                      this.showMessage('error', 'Error', 'Error al crear el pago');
-                      this.loading = false;
-                    }
-                  });
-                },
-                error: () => {
-                  this.showMessage('error', 'Error', 'Error al crear el pedido');
-                  this.loading = false;
-                }
-              });
+    this.productOrderService.create(nuevoPedido).subscribe({
+      next: (order) => {
+        console.log('Holao pedido creado:', order);
+        const nuevoPago: Payment = {
+          orderId: order.id!,
+          amount: order.totalPrice * 100,
+          currency: 'PEN',
+          status: 'requires_payment_method',
+          description: 'Pago de pedido',
+          orderType: order.orderType as OrderType
+        };
+        this.paymentAmount = nuevoPago.amount;
+        this.paymentCurrency = nuevoPago.currency;
+        this.paymentDescription = nuevoPago.description;
+        this.paymentService.create(nuevoPago).subscribe({
+          next: (payment) => {
+            this.paymentId = payment.id ?? '';
+            console.log(this.paymentId);
+            this.showPaymentDialog = true;
+            this.loading = false;
+          },
+          error: () => {
+            this.showMessage('error', 'Error', 'Error al crear el pago');
+            this.loading = false;
+          }
+        });
       },
       error: () => {
-        this.showMessage('error', 'Error', 'Error al finalizar la ORDEN');
+        this.showMessage('error', 'Error', 'Error al crear el pedido');
         this.loading = false;
       }
     });
@@ -220,49 +209,52 @@ export class ShoppingCartComponent implements OnInit {
 
   // 3. Métodos para confirmar o cancelar el pago
   confirmar(): void {
-        if (this.paymentId) {
-          const updateObservables = this.cartItems.map(item => {
-            item.statusCartShoppingItem = this.COMPLETED_STATUS;
-            return this.productItemService.update(item.id!, item);
-          });
-
-          forkJoin(updateObservables).subscribe({
-            next: () => {
+    if (this.paymentId) {
+      let updates = 0;
+      this.cartItems.forEach(item => {
+        item.statusCartShoppingItem = this.COMPLETED_STATUS;
+        this.productItemService.update(item.id!, item).subscribe({
+          next: () => {
+            updates++;
+            if (updates === this.cartItems.length) {
               this.paymentService.confirm(this.paymentId).subscribe({
                 next: (response) => {
                   console.log('Pago confirmado en backend:', response);
                   this.showMessage('success', 'Pago Confirmado', 'El pago ha sido confirmado exitosamente.');
                   this.showPaymentDialog = false;
                   this.showDialogShipping = true;
-                  this.loadCartItems(); // Recarga el carrito
+                  this.loadCartItems();
                 },
                 error: (error) => {
                   console.error('Error al confirmar en backend:', error);
                 }
               });
             }
-          });
-        }else {
-          console.error('ID PAYMENT NEW no está definido');
-        }
+          }
+        });
+      });
+    } else {
+      console.error('ID PAYMENT NEW no está definido');
+    }
   }
-      cancelar(): void {
-          if (this.paymentId) {
-            this.paymentService.cancel(this.paymentId).subscribe({
-              next: (response) => {
-                console.log('Pago cancelado en backend:', response);
-                this.showMessage('success', 'Pago Cancelado', 'El pago ha sido cancelado exitosamente.');
-              },
-              error: (error) => {
-                console.error('Error al cancelar en backend:', error);
-              }
-            });
-          } else {
-            console.error('ID PAYMENT NEW no está definido');
-          }
-      }
-        private showMessage(severity: string, summary: string, detail: string): void {
-            this.messageService.add({ severity, summary, detail });
-          }
 
+  cancelar(): void {
+    if (this.paymentId) {
+      this.paymentService.cancel(this.paymentId).subscribe({
+        next: (response) => {
+          console.log('Pago cancelado en backend:', response);
+          this.showMessage('success', 'Pago Cancelado', 'El pago ha sido cancelado exitosamente.');
+        },
+        error: (error) => {
+          console.error('Error al cancelar en backend:', error);
+        }
+      });
+    } else {
+      console.error('ID PAYMENT NEW no está definido');
+    }
+  }
+        private showMessage(severity: string, summary: string, detail: string): void {
+          this.messageService.add({severity, summary, detail});
+
+        }
 }
