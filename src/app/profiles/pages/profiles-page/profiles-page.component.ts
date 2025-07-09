@@ -28,16 +28,18 @@ export class ProfilesPageComponent {
   scheduleResponse: Schedule[] = [];
   showForm = false;
   selectedAdvisorId?: number ;
-
+  userRole: string = '';
 
 
   constructor(
     private availabilityService: SchedulingService,
     private authenticationService: AuthenticationService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
   ){}
   ngOnInit(): void {
+    this.userRole= this.authenticationService.getCurrentUserRole;
     this.loadSchedules();
+
   }
 
 

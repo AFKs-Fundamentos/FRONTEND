@@ -44,7 +44,7 @@ export const routes: Routes = [
   {path: 'product-history', component: ProductHistoryComponent },
   {path: 'product-inventory',component: ProductInventoryComponent},
   {path: 'profile',component: EditProfileComponent, canActivate: [roleGuard], data : { expectedRole: 'ROLE_TECHNICIAN' }},
-  {path: 'my-profile',component: ProfilesPageComponent, canActivate: [roleGuard], data : { expectedRole: 'ROLE_TECHNICIAN' }},
+  {path: 'my-profile',component: ProfilesPageComponent},
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent },
   {path: 'service-history', component: ServiceHistoryComponent },
