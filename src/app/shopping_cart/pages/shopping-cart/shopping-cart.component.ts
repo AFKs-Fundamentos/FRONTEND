@@ -13,6 +13,9 @@ import { forkJoin } from 'rxjs';
 import { AuthenticationService } from '../../../iam/services/authentication.service';
 import { ProductItemService } from '../../services/product-item.service';
 import { ProductItem } from '../../model/product-item.entity';
+import { ProductOrder} from '../../../order/model/product-order.entity';
+import { ProductOrderService } from '../../../order/services/product-order.service';
+import { RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-shopping-cart',
@@ -25,7 +28,8 @@ import { ProductItem } from '../../model/product-item.entity';
     CurrencyPipe,
     FormsModule,
     ToastModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    RouterLink
   ],
   templateUrl: './shopping-cart.component.html',
   styleUrls: ['./shopping-cart.component.css'],
@@ -36,13 +40,14 @@ export class ShoppingCartComponent implements OnInit {
   currentCart?: ShoppingCart;
   loading: boolean = true;
   readonly PENDING_STATUS = 'PENDING';
-  readonly COMPLETED_STATUS = 'COMPLETED';
+  readonly PROCESS_STATUS = 'PROCESS';
 
   constructor(
     private shoppingCartService: ShoppingCartService,
     private productItemService: ProductItemService,
     private authenticationService: AuthenticationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private productOrderService: ProductOrderService,
   ) {}
 
   ngOnInit(): void {
@@ -132,17 +137,34 @@ export class ShoppingCartComponent implements OnInit {
 
     this.loading = true;
     const updateObservables = this.cartItems.map(item => {
-      item.statusCartShoppingItem = this.COMPLETED_STATUS;
+      item.statusCartShoppingItem = this.PROCESS_STATUS;
       return this.productItemService.update(item.id!, item);
     });
 
     forkJoin(updateObservables).subscribe({
       next: () => {
-        this.showMessage('success', 'Éxito', 'Compra realizada con éxito');
-        this.loadCartItems();
+        // Crear la orden después de actualizar los items
+        const order: ProductOrder = {
+          userClientId: this.userId!,
+          totalPrice: this.getTotal(),
+          currency: 'PEN',
+          shoppingCartId: this.currentCart?.id,
+          status: this.PENDING_STATUS,
+        };
+
+        this.productOrderService.create(order).subscribe({
+          next: () => {
+            this.showMessage('success', 'Éxito', 'Orden creada con éxito');
+
+          },
+          error: () => {
+            this.showMessage('error', 'Error', 'Error al crear la orden');
+            this.loading = false;
+          }
+        });
       },
       error: () => {
-        this.showMessage('error', 'Error', 'Error al finalizar la compra');
+        this.showMessage('error', 'Error', 'Error al finalizar la ORDEN');
         this.loading = false;
       }
     });
