@@ -1,3 +1,4 @@
+<p-toast />
 <form [formGroup]="appointmentForm" (ngSubmit)="onSubmit()">
   <p-fluid class="flex flex-column justify-content-center gap-2">
 
@@ -38,9 +39,9 @@
 </form>
 
 <!-- advisory-form.component.html -->
-<p-dialog [(visible)]="displayPaymentDialog" [modal]="true" [closable]="false" [style]="{width: '400px'}">
+<p-dialog [(visible)]="displayPaymentDialog" [modal]="true" [closable]="false" [style]="{width: '400px'}" (onHide)="onDialogClose()">
   <app-payment
     [paymentId]="paymentId"
-    (paymentCompleted)="displayPaymentDialog = false">
+    (paymentCompleted)="onPaymentCompleted()" (cancel)="onDialogClose()">
   </app-payment>
 </p-dialog>

@@ -1,4 +1,7 @@
+<p-toast />
+<p-confirmDialog></p-confirmDialog>
 <div class="card min-w-full h-screen">
+
   <p-table #dt [columns]="cols" [value]="advisors" [paginator]="true" [rows]="8" responsiveLayout="" [tableStyle]="{ 'table-layout': 'auto' }">
 
     <ng-template pTemplate="header" let-columns>
@@ -36,7 +39,7 @@
         </td>
         } @else if (col.field=='schedules'){
         <td class="flex  flex-row gap-1 pl-6">
-          <p-button  type="button" label="Ver Horarios" icon="pi pi-calendar"  (onClick)="onViewSchedules(rowData)"  ></p-button>
+          <p-button  type="button" label="Ver Horarios" icon="pi pi-calendar" [rounded]="true" variant="outlined" (onClick)="onViewSchedules(rowData)"  ></p-button>
         </td>
         }
         @else {
@@ -86,6 +89,5 @@
   </app-dialog>
 
   }
-
 
 </div>

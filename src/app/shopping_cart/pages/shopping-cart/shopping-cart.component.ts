@@ -214,6 +214,8 @@ export class ShoppingCartComponent implements OnInit {
           this.paymentService.confirm(this.paymentId).subscribe({
             next: (response) => {
               console.log('Pago confirmado en backend:', response);
+              this.showMessage('success', 'Pago Confirmado', 'El pago ha sido confirmado exitosamente.');
+
             },
             error: (error) => {
               console.error('Error al confirmar en backend:', error);
@@ -229,6 +231,7 @@ export class ShoppingCartComponent implements OnInit {
             this.paymentService.cancel(this.paymentId).subscribe({
               next: (response) => {
                 console.log('Pago cancelado en backend:', response);
+                this.showMessage('success', 'Pago Cancelado', 'El pago ha sido cancelado exitosamente.');
               },
               error: (error) => {
                 console.error('Error al cancelar en backend:', error);
@@ -238,6 +241,5 @@ export class ShoppingCartComponent implements OnInit {
             console.error('ID PAYMENT NEW no está definido');
           }
       }
-
 
 }

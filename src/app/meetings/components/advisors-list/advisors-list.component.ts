@@ -17,10 +17,13 @@ import {UserService} from '../../../iam/services/user.service';
 
 import { PaymentComponent } from '../../../payments/components/payment/payment.component';
 
+import { ConfirmDialog } from 'primeng/confirmdialog';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 @Component({
   selector: 'app-advisors-list',
-  imports: [PaymentComponent,TableModule, CommonModule, Button, DialogComponent, AdvisoryFormComponent, CardAdvisorComponent, SchedulesComponent],
-  providers: [FilterService, AdvisorService],
+  imports: [ToastModule, ConfirmDialog,PaymentComponent,TableModule, CommonModule, Button, DialogComponent, AdvisoryFormComponent, CardAdvisorComponent, SchedulesComponent],
+  providers: [FilterService, AdvisorService, ConfirmationService, MessageService],
   templateUrl: './advisors-list.component.html',
   standalone: true,
   styleUrl: './advisors-list.component.css'

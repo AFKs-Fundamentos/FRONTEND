@@ -15,7 +15,7 @@
       <p>Precio: {{product.price | currency}}</p>
     </ng-template>
     <ng-template #footer>
-      <p-button icon="pi pi-trash" (click)="removeFromWishList(product.id)"></p-button>
+      <p-button icon="pi pi-trash" severity="danger" (click)="removeFromWishList(product.id)"></p-button>
     </ng-template>
   </p-card>
 </div>

@@ -13,10 +13,10 @@
         @if (showCancelButton) {
         <p-button
           [label]="cancelLabel"
-          severity="secondary"
+          severity="danger"
           class="w-full"
-          [outlined]="true"
           styleClass="w-full"
+          [rounded]="true"
           (onClick)="onCancel()"
         ></p-button>
         }
@@ -24,6 +24,8 @@
           <p-button
             [label]="saveLabel"
             class="w-full"
+            severity="success"
+            [rounded]="true"
             styleClass="w-full"
             (onClick)="onSave()"
           ></p-button>
