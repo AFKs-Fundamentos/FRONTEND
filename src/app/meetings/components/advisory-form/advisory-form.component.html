@@ -42,6 +42,9 @@
 <p-dialog [(visible)]="displayPaymentDialog" [modal]="true" [closable]="false" [style]="{width: '400px'}" (onHide)="onDialogClose()">
   <app-payment
     [paymentId]="paymentId"
+    [amount]="paymentAmount"
+    [currency]="paymentCurrency"
+    [description]="paymentDescription"
     (paymentCompleted)="onPaymentCompleted()" (cancel)="onDialogClose()">
   </app-payment>
 </p-dialog>

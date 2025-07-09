@@ -106,8 +106,17 @@
     </div>
   </div>
   <p-dialog header="Confirmar Pago" [(visible)]="showPaymentDialog" [modal]="true">
-    <p>¿Deseas confirmar el pago?</p>
-    <button pButton type="button" label="Confirmar" (click)="confirmar()"></button>
-    <button pButton type="button" label="Cancelar" (click)="cancelar()" class="p-button-secondary"></button>
+    <ng-template pTemplate="header">
+      <h3>Confirmar Pago</h3>
+    </ng-template>
+    <ng-template pTemplate="content">
+    <p><strong>Monto: </strong>{{ paymentAmount / 100 | currency:paymentCurrency }}</p>
+    <p><strong>Descripción: </strong>{{ paymentDescription }}</p>
+    <p><strong>¿Deseas confirmar el pago?</strong></p>
+    </ng-template>
+    <ng-template pTemplate="footer">
+    <button pButton type="button" label="Confirmar" (click)="confirmar()" severity="success"></button>
+    <button pButton type="button" label="Cancelar" (click)="cancelar()" severity="danger" class="p-button-secondary"></button>
+    </ng-template>
   </p-dialog>
 </div>

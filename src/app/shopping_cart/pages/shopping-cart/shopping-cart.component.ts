@@ -54,6 +54,10 @@ export class ShoppingCartComponent implements OnInit {
   showPaymentDialog = false;
   paymentClientSecret: string = '';
   paymentId: string = '';
+  public paymentAmount: number = 0;
+  public paymentCurrency: string = '';
+  public paymentDescription: string = '';
+
   readonly PENDING_STATUS = 'PENDING';
   readonly PROCESS_STATUS = 'PROCESS';
   readonly COMPLETED_STATUS = 'COMPLETED';
@@ -179,6 +183,9 @@ export class ShoppingCartComponent implements OnInit {
                         description: 'Pago de pedido',
                         orderType: order.orderType as OrderType
                       };
+                  this.paymentAmount = nuevoPago.amount;
+                  this.paymentCurrency = nuevoPago.currency;
+                  this.paymentDescription = nuevoPago.description;
                   this.paymentService.create(nuevoPago).subscribe({
                     next: (payment) => {
                       this.paymentId = payment.id ?? '';
