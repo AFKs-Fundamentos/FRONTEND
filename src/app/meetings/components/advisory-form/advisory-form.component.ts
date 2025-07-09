@@ -134,12 +134,11 @@ export class AdvisoryFormComponent implements OnInit {
           }
         });
       }
-      console.log("probando");
 
       this.advisoryOrderService.create(advisoryOrder).subscribe((order) => {
         this.advisoryOrderId = order.id!;
         console.log('AdvisoryOrder creado:', order);
-        /*const payment = {
+        const payment = {
           orderId: order.id!, // Asegúrate de que order.id esté definido
           amount: 100, // Ajusta el monto según corresponda
           currency: 'USD',
@@ -148,7 +147,7 @@ export class AdvisoryFormComponent implements OnInit {
           orderType: 'ADVISORY_ORDER'
         };
         // Ahora, crea el Payment solo después de que el advisoryOrder se haya creado
-        this.createPayment(payment);*/ // Pasamos el ID del advisoryOrder para crear el pago
+        this.createPayment(payment); // Pasamos el ID del advisoryOrder para crear el pago
       }, (error) => {
         console.error("Error al crear el advisoryOrder:", error);
       });
@@ -206,6 +205,7 @@ export class AdvisoryFormComponent implements OnInit {
     this.paymentService.create(payment).subscribe({
       next: (response) => {
         this.paymentId = response.id ?? ''; // Es importante que uses el nombre correcto aquí
+        this.clientSecretToParent.emit(this.paymentId);
         console.log('Client Secret recibido:', this.paymentId);
         this.displayPaymentDialog = true;
         console.log('dialog booleab:', this.displayPaymentDialog);

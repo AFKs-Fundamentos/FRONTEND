@@ -71,7 +71,7 @@
     @else if (visibleForm) {
     <app-advisory-form
       [advisor]="advisor"
-      (formSent)="onFormSent()"
+      (clientSecretToParent)="onClientSecretReceived($event)"
     ></app-advisory-form>
     }
     @else if (visibleSchedules) {
@@ -83,11 +83,13 @@
 
   </app-dialog>
 
-
-
   }
 
-
-
+  <!-- Diálogo de Stripe, independiente del advisor y del diálogo principal -->
+  <app-payment
+    *ngIf="stripeDialogVisible"
+    [paymentId]="stripePaymentId"
+    (close)="closeStripeDialog()"
+  ></app-payment>
 
 </div>

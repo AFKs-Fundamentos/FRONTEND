@@ -13,9 +13,11 @@ import {SchedulesComponent} from '../../../profiles/components/schedules/schedul
 import {AdvisorSchedule} from '../../model/advisorSchedule.entity';
 import {SchedulingService} from '../../../profiles/services/scheduling.service';
 
+import { PaymentComponent } from '../../../payments/components/payment/payment.component';
+
 @Component({
   selector: 'app-advisors-list',
-  imports: [TableModule, CommonModule, Button, DialogComponent, AdvisoryFormComponent, CardAdvisorComponent, SchedulesComponent],
+  imports: [PaymentComponent,TableModule, CommonModule, Button, DialogComponent, AdvisoryFormComponent, CardAdvisorComponent, SchedulesComponent],
   providers: [FilterService, AdvisorService],
   templateUrl: './advisors-list.component.html',
   standalone: true,
@@ -34,7 +36,8 @@ export class AdvisorsListComponent implements OnInit, OnChanges{
   @Input() advisor?: Advisor;
   @Output() dialogClosed = new EventEmitter<void>();
 
-
+  stripeDialogVisible = false;
+  stripePaymentId: string = '';
 
   constructor(
     private filterService: FilterService,
@@ -142,6 +145,17 @@ export class AdvisorsListComponent implements OnInit, OnChanges{
     }
   }
 
+  onClientSecretReceived(paymentId: string) {
+      this.stripeDialogVisible = true;
+      console.log('Client Secret recibido en el componente padre:', paymentId);
+      console.log('Stripe Dialog Visible PROBANDO:', this.stripeDialogVisible);
+      this.stripePaymentId = paymentId;
+   }
+
+   closeStripeDialog() {
+      this.stripeDialogVisible = false;
+      this.stripePaymentId = '';
+   }
 
 
 }
