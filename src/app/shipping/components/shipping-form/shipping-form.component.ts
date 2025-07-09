@@ -48,14 +48,14 @@ export class ShippingFormComponent implements OnInit{
     this.shippingForm = this.fb.group({
       recipientName: [''],
       city: [''],
-      postalCode: [''],
-      shippingCost: [0],
+      postalCode: ['12345'],
+      shippingCost: [10],
       trackingNumber: [''],
       carrier: [''],
-      shippingEstimatedArrival: [0],
+      shippingEstimatedArrival: [2],
       address: [''],
       userId: [this.auth.getCurrentUserId],
-      technicalId: [0]
+      technicalId: [1]
     });
   }
   

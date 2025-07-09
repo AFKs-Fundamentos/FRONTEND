@@ -26,6 +26,7 @@ import { ProductOrderService } from '../../../order/services/product-order.servi
 import { PaymentService } from '../../../payments/services/payment.service'; // Importing PaymentService for payment handling
 import { Payment } from '../../../payments/model/payment.entity';
 import { OrderType } from '../../../payments/model/orderType.entity';
+import { ShippingFormComponent } from '../../../shipping/components/shipping-form/shipping-form.component';
 
 
 @Component({
@@ -41,7 +42,8 @@ import { OrderType } from '../../../payments/model/orderType.entity';
     ToastModule,
     ProgressSpinnerModule,
     RouterLink,
-    DialogModule
+    DialogModule,
+    ShippingFormComponent
   ],
   templateUrl: './shopping-cart.component.html',
   styleUrls: ['./shopping-cart.component.css'],
@@ -57,6 +59,8 @@ export class ShoppingCartComponent implements OnInit {
   public paymentAmount: number = 0;
   public paymentCurrency: string = '';
   public paymentDescription: string = '';
+
+  showDialogShipping: boolean = false;
 
   readonly PENDING_STATUS = 'PENDING';
   readonly PROCESS_STATUS = 'PROCESS';
@@ -229,6 +233,7 @@ export class ShoppingCartComponent implements OnInit {
                   console.log('Pago confirmado en backend:', response);
                   this.showMessage('success', 'Pago Confirmado', 'El pago ha sido confirmado exitosamente.');
                   this.showPaymentDialog = false;
+                  this.showDialogShipping = true;
                   this.loadCartItems(); // Recarga el carrito
                 },
                 error: (error) => {
@@ -240,7 +245,6 @@ export class ShoppingCartComponent implements OnInit {
         }else {
           console.error('ID PAYMENT NEW no está definido');
         }
-
   }
       cancelar(): void {
           if (this.paymentId) {

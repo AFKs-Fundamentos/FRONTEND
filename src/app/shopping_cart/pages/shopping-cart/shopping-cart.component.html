@@ -119,4 +119,16 @@
     <button pButton type="button" label="Cancelar" (click)="cancelar()" severity="danger" class="p-button-secondary"></button>
     </ng-template>
   </p-dialog>
+  
+  <p-dialog
+  [(visible)]="showDialogShipping"
+  header="Agregar Nueva Reseña"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false">
+  <app-shipping-form></app-shipping-form>
+</p-dialog>
+
+
 </div>
