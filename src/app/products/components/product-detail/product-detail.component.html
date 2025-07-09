@@ -25,10 +25,28 @@
       label="Añadir al carrito"
       (click)="addToCart(product)">
     </p-button>
+
+    <p-button
+      *ngIf="currentUserRole !== 'ROLE_TECHNICIAN'"
+      icon="pi pi-shopping-cart"
+      label="Dejar una reseña"
+      (click)="showRating()">
+    </p-button>
   </ng-template>
 </p-card>
 
 <ng-container *ngIf="product">
   <br/>
   <app-ratings-by-context [context]="'product'" [contextId]="product.id"></app-ratings-by-context>
+  <br/>
+  
+  <p-dialog
+  [(visible)]="showRatingD"
+  header="Agregar Nueva Reseña"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false">
+  <app-rating-form [id]="product.id" [context]="'product'" (dialogClosed)="closeDialogRating()"></app-rating-form></p-dialog>
+  
 </ng-container>
