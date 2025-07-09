@@ -62,6 +62,9 @@ export class AdvisoryFormComponent implements OnInit {
   @Output() dialogClosed = new EventEmitter<void>();
   @Output() formSent = new EventEmitter();
   @Output() clientSecretToParent = new EventEmitter<string>();
+  public paymentAmount: number = 0;
+  public paymentCurrency: string = '';
+  public paymentDescription: string = '';
 
   advisoryOrderId!: number;
   availableDates: { label: string, value: string }[] = [];
@@ -209,10 +212,13 @@ export class AdvisoryFormComponent implements OnInit {
 
   // Crear el Payment después de crear el AdvisoryOrder
   createPayment(payment: any) {
-
+    this.paymentAmount = payment.amount;
+    this.paymentCurrency = payment.currency;
+    this.paymentDescription = payment.description;
       this.paymentService.create(payment).subscribe({
         next: (response) => {
           this.paymentId = response.id ?? ''; // Es importante que uses el nombre correcto aquí
+
           this.clientSecretToParent.emit(this.paymentId);
           console.log('Client Secret recibido:', this.paymentId);
           this.displayPaymentDialog = true;
