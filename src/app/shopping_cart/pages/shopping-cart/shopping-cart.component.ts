@@ -48,6 +48,7 @@ export class ShoppingCartComponent implements OnInit {
   loading: boolean = true;
   showPaymentDialog = false;
   paymentClientSecret: string = '';
+  paymentId: string = '';
   readonly PENDING_STATUS = 'PENDING';
   readonly COMPLETED_STATUS = 'COMPLETED';
 
@@ -166,16 +167,16 @@ export class ShoppingCartComponent implements OnInit {
                   // Aquí crea el pago y obtiene el client_secret
                   const nuevoPago: Payment = {
                         orderId: order.id!,
-                        amount: order.totalPrice,
-                        currency: 'USD',
+                        amount: order.totalPrice * 100,
+                        currency: 'PEN',
                         status: 'requires_payment_method',
                         description: 'Pago de pedido',
                         orderType: order.orderType as OrderType
                       };
                   this.paymentService.create(nuevoPago).subscribe({
                     next: (payment) => {
-                      this.paymentClientSecret = payment.client_secret ?? '';
-                      console.log(this.paymentClientSecret);
+                      this.paymentId = payment.id ?? '';
+                      console.log(this.paymentId);
                       this.showPaymentDialog = true; // Muestra el diálogo
                       this.loading = false;
                     },
@@ -203,17 +204,35 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   // 3. Métodos para confirmar o cancelar el pago
-  confirmarPago(): void {
-    // Lógica para confirmar usando this.paymentClientSecret
-    this.showPaymentDialog = false;
-    this.showMessage('success', 'Pago confirmado', 'El pago fue confirmado');
-  }
+  confirmar(): void {
+        if (this.paymentId) {
+          this.paymentService.confirm(this.paymentId).subscribe({
+            next: (response) => {
+              console.log('Pago confirmado en backend:', response);
+            },
+            error: (error) => {
+              console.error('Error al confirmar en backend:', error);
+            }
+          });
+        } else {
+          console.error('ID PAYMENT NEW no está definido');
+        }
+      }
 
-  cancelarPago(): void {
-    // Lógica para cancelar usando this.paymentClientSecret
-    this.showPaymentDialog = false;
-    this.showMessage('info', 'Pago cancelado', 'El pago fue cancelado');
-  }
+      cancelar(): void {
+          if (this.paymentId) {
+            this.paymentService.cancel(this.paymentId).subscribe({
+              next: (response) => {
+                console.log('Pago cancelado en backend:', response);
+              },
+              error: (error) => {
+                console.error('Error al cancelar en backend:', error);
+              }
+            });
+          } else {
+            console.error('ID PAYMENT NEW no está definido');
+          }
+      }
 
 
 }

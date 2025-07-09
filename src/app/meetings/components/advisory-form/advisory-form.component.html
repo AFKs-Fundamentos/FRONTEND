@@ -40,7 +40,7 @@
 <!-- advisory-form.component.html -->
 <p-dialog [(visible)]="displayPaymentDialog" [modal]="true" [closable]="false" [style]="{width: '400px'}">
   <app-payment
-    [clientSecret]="clientSecret"
+    [paymentId]="paymentId"
     (paymentCompleted)="displayPaymentDialog = false">
   </app-payment>
 </p-dialog>
