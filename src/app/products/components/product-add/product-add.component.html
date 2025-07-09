@@ -44,9 +44,8 @@
           [required]="true"
           [disabled]="loading"
           [showClear]="false"
-          [class]="{'p-invalid': (productForm.controls['category']?.invalid && productForm.controls['category']?.touched) || (productForm.submitted && productForm.controls['category'].invalid)}">
-      </p-dropdown>
-      <small *ngIf="(productForm.controls['category']?.invalid && productForm.controls['category']?.touched) || (productForm.submitted && productForm.controls['category']?.invalid)"
+          [class]="{'p-invalid': productForm.controls['category'] && ((productForm.controls['category'].invalid && productForm.controls['category'].touched) || (productForm.submitted && productForm.controls['category'].invalid))}"/>
+      <small *ngIf="productForm.controls['category'] && ((productForm.controls['category'].invalid && productForm.controls['category'].touched) || (productForm.submitted && productForm.controls['category'].invalid))"
              class="p-error block mt-1">Este campo es requerido</small>
     </div>
 
