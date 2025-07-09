@@ -12,20 +12,28 @@ import {ProductItemService} from '../../../shopping_cart/services/product-item.s
 import {ShoppingCartService} from '../../../shopping_cart/services/shopping-cart.service';
 import {AuthenticationService} from '../../../iam/services/authentication.service';
 import {Tooltip} from 'primeng/tooltip';
+import {DropdownModule} from "primeng/dropdown";
+import {FormsModule} from "@angular/forms";
+import {InputTextModule} from 'primeng/inputtext';
 import { AddButtonComponent } from '../../../wishlist/components/add-button/add-button.component';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [CommonModule, CardModule, NgForOf, CurrencyPipe, Button, ButtonModule, Tooltip, AddButtonComponent],
+  imports: [CommonModule, CardModule, NgForOf, CurrencyPipe, Button, ButtonModule, Tooltip, DropdownModule, FormsModule, InputTextModule,AddButtonComponent],
   providers: [MessageService],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css'
 })
 export class ProductListComponent implements OnInit{
   productData: Product[] = [];
+  filteredProducts: Product[] = [];
   userId: number = 0;
   currentUserRole: string = '';
+
+  searchTerm: string = '';
+  selectedCategory: string = '';
+  categories: string[] = [];
 
   constructor(
     private productService: ProductsService,
@@ -45,15 +53,31 @@ export class ProductListComponent implements OnInit{
     this.loadProducts();
   }
   loadProducts() {
-    this.productService.getAll().subscribe(
+    this.productService.getProductsByStock().subscribe(
       (data: Product[]) => {
         this.productData = data;
+        this.filteredProducts = [...this.productData];
+        this.categories = [...new Set(this.productData.map(product => product.category))];
         console.log(this.productData);
       },
       (error: any) => {
         console.error('Error fetching products', error);
       }
     );
+  }
+  filterProducts() {
+    this.filteredProducts = this.productData.filter(product => {
+      // Filtro por término de búsqueda
+      const matchesSearch = this.searchTerm === '' ||
+          product.productName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+          product.category.toLowerCase().includes(this.searchTerm.toLowerCase());
+
+      // Filtro por categoría
+      const matchesCategory = !this.selectedCategory ||
+        product.category === this.selectedCategory;
+
+      return matchesSearch && matchesCategory;
+    });
   }
 
   addToCart(product: Product): void {
