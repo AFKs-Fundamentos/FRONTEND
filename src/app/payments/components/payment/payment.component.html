@@ -1,28 +1,8 @@
 <div class="p-card">
   <h3>Resumen de Pago</h3>
   <p><strong>PaymentId: </strong> {{ paymentId }}</p>
-  <!--
-  <p><strong>Order Type: </strong> {{ orderType }}</p>
-  <p><strong>Detalles</strong></p>
-  <p><strong>Fecha:</strong> {{ advisoryDetails?.appointmentDate }} {{ advisoryDetails?.appointmentTime }}</p>
-  <p><strong>Descripción:</strong> {{ advisoryDetails?.description }}</p>
-  <p><strong>Currency:</strong> {{ currency }}</p>
-  <p><strong>Monto:</strong> {{ amount | currency: 'USD' }}</p>
 
 
-  <form novalidate (ngSubmit)="buy()" [formGroup]="paymentForm">
-      <ngx-stripe-card
-        containerClass="form-control"
-        [options]="cardOptions"
-      ></ngx-stripe-card>
-    <p-button
-      type="submit"
-      label="Pagar"
-      [disabled]="paymentForm.invalid || loading"
-      class="p-mt-2"
-    ></p-button>
-  </form>
--->
   <div class="p-d-flex p-ai-center p-jc-between p-mt-4">
     <p-button
       label="Cancelar"
