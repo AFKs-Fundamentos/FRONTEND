@@ -164,7 +164,7 @@ export class ShoppingCartComponent implements OnInit {
               nuevoPedido.totalPrice = this.getTotal();
               nuevoPedido.currency = 'USD';
               nuevoPedido.shoppingCartId = this.currentCart?.id ?? 0;
-              nuevoPedido.status = this.COMPLETED_STATUS;
+              nuevoPedido.status = this.PENDING_STATUS;
 
               this.productOrderService.create(nuevoPedido).subscribe({
                 next: (order) => {
