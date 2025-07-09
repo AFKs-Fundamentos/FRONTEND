@@ -29,9 +29,14 @@ import { InputTextModule } from 'primeng/inputtext';
 
 import { PaymentComponent } from '../../../payments/components/payment/payment.component';
 import {DialogComponent} from '../../../shared/components/dialog/dialog.component'; // Importing PaymentComponent for reference
+
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+
 @Component({
   selector: 'app-advisory-form',
   imports: [
+    ToastModule,
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
@@ -44,7 +49,7 @@ import {DialogComponent} from '../../../shared/components/dialog/dialog.componen
     DialogModule,
     InputTextModule
   ],
-  providers: [AppointmentService, TimeSlotService],
+  providers: [AppointmentService, TimeSlotService,MessageService],
   standalone: true,
   templateUrl: './advisory-form.component.html',
   styleUrl: './advisory-form.component.css',
@@ -78,7 +83,8 @@ export class AdvisoryFormComponent implements OnInit {
     private scheduleService: SchedulingService,
     private timeSlotService: TimeSlotService,
     private advisoryOrderService: AdvisoryOrderService,
-    private paymentService: PaymentService
+    private paymentService: PaymentService,
+    private messageService: MessageService
   ) {
   }
 
@@ -204,16 +210,15 @@ export class AdvisoryFormComponent implements OnInit {
   // Crear el Payment después de crear el AdvisoryOrder
   createPayment(payment: any) {
 
-    this.paymentService.create(payment).subscribe({
-      next: (response) => {
-        this.paymentId = response.id ?? ''; // Es importante que uses el nombre correcto aquí
-        this.clientSecretToParent.emit(this.paymentId);
-        console.log('Client Secret recibido:', this.paymentId);
-        this.displayPaymentDialog = true;
+      this.paymentService.create(payment).subscribe({
+        next: (response) => {
+          this.paymentId = response.id ?? ''; // Es importante que uses el nombre correcto aquí
+          this.clientSecretToParent.emit(this.paymentId);
+          console.log('Client Secret recibido:', this.paymentId);
+          this.displayPaymentDialog = true;
+          console.log('dialog booleab:', this.displayPaymentDialog);
 
-        console.log('dialog booleab:', this.displayPaymentDialog);
-
-      },
+        },
       error: (error) => {
         console.error('Error al crear el pago:', error);
       }
@@ -227,12 +232,15 @@ export class AdvisoryFormComponent implements OnInit {
   onDialogClose() {
     this.displayPaymentDialog = false;
     this.dialogClosed.emit();
+
   }
 
   onPaymentCompleted() {
     this.displayPaymentDialog = false;
-    // Aquí puedes emitir otros eventos o lógica adicional
+    this.showMessage('success', 'Pago Confirmado', 'El pago ha sido confirmado exitosamente.');
   }
-
+  private showMessage(severity: string, summary: string, detail: string): void {
+      this.messageService.add({ severity, summary, detail });
+    }
 
 }

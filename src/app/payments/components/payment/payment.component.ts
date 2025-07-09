@@ -49,8 +49,8 @@ export class PaymentComponent{
         this.paymentService.confirm(this.paymentId).subscribe({
           next: (response) => {
             console.log('Pago confirmado en backend:', response);
-            this.showMessage('success', 'Pago Confirmado', 'El pago ha sido confirmado exitosamente.');
-            this.close.emit(); // Cierra el diálogo al confirmar
+            this.paymentCompleted.emit();
+            this.close.emit();
           },
           error: (error) => {
             console.error('Error al confirmar en backend:', error);
@@ -66,8 +66,8 @@ export class PaymentComponent{
           this.paymentService.cancel(this.paymentId).subscribe({
             next: (response) => {
               console.log('Pago cancelado en backend:', response);
-              this.showMessage('success', 'Pago Cancelado', 'El pago ha sido cancelado exitosamente.');
-              this.close.emit(); // Cierra el diálogo al confirmar
+              this.cancel.emit();
+              this.close.emit();
             },
             error: (error) => {
               console.error('Error al cancelar en backend:', error);
@@ -77,6 +77,7 @@ export class PaymentComponent{
           console.error('paymentId no está definido');
         }
       }
+
   private showMessage(severity: string, summary: string, detail: string): void {
     this.messageService.add({ severity, summary, detail });
   }
