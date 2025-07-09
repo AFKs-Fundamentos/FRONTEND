@@ -50,15 +50,6 @@
               <tr>
                 <td colspan="3" class="text-right font-bold">Total:</td>
                 <td class="font-bold">{{ getTotal() | currency:'PEN':'S/ ' }}</td>
-                <td>
-                  <button
-                    pButton
-                    label="Total"
-                    icon="pi pi-check"
-                    class="p-button-success"
-                    [disabled]="cartItems.length === 0">
-                  </button>
-                </td>
               </tr>
             </ng-template>
 

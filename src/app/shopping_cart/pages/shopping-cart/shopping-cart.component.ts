@@ -56,6 +56,7 @@ export class ShoppingCartComponent implements OnInit {
   paymentId: string = '';
   readonly PENDING_STATUS = 'PENDING';
   readonly PROCESS_STATUS = 'PROCESS';
+  readonly COMPLETED_STATUS = 'COMPLETED';
 
   constructor(
     private shoppingCartService: ShoppingCartService,
@@ -153,7 +154,7 @@ export class ShoppingCartComponent implements OnInit {
 
     this.loading = true;
     const updateObservables = this.cartItems.map(item => {
-      item.statusCartShoppingItem = this.PROCESS_STATUS;
+      item.statusCartShoppingItem = this.PENDING_STATUS;
       return this.productItemService.update(item.id!, item);
     });
 
@@ -204,28 +205,36 @@ export class ShoppingCartComponent implements OnInit {
     });
   }
 
-  private showMessage(severity: string, summary: string, detail: string): void {
-    this.messageService.add({ severity, summary, detail });
-  }
+
 
   // 3. Métodos para confirmar o cancelar el pago
   confirmar(): void {
         if (this.paymentId) {
-          this.paymentService.confirm(this.paymentId).subscribe({
-            next: (response) => {
-              console.log('Pago confirmado en backend:', response);
-              this.showMessage('success', 'Pago Confirmado', 'El pago ha sido confirmado exitosamente.');
+          const updateObservables = this.cartItems.map(item => {
+            item.statusCartShoppingItem = this.COMPLETED_STATUS;
+            return this.productItemService.update(item.id!, item);
+          });
 
-            },
-            error: (error) => {
-              console.error('Error al confirmar en backend:', error);
+          forkJoin(updateObservables).subscribe({
+            next: () => {
+              this.paymentService.confirm(this.paymentId).subscribe({
+                next: (response) => {
+                  console.log('Pago confirmado en backend:', response);
+                  this.showMessage('success', 'Pago Confirmado', 'El pago ha sido confirmado exitosamente.');
+                  this.showPaymentDialog = false;
+                  this.loadCartItems(); // Recarga el carrito
+                },
+                error: (error) => {
+                  console.error('Error al confirmar en backend:', error);
+                }
+              });
             }
           });
-        } else {
+        }else {
           console.error('ID PAYMENT NEW no está definido');
         }
-      }
 
+  }
       cancelar(): void {
           if (this.paymentId) {
             this.paymentService.cancel(this.paymentId).subscribe({
@@ -241,5 +250,8 @@ export class ShoppingCartComponent implements OnInit {
             console.error('ID PAYMENT NEW no está definido');
           }
       }
+        private showMessage(severity: string, summary: string, detail: string): void {
+            this.messageService.add({ severity, summary, detail });
+          }
 
 }
