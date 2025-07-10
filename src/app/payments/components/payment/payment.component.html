@@ -1,0 +1,25 @@
+<p-confirmdialog />
+<div class="p-card">
+  <h2>Resumen de Pago</h2>
+  <h3><strong>PaymentId: </strong></h3>
+  <p>{{ paymentId }}</p>
+  <p><strong>Description:</strong></p>
+  <p>{{ description }}</p>
+  <p><strong>Amount: </strong> {{ amount | currency: currency }}</p>
+
+  <div class="p-d-flex p-ai-center p-jc-between p-mt-4">
+    <p-button
+      label="Cancelar"
+      class="p-button-secondary"
+      severity="danger"
+      (click)="cancelar()"
+    ></p-button>
+
+    <p-button
+      label="Confirmar Pago"
+      class="p-button-success"
+      severity="success"
+      (click)="confirmar()"
+    ></p-button>
+  </div>
+</div>

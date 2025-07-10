@@ -1,0 +1,151 @@
+<div class="p-4">
+  <p-toast></p-toast>
+  <p-confirmDialog></p-confirmDialog>
+
+  <div class="card">
+    <div class="flex justify-content-between align-items-center mb-4">
+      <h2>Inventario de Productos</h2>
+      <button
+        pButton
+        icon="pi pi-plus"
+        label="Agregar Producto"
+        class="p-button-success"
+        (click)="displayAddModal = true">
+      </button>
+    </div>
+
+
+
+    @if (loading) {
+      <div class="flex justify-content-center p-8">
+        <p-progressSpinner></p-progressSpinner>
+      </div>
+    } @else {
+      <p-table
+        [value]="productsInventory"
+        [paginator]="true"
+        [rows]="10"
+        styleClass="p-datatable-gridlines p-datatable-striped"
+        [globalFilterFields]="['product.productName', 'product.sku', 'product.category']">
+
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Imagen</th>
+            <th pSortableColumn="product.productName">Nombre <p-sortIcon field="product.productName"></p-sortIcon></th>
+            <th pSortableColumn="product.sku">SKU <p-sortIcon field="product.sku"></p-sortIcon></th>
+            <th pSortableColumn="product.category">Categoría <p-sortIcon field="product.category"></p-sortIcon></th>
+            <th pSortableColumn="product.price">Precio <p-sortIcon field="product.price"></p-sortIcon></th>
+            <th>Stock</th>
+            <th>Stock Mín</th>
+            <th>Stock Máx</th>
+            <th>Acciones</th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-item>
+          <tr>
+            <td>
+              <img
+                [src]="item.product.photo"
+                [alt]="item.product.productName"
+                class="w-4rem shadow-2 border-round"
+                style="max-height: 60px; object-fit: contain;">
+            </td>
+            <td>{{ item.product.productName }}</td>
+            <td>{{ item.product.sku }}</td>
+            <td>
+              <span class="p-tag">{{ item.product.category }}</span>
+            </td>
+            <td>{{ item.product.price | currency:'S/.' }}</td>
+            <td
+              [ngClass]="{
+                'text-green-500': item.inventory.stock > item.inventory.stockMin,
+                'text-yellow-500': item.inventory.stock === item.inventory.stockMin,
+                'text-red-500': item.inventory.stock < item.inventory.stockMax
+              }">
+              {{ item.inventory.stock }}
+            </td>
+            <td>{{ item.inventory.stockMin }}</td>
+            <td>{{ item.inventory.stockMax }}</td>
+            <td>
+              <div class="flex gap-2">
+                <button
+                  pButton
+                  icon="pi pi-pencil"
+                  class="p-button-rounded p-button-info p-button-sm"
+                  pTooltip="Editar producto"
+                  tooltipPosition="top"
+                  (click)="editItem(item, 'product')">
+                </button>
+                <button
+                  pButton
+                  icon="pi pi-box"
+                  class="p-button-rounded p-button-help p-button-sm"
+                  pTooltip="Editar inventario"
+                  tooltipPosition="top"
+                  (click)="editItem(item, 'inventory')">
+                </button>
+                <button
+                  pButton
+                  icon="pi pi-trash"
+                  class="p-button-rounded p-button-danger p-button-sm"
+                  pTooltip="Eliminar producto"
+                  tooltipPosition="top"
+                  (click)="confirmDelete(item)">
+                </button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+
+          <tr>
+            <td colspan="9" class="text-center py-5">No se encontraron productos</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    }
+  </div>
+
+
+  <p-dialog
+    [(visible)]="displayEditModal"
+    [header]="editMode === 'product' ? 'Editar Producto' : 'Editar Inventario'"
+    [modal]="true"
+    [style]="{ width: '50vw' }"
+    [draggable]="false"
+    [resizable]="false"
+    *ngIf="selectedItem">
+
+    @if (editMode === 'product') {
+      <app-product-edit
+        [product]="selectedItem.product"
+        (save)="handleSave()"
+        (cancel)="displayEditModal = false">
+      </app-product-edit>
+    }
+    @if (editMode === 'inventory') {
+      <app-inventory-edit
+        [inventory]="selectedItem.inventory"
+        (save)="handleSave()"
+        (cancel)="displayEditModal = false">
+      </app-inventory-edit>
+    }
+  </p-dialog>
+
+
+  <p-dialog
+    [(visible)]="displayAddModal"
+    header="Agregar Nuevo Producto"
+    [modal]="true"
+    [style]="{ width: '50vw' }"
+    [draggable]="false"
+    [resizable]="false">
+    <app-product-add
+      [userId]="userId"
+      (productAdded)="handleProductAdded()"
+      (cancel)="displayAddModal = false">
+    </app-product-add>
+  </p-dialog>
+</div>

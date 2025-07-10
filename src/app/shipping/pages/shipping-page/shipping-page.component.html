@@ -1,0 +1,57 @@
+<div>
+    <h2>Mis ordenes de envío</h2>
+    <h2>Pedidos hasta ahora: </h2>
+</div>
+
+<div class="justify-center ml-7">
+    <div class="grid grid-cols-2">
+        <ng-container *ngFor="let shippings of shippingByType">
+            <div  class="w-5 h-24 m-2 overflow-hidden">
+                
+                <p-card [style]="{ width: '25rem', overflow: 'hidden' }">
+                    <ng-template #header>
+                        <div class="flex justify-center m-3">
+                            {{ shippings.trackingNumber }}
+                        </div>
+                    </ng-template>
+
+                    <ng-template #title> {{ shippings.carrier }} </ng-template>
+                    <ng-template #subtitle> {{ shippings.recipientName }} </ng-template>
+
+                    <h3>
+                        {{shippings.city}}
+                        {{shippings.address}}
+                    </h3>
+
+                    <p class="m-2 font-bold">
+                        Los productos serán entregados en 72 horas
+                    </p>
+                    
+                    <ng-template #footer>
+                        <p-message severity="secondary">Código postal: {{ shippings.postalCode }}</p-message>
+                        <p-message severity="secondary">S/. 0</p-message>
+                    </ng-template>
+                </p-card>
+
+            
+            </div>
+        </ng-container>
+    </div>
+</div>
+
+<p-button
+icon="pi pi-shopping-cart"
+label="Registrar pedido"
+(click)="showDialogShipping()">
+</p-button>
+
+
+<p-dialog
+[(visible)]="dialogShippin"
+header="Agregar Nueva Reseña"
+[modal]="true"
+[style]="{ width: '50vw' }"
+[draggable]="false"
+[resizable]="false">
+<app-shipping-form></app-shipping-form>
+</p-dialog>

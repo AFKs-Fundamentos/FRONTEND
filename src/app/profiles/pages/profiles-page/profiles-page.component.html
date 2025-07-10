@@ -1,0 +1,42 @@
+<div class="flex flex-row gap-6 p-6  rounded-xl shadow-md w-full max-w-6xl mx-auto">
+
+  <!-- Información personal -->
+  <div class="flex">
+    <app-edit-profile />
+  </div>
+
+  @if (!showForm && userRole =='USER_TECHNICIAN') {
+
+  <!-- Tabla y botón -->
+  <div class="flex-[2] flex flex-col gap-6">
+
+    <div class="flex  flex-column justify-between items-center">
+      <div class="flex justify-content-center ">
+
+          <div  class=" p-2 rounded-lg shadow flex flex-col gap-4">
+            <p-button icon="pi pi-plus" [label]="showForm?'Cerrar': 'Agregar'" (onClick)="toggleForm()" />
+          </div>
+
+      </div>
+
+      <div>
+        @if (showForm) {
+          <div  class=" p-2 rounded-lg shadow flex flex-col gap-4">
+                <app-schedules-form (availabilityCreated)="handleCreated($event)"/>
+          </div>
+        }
+      </div>
+
+    </div>
+      <div class="flex flex-column">
+        <h2 class="text-xl font-semibold text-indigo-400 text-center">Horarios Registrados</h2>
+
+        <app-schedules [schedules]="scheduleResponse"   [advisorId]="selectedAdvisorId" />
+
+      </div>
+
+  </div>
+
+  }
+
+</div>

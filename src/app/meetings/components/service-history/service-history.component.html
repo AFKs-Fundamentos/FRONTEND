@@ -1,42 +1,73 @@
-<div class="flex flex-row bg-black-alpha-20 px-6 border-0 border-round-3xl">
+<div class="flex flex-row bg-black-alpha-20 px-6 border-0 border-round-3xl gap-5">
 
 
-    <div class="flex flex-row flex-wrap max-w-30rem  p-2 gap-3   ">
-      <p class="inline  w-full text-center">Servicios Pendientes</p>
+<div class="flex flex-column align-items-center gap-3 w-full">
 
-    @for (m of meetings; track m.id) {
+  <p class="inline w-full text-center">Servicios Programados</p>
+
+  @for (a of advisoriesSchedulled; track a.advisoryId) {
+    <app-card
+      class="w-20rem"
+      [image]="false"
+      [contentTitle]="advisor ? advisor.firstName : ''"
+      [showSaveButton]="true"
+      [showCancelButton]="true"
+      (cancelClicked)="onMarkAsCanceled(a.advisoryId)"
+      (saveClicked)="onMarkAsCompleted(a.advisoryId)"
+      [saveLabel]="'Marcar como Completado'"
+      [cancelLabel]="'Rechazar Servicio'"
+    >
+      <p><strong>Descripción:</strong> {{ a.advisoryDescription }}</p>
+      <p><strong>Estado:</strong>
+        <span [ngClass]="{
+            'text-green-600': a.advisoryStatus === 'COMPLETED',
+            'text-red-500': a.advisoryStatus === 'CANCELLED',
+          }">
+            {{
+              a.advisoryStatus === 'COMPLETED' ? 'Completado' :
+                a.advisoryStatus === 'CANCELLED' ? 'Cancelado' :
+                  'En progreso'
+          }}
+          </span>
+      </p>
+      <p *ngIf="a.advisoryDate"><strong>Fecha:</strong> {{ a.advisoryDate | date:'dd/MM/yyyy' }}</p>
+      <p *ngIf="a.advisoryTime"><strong>Hora:</strong> {{ a.advisoryTime }}</p>
+      <p *ngIf="a.meetUrl" class="text-center"> <a [href]="a.meetUrl" class="mx-1 text-decoration: no-underline" target="_blank" pButton> <span pButtonLabel>Ir a la reunión</span> </a></p>
+    </app-card>
+  }
+</div>
+
+  <div class="flex flex-column align-items-center gap-3 w-full">
+
+    <p class="inline w-full text-center">Servicios Completados</p>
+
+    @for (a of advisoriesCompleted; track a.advisoryId) {
       <app-card
+        class="w-20rem"
         [image]="false"
-        [contentTitle]="advisor?advisor.nombre: '' "
-
+        [contentTitle]="advisor ? advisor.firstName : ''"
+        [showCancelButton]="false"
+        [showSaveButton]="false"
       >
-        <p>Estado: {{m.estado}}</p>
-        @if (m.rating!=null) {
-          <p>Rating: {{m.rating}}</p>
-        }
+        <p><strong>Descripción:</strong> {{ a.advisoryDescription }}</p>
+        <p><strong>Estado:</strong>
+          <span [ngClass]="{
+            'text-green-600': a.advisoryStatus === 'COMPLETED',
+            'text-red-500': a.advisoryStatus === 'CANCELLED',
+          }">
+            {{
+              a.advisoryStatus === 'COMPLETED' ? 'Completado' :
+              a.advisoryStatus === 'CANCELLED' ? 'Cancelado' :
+              'En progreso'
+            }}
+          </span>
+        </p>
+        <p *ngIf="a.advisoryDate"><strong>Fecha:</strong> {{ a.advisoryDate | date:'dd/MM/yyyy' }}</p>
+        <p *ngIf="a.advisoryTime"><strong>Hora:</strong> {{ a.advisoryTime }}</p>
+
       </app-card>
     }
-    </div>
-
-
-
-
-    <div class="flex flex-row flex-wrap max-w-30rem  p-2 gap-3">
-      <p class="inline w-full text-center">Servicios Completados</p>
-
-      @for (m of meetings; track m.id) {
-        <app-card
-          [image]="false"
-          [contentTitle]="advisor?advisor.nombre: '' "
-
-        >
-          <p>Estado: {{m?.estado}}</p>
-
-          <p>Rating: {{m?.rating}}</p>
-        </app-card>
-      }
-    </div>
-
+  </div>
   </div>
 
 

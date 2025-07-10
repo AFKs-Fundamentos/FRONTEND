@@ -1,0 +1,33 @@
+<form [formGroup]="availabilityForm" (ngSubmit)="onSubmit()">
+  <p-fluid class="flex flex-column gap-2">
+
+    <!-- Fecha -->
+    <p-datepicker
+      formControlName="dateRange"
+      selectionMode="range"
+      [showButtonBar]="true"
+      dateFormat="yy-mm-dd"
+      placeholder="Selecciona rango de fechas">
+    </p-datepicker>
+
+
+    <!-- Hora de inicio -->
+    <p-datepicker
+      formControlName="startTime"
+      [timeOnly]="true"
+      hourFormat="24"
+      placeholder="Hora de inicio">
+    </p-datepicker>
+
+    <!-- Hora de fin -->
+    <p-datepicker
+      formControlName="endTime"
+      [timeOnly]="true"
+      hourFormat="24"
+      placeholder="Hora de fin">
+    </p-datepicker>
+
+    <p-button type="submit" label="Guardar disponibilidad"></p-button>
+
+  </p-fluid>
+</form>

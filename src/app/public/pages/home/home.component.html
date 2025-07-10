@@ -1,0 +1,27 @@
+<div class="cards-container bg-black-alpha-20 px-6 border-round-3xl">
+  <div class="flex flex-column justify-content-center align-items-center">
+    <h2>PC Master</h2>
+  </div>
+
+  <div class="flex flex-row flex-wrap justify-content-center gap-4">
+    <div *ngFor="let item of items">
+      <p-card class="fixed-card">
+        <ng-template #header>
+          <img [src]="item.image" alt="{{ item.title }}" loading="lazy" />
+        </ng-template>
+
+        <ng-template #title>
+          <h3 class="title">{{ item.title }}</h3>
+        </ng-template>
+
+        <p class="description">{{ item.text }}</p>
+
+        <ng-template #footer>
+          <div class="footer-button">
+            <p-button [routerLink]="item.route" icon="pi pi-arrow-up-right" label="Ir" />
+          </div>
+        </ng-template>
+      </p-card>
+    </div>
+  </div>
+</div>

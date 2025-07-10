@@ -1,0 +1,87 @@
+<form [formGroup]="inventoryForm" (ngSubmit)="onSubmit()" class="p-fluid grid formgrid">
+  <!-- ID only visibility  -->
+  <div class="field col-12">
+    <label for="id">ID de Inventario</label>
+    <input
+      pInputText
+      id="id"
+      formControlName="id"
+      readonly
+      [class]="{'p-invalid': inventoryForm.controls['id'].invalid && (inventoryForm.controls['id'].dirty || inventoryForm.controls['id'].touched)}">
+  </div>
+
+  <!-- Stock Mínimo -->
+  <div class="field col-12 md:col-4">
+    <label for="stockMin">Stock Mínimo</label>
+    <p-inputNumber
+      inputId="stockMin"
+      formControlName="stockMin"
+      mode="decimal"
+      [min]="0"
+      [showButtons]="true"
+      [class]="{'p-invalid': inventoryForm.controls['stockMin'].invalid && (inventoryForm.controls['stockMin'].dirty || inventoryForm.controls['stockMin'].touched)}">
+    </p-inputNumber>
+    <small *ngIf="inventoryForm.controls['stockMin'].invalid && (inventoryForm.controls['stockMin'].dirty || inventoryForm.controls['stockMin'].touched)"
+           class="p-error">
+      Valor mínimo requerido: 0
+    </small>
+  </div>
+
+  <!-- Stock Actual -->
+  <div class="field col-12 md:col-4">
+    <label for="stock">Stock Actual</label>
+    <p-inputNumber
+      inputId="stock"
+      formControlName="stock"
+      mode="decimal"
+      [min]="0"
+      [showButtons]="true"
+      [class]="{'p-invalid': inventoryForm.controls['stock'].invalid && (inventoryForm.controls['stock'].dirty || inventoryForm.controls['stock'].touched)}">
+    </p-inputNumber>
+    <small *ngIf="inventoryForm.controls['stock'].invalid && (inventoryForm.controls['stock'].dirty || inventoryForm.controls['stock'].touched)"
+           class="p-error">
+      Valor mínimo requerido: 0
+    </small>
+  </div>
+
+  <!-- Stock Máximo -->
+  <div class="field col-12 md:col-4">
+    <label for="stockMax">Stock Máximo</label>
+    <p-inputNumber
+      inputId="stockMax"
+      formControlName="stockMax"
+      mode="decimal"
+      [min]="0"
+      [showButtons]="true"
+      [class]="{'p-invalid': inventoryForm.controls['stockMax'].invalid && (inventoryForm.controls['stockMax'].dirty || inventoryForm.controls['stockMax'].touched)}">
+    </p-inputNumber>
+    <small *ngIf="inventoryForm.controls['stockMax'].invalid && (inventoryForm.controls['stockMax'].dirty || inventoryForm.controls['stockMax'].touched)"
+           class="p-error">
+      Valor mínimo requerido: 0
+    </small>
+  </div>
+
+  <!-- Botones de cancelar y guardar  -->
+  <div class="field col-12 flex justify-content-end gap-2">
+    <button
+      pButton
+      type="button"
+      label="Cancelar"
+      icon="pi pi-times"
+      class="p-button-text"
+      (click)="onCancel()"
+      [disabled]="loading">
+    </button>
+    <button
+      pButton
+      type="submit"
+      label="Guardar"
+      icon="pi pi-save"
+      class="p-button-success"
+      [disabled]="inventoryForm.invalid || loading">
+      @if (loading) {
+        <i class="pi pi-spinner pi-spin ml-2"></i>
+      }
+    </button>
+  </div>
+</form>

@@ -1,0 +1,49 @@
+.fixed-card {
+  width: 260px;
+  height: 380px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #18181b;
+  color: white;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: none; /* Quita la sombra */
+  border: none;
+}
+/* Asegura que el contenido interno tampoco tenga bordes/sombras */
+.fixed-card ::ng-deep .p-card {
+  box-shadow: none !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+.fixed-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.title {
+  margin: 0.5rem 0 0.25rem 0;
+  font-size: 1.2rem;
+}
+
+.description {
+  margin: 0 1rem;
+  flex-grow: 1;
+  font-size: 0.95rem;
+  color: #ccc;
+}
+
+.footer-button {
+  display: flex;
+  justify-content: center;
+  padding: 0.75rem;
+}
+
+.cards-container {
+  padding-bottom: 4rem; /* Aumenta el espacio inferior */
+  padding-top: 2rem;    /* (Opcional) también puedes añadir un poco arriba */
+  min-height: 600px;    /* Garantiza que tenga un alto mínimo visual */
+}

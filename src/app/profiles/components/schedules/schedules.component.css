@@ -1,0 +1,12 @@
+:host ::ng-deep .p-datatable th {
+  text-align: center;
+}
+:host ::ng-deep .p-datatable td {
+  text-align: center;
+}
+.badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  display: inline-block;
+}
